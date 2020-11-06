@@ -86,9 +86,11 @@ export default {
                         sessionStorage.setItem('usuario', response.data.Nombre);
                         sessionStorage.setItem('permiso', response.data.Numeronivel);
                         sessionStorage.setItem('nombreNivel', response.data.nivel);
+                        sessionStorage.setItem('nomSucursal', response.data.NombreSucursal);
+                        sessionStorage.setItem('sucursalId', response.data.idSucursal);
 
-                        if(sessionStorage.getItem('autenticado') != '' && sessionStorage.getItem('usuario') != '' && sessionStorage.getItem('permiso') != '' &&sessionStorage.getItem('nombreNivel') != ''){
-                            if(sessionStorage.getItem('autenticado') != 'undefined' && sessionStorage.getItem('usuario') != 'undefined' && sessionStorage.getItem('permiso') != 'undefined' &&sessionStorage.getItem('nombreNivel') != 'undefined'){
+                        if(sessionStorage.getItem('autenticado') != '' && sessionStorage.getItem('usuario') != '' && sessionStorage.getItem('permiso') != '' && sessionStorage.getItem('nombreNivel') != '' && sessionStorage.getItem('nomSucursal') != '' &&sessionStorage.getItem('sucursalId') != ''){
+                            if(sessionStorage.getItem('autenticado') != 'undefined' && sessionStorage.getItem('usuario') != 'undefined' && sessionStorage.getItem('permiso') != 'undefined' &&sessionStorage.getItem('nombreNivel') != 'undefined' && sessionStorage.getItem('nomSucursal') != 'undefined' &&sessionStorage.getItem('sucursalId') != 'undefined'){
                                 this.$router.replace({ name: "Menu" });
                                 location.reload();
                             }

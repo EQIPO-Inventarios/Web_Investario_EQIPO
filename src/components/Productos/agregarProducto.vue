@@ -5,7 +5,7 @@
           <br>
           <div class="card">
               <div class="card-body">
-                  <form @submit="enviarForm()">
+                  <form @submit.prevent="enviarForm()">
                       <div class="form row">
                           <div class="col">
                               <input v-model="sucursal" type="text" class="form-control" disabled="disabled">
@@ -29,7 +29,9 @@
                               </select>
                           </div>
                           <div class="col-4">
-                              <button type="button" class="btn btn-info btn-sm">+ Nuevo</button>
+                              <button @click="redireccionar()" type="button" class="btn btn-info btn-sm" data-dismiss="modal">
+                                   + Nuevo
+                              </button>
                           </div>
                       </div>
                       <br>
@@ -72,7 +74,7 @@ export default {
         return {
             codigoProducto: '',
             nombreProducto: '',
-            sucursal: 'Sucursal central',
+            sucursal: '',
             material: '',
             caracteristicas: '',
             existencias: 0,
@@ -92,6 +94,7 @@ export default {
     },
     created() {
         this.bringSuppliers();
+        this.EsAdminSucursalPrincipal();
     },
     methods: {
         bringSuppliers() {
@@ -160,7 +163,7 @@ export default {
                   text: 'Todos los campos son requeridos.'
               });
           } 
-      },
+        },
         limpiarForm() {
             this.codigoProducto = '';
             this.nombreProducto = '';
@@ -176,6 +179,14 @@ export default {
             this.descripcion = '';
             this.telefono = '';
             this.correo = '';
+        },
+        redireccionar() {
+            this.$router.replace({ name: "ProveedorL" });
+        },
+        EsAdminSucursalPrincipal() {
+            if(sessionStorage.getItem('nomSucursal') == 'Sucursal Principal') {
+            this.sucursal =  sessionStorage.getItem('nomSucursal');
+            }
         }
     }
 }
