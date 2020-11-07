@@ -232,7 +232,7 @@ export default {
             this.numeronivel = this.dataUsuario.nivel.NumeroNivel;
 
             this.idSucursal = this.dataUsuario.personal.idSucursal;
-            this.obtenerNombreSucursal(this.dataUsuario.personal.idSucursals);
+            this.obtenerNombreSucursal();
 
             this.descripcion = this.dataUsuario.personal.Contacto.Direccion.Descripcion;
             this.departamento = this.dataUsuario.personal.Contacto.Direccion.Departamento;
@@ -329,7 +329,7 @@ export default {
                  error => console.log(error)
             )
         },
-        obtenerNombreSucursal(id){
+        obtenerNombreSucursal(){
             axios.get(`/Sucursales/buscar/${this.idSucursal}`)
             .then(response => {
                 this.nombreSucursal = response.data.Nombre;
