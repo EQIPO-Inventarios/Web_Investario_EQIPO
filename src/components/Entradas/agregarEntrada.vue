@@ -67,36 +67,9 @@
                       <div class="col">
                           <div class="form-group">
                               <label for="nompro">Detalle:</label>
-                              <textarea v-model="detalle" class="form-control" cols="30" rows="5" placeholder="Carcateristicas ..."></textarea>
+                              <textarea v-model="detalle" class="form-control" cols="30" rows="5" placeholder="Detalles ..."></textarea>
                           </div>
                        </div>
-                    </div>
-                    <div class="form-row">
-                      <div class="col">
-                          <div class="form-group">
-                              <label for="selectEstante">Numero Estanteria:</label>
-                              <input v-model.number="estante" id="selectEstante" type="number" min="1" :max="numEstanteria" class="form-control" required="required">
-                              <p v-if="minEst" class="wd-2 bg-danger text-white">El menor estante es: 1</p>
-                              <p v-if="maxEst" class="wd-2 bg-danger text-white">El maximo de estante es: {{numEstanteria}}</p>
-                          </div>
-                      </div>
-                      
-                      <div class="col">
-                          <div class="form-group">
-                              <label for="x">Eje X:</label>
-                              <input v-model.number="x" id="x" type="number" min="1" max="6" class="form-control" required="required">
-                              <p v-if="minX" class="wd-2 bg-danger text-white">El menor es: 1</p>
-                              <p v-if="maxX" class="wd-2 bg-danger text-white">El maximo es: 6</p>
-                          </div>
-                      </div>
-                      <div class="col">
-                          <div class="form-group">
-                              <label for="y">Eje Y:</label>
-                              <input v-model.number="y" id="y" type="number" min="1" max="4" class="form-control" required="required">
-                              <p v-if="minY" class="wd-2 bg-danger text-white">El menor es: 1</p>
-                              <p v-if="maxY" class="wd-2 bg-danger text-white">El maximo es: 4</p>
-                          </div>
-                      </div>
                     </div>
                   </div>
               </form>   
@@ -130,13 +103,6 @@ export default {
         productoId: '',
         cantidad: 0,
         monto: 0,
-        numBodega: 0,
-        numEstanteria: 0,
-          largo: 0,
-          ancho: 0,
-        estante: 1,
-          x: 1,
-          y: 1,
 
         //variables para obtener data
         dataProductos: [],
@@ -151,13 +117,7 @@ export default {
         nombreProducto: '',
 
         //validaciones de max y min estante
-        minCant: false,
-        maxEst: false,
-        minEst: false,
-        maxX: false,
-        minX: false,
-        maxY: false,
-        minY: false
+        minCant: false
     }
   },
   mounted() {
@@ -213,25 +173,16 @@ export default {
         this.productoId = '';
         this.cantidad = '';
         this.monto = '';
-        this.estante = '';
-          this.x = '';
-          this.y = '';
       },
       enviarForm() {
-          if(this.fechaActual != '' && this.detalle != '' && 
+          if(this.fechaActual != '' && 
+             this.detalle != '' && 
              this.productoId != '' && 
              this.cantidad != 0 && 
              this.monto != 0 && 
-             this.sucursalId != '' && 
-             this.numBodega != 0 && 
-             this.Estanterias != 0 && 
-             this.largo != 0 && 
-             this.ancho != 0 && 
-             this.estante != 0 && 
-             this.x != 0 && 
-             this.y != 0){ 
+             this.sucursalId != '' ){ 
                //validando campos numericos
-               if (this.cantidad >= 1 && this.monto != 0 && this.monto >= 1 && this.estante >= 1 && this.estante <= this.numEstanteria && this.x >= 1 && this.x <= 6 && this.y >= 1 && this.y <= 4) {
+               if (this.cantidad >= 1 && this.monto != 0 && this.monto >= 1 ) {
                   axios.post('/Entradas/crear',{
                       Fecha: this.fechaActual,
                       Detalle: this.detalle,
@@ -239,13 +190,6 @@ export default {
                       Cantidad: this.cantidad,
                       Monto: this.monto,
                       idSucursal: this.sucursalId,
-                      NumeroBodega: this.numBodega,
-                      Estanterias: this.numEstanteria,
-                      Largo: this.largo,
-                      Ancho: this.ancho,
-                      Estanteria: this.estante,
-                      X: this.x,
-                      Y: this.y
                   })
                   .then(response => {                 
                       //console.log(response.data.mensaje);                 
@@ -292,42 +236,6 @@ export default {
           this.monto = this.precio * this.cantidad;
         }        
       }
-    },
-    estante() {
-      if(this.estante) {
-              if (this.estante < 1) {
-                this.minEst = true;
-              }else { this.minEst = false; }
-
-
-              if (this.estante > 100) {
-                this.maxEst = true;
-              }else { this.maxEst = false; }
-          }
-    },
-    x() {
-      if(this.x) {
-              if (this.x < 1) {
-                this.minX = true;
-              }else { this.minX = false; }
-
-
-              if (this.x > 6) {
-                this.maxX = true;
-              }else { this.maxX = false; }
-          }
-    },
-    y() {
-      if(this.y) {
-              if (this.y < 1) {
-                this.minY = true;
-              }else { this.minY = false; }
-
-
-              if (this.y > 4) {
-                this.maxY = true;
-              }else { this.maxY = false; }
-          }
     }
 
   }

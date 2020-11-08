@@ -3,7 +3,7 @@
         <br>
         <!--Incio modal editar--> 
         <div class="modal fade" id="EditModal"  data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
@@ -14,7 +14,7 @@
               <div class="modal-body">
 
                   <!--aqui ira el componente editar --> 
-                  <!--<editar :dataProduct="row"></editar> -->
+                  <editar :dataEntrada="row"></editar>
 
               </div>
               <div class="modal-footer">
@@ -79,6 +79,7 @@
                   <th scope="col">Monto</th>
                   <th scope="col">Sucursal</th>
                   <th scope="col">Proveedor</th>
+                  <th scope="col">Detalle</th>
                   <th scope="col">Opciones</th>
                 </tr>
               </thead>
@@ -92,6 +93,7 @@
                   <td>${{item.Monto}} </td>
                   <td> {{obtenerNombreSucursal(item.idSucursal)}} </td>
                   <td> {{obtenerNombreProveedor(item.idProducto)}} </td>
+                  <td> {{item.Detalle}} </td>
                   <td> 
                     <button @click="editar(item)"
                         type="button" data-toggle="modal" data-target="#EditModal"
@@ -103,8 +105,8 @@
                 </tr>
               </tbody> 
             </table>
-            <!-- 
-            <div > <Paginacion 
+
+            <div> <!--Paginacion -->
             
               <button  class=" btn btn-primary btn-sm mr-1" 
                        type="button" 
@@ -124,7 +126,7 @@
                       @click="page++">
                  Siguiente
               </button>
-            </div> -->
+            </div> 
         </div>
         
     </div>
