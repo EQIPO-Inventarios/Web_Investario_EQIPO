@@ -80,7 +80,7 @@
                   <th scope="col">Sucursal</th>
                   <th scope="col">Proveedor</th>
                   <th scope="col">Detalle</th>
-                  <th scope="col">Opciones</th>
+                  <th scope="col" v-if="mostrar">Opciones</th>
                 </tr>
               </thead>
                 
@@ -94,7 +94,7 @@
                   <td> {{obtenerNombreSucursal(item.idSucursal)}} </td>
                   <td> {{obtenerNombreProveedor(item.idProducto)}} </td>
                   <td> {{item.Detalle}} </td>
-                  <td> 
+                  <td v-if="mostrar"> 
                     <button @click="editar(item)"
                         type="button" data-toggle="modal" data-target="#EditModal"
                         style="margin-right:8px; color: white" class="btn btn-warning btn-sm" title="Editar">

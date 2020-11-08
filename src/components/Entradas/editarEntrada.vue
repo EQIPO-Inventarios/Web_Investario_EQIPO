@@ -16,16 +16,6 @@
                     </div>
                   </div>
                   <br>
-                  <div class="form-row">                    
-                    <div class="col-8">
-                        <input v-model.number="codigoBarra" type="number" class="form-control" placeholder="Ingrese codigo de barra" required="required">
-                        <div v-if="codigoBarra != '' " class="wd bg-success text-white"> Ok valido!</div>
-                    </div>
-                    <div class="col">
-                      <button @click="buscar()" class="btn btn-primary btn-sm" type="button">Buscar</button>
-                    </div>
-                  </div>  
-                  <br>
                   <div> 
                     <div class="form-row">
                        <div class="col">
@@ -76,7 +66,7 @@
               <br>
               <div>
                 <center>
-                        <button @click="enviarForm()" type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Agregar</button>
+                        <button @click="enviarForm()" type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Actualizar</button>
                         <button @click="limpiarForm()" type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 </center>
               </div>           
@@ -137,18 +127,6 @@ export default {
           .catch(
                 error => console.log(error)
           );
-      },
-      buscar() {
-        if(this.codigoBarra != '') {
-          for(let producto of this.dataProductos) {
-            if(producto.CodigoProducto == this.codigoBarra) {
-                this.nombreProducto = producto.NombreProducto;
-                this.productoId = producto._id;
-                this.precio = producto.Precio_Unitario;
-                this.nombreProveedor = producto.Proveedor.Nombre;
-            }
-          }
-        }
       },
       limpiarForm() {
         this.codigoBarra = '';
@@ -221,7 +199,7 @@ export default {
 
         }
     },
-    productoId() {
+    productoId() {  //metodo que no se esta ocupando pero que puede servir.
         if (this.productoId) {
             for(let producto of this.dataProductos) {
                 if (producto._id == this.productoId) {

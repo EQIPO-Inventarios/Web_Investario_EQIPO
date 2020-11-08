@@ -22,10 +22,15 @@
                         <div v-if="codigoBarra != '' " class="wd bg-success text-white"> Ok valido!</div>
                     </div>
                     <div class="col">
-                      <button @click="buscar()" class="btn btn-primary btn-sm" type="submit">Buscar</button>
+                      <button @click="buscar()" class="btn btn-primary btn-sm" type="button">Buscar</button>
                     </div>
                   </div>  
                   <br>
+                  <div v-if="NoExiste"> <!-- SE MUESTRA SI EL CODIGO DE BARRA NO ENCUENTRA NINGUN PRODUCTO.-->
+                      <span class="wd-2 bg-danger text-white">
+                        No se encontro producto con dicho codigo de barra.
+                      </span>
+                  </div>
                   <div v-if="nombreProducto != '' && nombreProveedor != '' && precio != '' "> <!-- SINO INGRESA CODIGO DE BARRA NO SE MOSTRARA-->
                     <div class="form-row">
                        <div class="col">
@@ -117,6 +122,7 @@ export default {
         nombreProducto: '',
 
         //validaciones de max y min estante
+        NoExiste: false,
         minCant: false
     }
   },
@@ -158,12 +164,21 @@ export default {
         if(this.codigoBarra != '') {
           for(let producto of this.dataProductos) {
             if(producto.CodigoProducto == this.codigoBarra) {
+                this.NoExiste = false; 
                 this.nombreProducto = producto.NombreProducto;
                 this.productoId = producto._id;
                 this.precio = producto.Precio_Unitario;
-                this.nombreProveedor = producto.Proveedor.Nombre;
+                this.nombreProveedor = producto.Proveedor.Nombre;               
             }
           }
+
+          if (this.nombreProducto == '' && 
+              this.productoId == '' && 
+              this.precio == 0 && 
+              this.nombreProveedor == '') {
+              this.NoExiste = true;  
+          }
+
         }
       },
       limpiarForm() {
