@@ -5,11 +5,11 @@
   </div>
 </template>
 <script>
-import Listado from '@/components/Productos/listarProducto.vue'
+import Listado from '@/components/Entradas/listarEntrada.vue'
 import menuComponent from '@/components/menus/menuComponent.vue'
 
 export default {
-    name: 'ProductoL',
+    name: 'EntradaL',
     components: {
         menuComponent,
         Listado
