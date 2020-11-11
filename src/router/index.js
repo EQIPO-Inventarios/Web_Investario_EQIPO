@@ -40,6 +40,11 @@ Vue.use(VueRouter)
     path: '/menu/SucursalListado',
     name: 'SucursalL',
     component: () => import(/* webpackChunkName: "about" */ '@/views/Sucursal/SucursalList.vue')
+  },
+  {
+    path: '/menu/SalidaListado',
+    name: 'SalidaList',
+    component: () => import(/* webpackChunkName: "salida" */ '@/views/Salida/SalidaList.vue')
   }
 ]
 
