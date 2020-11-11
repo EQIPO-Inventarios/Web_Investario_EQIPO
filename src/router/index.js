@@ -42,6 +42,11 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "about" */ '@/views/Sucursal/SucursalList.vue')
   },
   {
+    path: '/menu/EntradaListado',
+    name: 'EntradaL',
+    component: () => import(/* webpackChunkName: "about" */ '@/views/Entrada/EntradaList.vue')
+  },
+  {
     path: '/menu/PeticionListado',
     name: 'PeticionList',
     component: () => import(/* webpackChunkName: "peticion" */ '@/views/Peticion/PeticionList.vue')
