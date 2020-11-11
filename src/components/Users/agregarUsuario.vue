@@ -2,7 +2,7 @@
     <div class="content">
         <center>
             <div class="row">
-                <div>
+                <div class="col-12">
                     <br>
                     <div class="card">
                         <div class="card-body">
