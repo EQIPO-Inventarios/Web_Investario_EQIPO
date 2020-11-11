@@ -57,14 +57,11 @@
                             </a>
                         </li>
                         <li class="nav-item dropdown mr-4" v-if="permiso == 3">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="EnlaceP"><i class="fas fa-tasks"></i>   Peticion</span> 
+                            <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <router-link to="/menu/PeticionListado">
+                                    <span class="EnlaceP"><i class="fas fa-tasks"></i>   Peticion</span> 
+                                </router-link>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
                         </li>
                     </ul>
                 </div>
