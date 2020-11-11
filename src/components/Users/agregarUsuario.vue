@@ -1,6 +1,4 @@
 <template>
-    <div class="content">
-        <center>
             <div class="row">
                 <div class="col-12">
                     <br>
@@ -9,53 +7,80 @@
                             <form @submit="enviar_form()">
                                 <div class="form-row">
                                     <div class="col">
-                                        <input v-model="nombres" type="text" class="form-control"  placeholder="Nombres">
+                                        <div class="form-group">
+                                            <label for="nom">Nombre:</label>
+                                            <input v-model="nombres" type="text" class="form-control" id="nom" placeholder="Nombres">
+                                        </div>
                                     </div>
                                     <div class="col">
-                                        <input v-model="apellidos" type="text" class="form-control"  placeholder="Apellidos">
+                                        <div class="form-group">
+                                            <label for="ape">Apellido:</label>
+                                            <input v-model="apellidos" type="text" class="form-control" id="ape" placeholder="Apellidos">
+                                        </div>
                                     </div>
                                     <div class="col">
-                                        <input v-model="correo" type="email" class="form-control"  placeholder="Correo electronico">
+                                        <div class="form-group">
+                                            <label for="cor">Correo:</label>
+                                            <input v-model="correo" type="email" class="form-control" id="cor" placeholder="Correo electronico">
+                                        </div>
                                     </div>
                                 </div>
-                                <br>
                                 <div class="form-row"> 
                                     <div class="col">
-                                    <input v-model="dui" type="text" class="form-control" placeholder="DUI">
+                                        <div class="form-group">
+                                            <label for="du">DUI:</label>
+                                            <input v-model="dui" type="text" class="form-control" id="du" placeholder="DUI">
+                                        </div>
                                     </div>
                                     <div class="col">
-                                    <input v-model="nit" type="text" class="form-control" placeholder="NIT">
+                                        <div class="form-group">
+                                            <label for="ni">NIT:</label>
+                                            <input v-model="nit" type="text" class="form-control" id="ni" placeholder="NIT">
+                                        </div>
                                     </div>
                                     <div class="col">
-                                        <input v-model="telefono" type="text" class="form-control" placeholder="telefono">
+                                        <div class="form-group">
+                                            <label for="tel">Telefono:</label>
+                                            <input v-model="telefono" type="text" class="form-control" id="tel" placeholder="telefono">
+                                        </div>
                                     </div>  
                                 </div>
-                                <br>
                                 <div class="form-row"> 
                                     <div class="col">
-                                    <input v-model="fechaNacimiento" type="date" class="form-control" placeholder="Fecha de Nacimiento">
+                                        <div class="form-group">
+                                            <label for="fec">Fecha de nacimiento:</label>
+                                            <input v-model="fechaNacimiento" type="date" class="form-control" id="fec" placeholder="Fecha de Nacimiento">
+                                        </div>
                                     </div>
                                     <div class="col">
-                                        <select v-model="numero" class="form-control" id="selectEstadoCivil" @change="ShowSelected3()">
-                                            <option value="0">-Estado Civil-</option>
-                                            <option value="1">Soltero</option>
-                                            <option value="2">Casado</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label>Estado civil:</label>
+                                            <select v-model="numero" class="form-control" id="selectEstadoCivil" @change="ShowSelected3()">
+                                             <option value="0">-Estado Civil-</option>
+                                             <option value="1">Soltero</option>
+                                             <option value="2">Casado</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <br>
                                 <div class="form-row">
                                     <div class="col">
-                                        <select class="form-control" v-model="numeronivel" id="selectNivel" @change="ShowSelected()">
-                                            <option value="0" selected="selected">-Nivel-</option>
-                                            <option v-for="(item, index) in dataNivel" :value="item.NumeroNivel" :key="index">{{item.TipoNivel}}</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label>Nivel de usuario:</label>
+                                            <select class="form-control" v-model="numeronivel" id="selectNivel" @change="ShowSelected()">
+                                             <option value="0" selected="selected">-Nivel-</option>
+                                             <option v-for="(item, index) in dataNivel" :value="item.NumeroNivel" :key="index">{{item.TipoNivel}}</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col">
-                                        <select class="form-control" v-model="idSucursal" id="selectSucursal">
-                                            <option value="0" selected="selected">-Sucursal-</option>
-                                            <option v-for="(item, index) in dataSucursal" :value="item._id" :key="index">{{item.Nombre}}</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label>Sucursal:</label>
+                                            <select class="form-control" v-model="idSucursal" id="selectSucursal">
+                                             <option value="0" selected="selected">-Sucursal-</option>
+                                             <option v-for="(item, index) in dataSucursal" :value="item._id" :key="index">{{item.Nombre}}</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <br>
@@ -64,27 +89,31 @@
                                     Direccion
                                     </div>
                                     <div class="card-body">
-                                        <br>
                                         <div class="form-row"> 
                                             <div class="col">
-                                                <select class="form-control" id="selectDepartamento" @change="ShowSelected2()">
-                                                <option value="Departamento" selected="selected">-Departamento-</option>
-                                                <option v-for="(item, index) in data" :value="index" :key="index">{{item.Departamento}}</option>
-                                                </select>
+                                                <div class="form-group">
+                                                    <label>Departamento:</label>
+                                                    <select class="form-control" id="selectDepartamento" @change="ShowSelected2()">
+                                                    <option value="Departamento" selected="selected">-Departamento-</option>
+                                                    <option v-for="(item, index) in data" :value="index" :key="index">{{item.Departamento}}</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="col">
-                                                <select v-model="municipio" class="form-control">
-                                                <option value="0" selected="selected">-Municipio-</option>
-                                                <option v-for="(item, index) in municipiosArray" :key="index" >{{item}}</option>
-                                                </select>
+                                                <div class="form-group">
+                                                    <label>Municipio:</label>
+                                                    <select v-model="municipio" class="form-control">
+                                                    <option value="0" selected="selected">-Municipio-</option>
+                                                    <option v-for="(item, index) in municipiosArray" :key="index" >{{item}}</option>
+                                                    </select>
+                                                </div>
                                             </div>                                      
                                         </div>
-                                        <br>
-                                        <div class="form-row">
-                                            <div class="col"> 
-                                                <div class="col">
-                                                    <input v-model="descripcion" type="text" class="form-control" placeholder="Descripcion">
-                                                </div>
+                                        
+                                        <div class="col"> 
+                                            <div class="form-group">
+                                                <label for="des">Descripcion:</label>
+                                                <input v-model="descripcion" type="text" class="form-control" id="des" placeholder="Descripcion">
                                             </div>
                                         </div>
                                     </div>
@@ -101,8 +130,6 @@
                     </div>
                 </div>
             </div>
-        </center>
-    </div>
 </template>
 
 <script>
