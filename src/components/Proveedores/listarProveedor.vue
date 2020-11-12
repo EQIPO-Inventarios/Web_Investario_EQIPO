@@ -70,6 +70,15 @@
           </div>
           <div class="card-body">
 
+            <div class="row ml-1">
+            <form>
+              <div class="row">
+                <div class="col-3"><label for="">Buscador:</label></div>
+                <div class="col"> <input v-model="search" type="text" class="form-control" placeholder="Buscar por Nombre ..."></div>
+              </div>
+            </form>
+          </div>
+
             <table class="table table-striped">
               <thead class="bg-primary text-white">
                 <tr>
@@ -149,7 +158,8 @@ export default {
         page: 1,
         perPage: 5,
         pages: [],
-        row: Object
+        row: Object,
+        search: ''
       }
   },
   mounted() {
@@ -222,7 +232,17 @@ export default {
   watch: {
     dataProveedores() {
       this.setProviders();
-    }
+    },
+    search(){
+          axios.get(`/Proveedores/listarPorNombre/${this.search}`)
+          .then(response => {
+                this.dataProveedores = response.data;
+                console.log('Estos son buscados: '+this.dataProveedores);
+          })
+          .catch(
+                error => console.log(error)
+          );
+      }
   }
 }
 </script>
