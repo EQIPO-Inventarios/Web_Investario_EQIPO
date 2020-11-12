@@ -6,16 +6,14 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar Salidas</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Editar Salida</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                          <!--Aca ira componente editar -->
-                         <center>
-                             <editar :dataSalida="row"></editar>
-                         </center>
+                            <editar :dataSalida="row"></editar>
                     </div>
                     <div class="modal-footer">
                     </div>
@@ -29,14 +27,12 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Agregar Salida</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="">&times;</span>
+                                <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <center> 
-                                <!-- aca va el componente agregar -->
-                                <agregar></agregar>
-                            </center>
+                            <!-- aca va el componente agregar -->
+                            <agregar></agregar>
                         </div>
                         <div class="modal-footer">
                         </div>
@@ -48,7 +44,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col">
-                            <div>
+                            <div v-if="mostrar">
                                <button type="button" data-toggle="modal" data-target="#AddModal"
                                 style="margin-right:8px; color: white" class="btn btn-success">
                                     <i class="fas fa-plus-circle"></i>  Agregar
@@ -79,7 +75,7 @@
                         <td scope= "col">Precio Unitario</td>
                         <td scope= "col">Cantidad</td>
                         <td scope= "col">Monto</td>
-                        <td scope= "col">Opciones</td>
+                        <td scope= "col" v-if="mostrarOpciones">Opciones</td>
                     </tr>
                     </thead>
 
@@ -94,8 +90,8 @@
                         <td>$ {{getPrecioUnitario(item.idProducto)}}</td>
                         <td>{{item.Cantidad}}</td>
                         <td>$ {{item.Monto}}</td>
-                        <td>
-                            <button
+                        <td v-if="mostrarOpciones">
+                            <button @click="editar(item)"
                                 type="button" data-toggle="modal" data-target="#EditModal"
                                 style="margin-right:8px; color: white" class="btn btn-warning btn-sm" title="Editar">
                                 <i class="fas fa-edit"></i>
@@ -114,7 +110,8 @@
                     </button>
                     <button class="btn btn-primary btn-sm mr-1"
                         type="button"
-                        v-for="pageNumber in pages.slice(page- 1, page+ 0)" :key="pageNumber">
+                        v-for="pageNumber in pages.slice(page- 1, page+ 0)" :key="pageNumber"
+                        @click="page = pageNumber">
                         {{pageNumber}}
                     </button>
                     <button class="btn btn-primary btn-sm mr-1"
@@ -145,8 +142,8 @@ export default {
         agregar,
         editar
     },
-    data: function(){
-        return{
+    data() {
+        return {
             numSal: 0,
             dataSalidas: [],
             page: 1,
@@ -160,23 +157,23 @@ export default {
             //data de las sucursales
             dataSucursales: [],
 
-            //data de los proveedores
-            dataProveedores: []
+            //mostrar agregar Entradas segun Jefe de Bodega
+            mostrar: false,
+            //mostrar editar Entradas segun Admin
+            mostrarOpciones: false
         }
     },
     mounted() {
         this.dataSalidasListar();
         this.dataProductosListar();
         this.dataSucursalesListar();
-        //this.getNameProduct();
-        //this.getCodigoProducto();
-        //this.obtenerNombreSucursal();
-        //this.getNombreProveedor();
-        //this.getPrecioUnitario();
+        this.esJefeBodega();
+        this.esAdmin();
     },
     methods: {
         editar(item) {
             this.row = item;
+            console.log(item);
         },
         //obteniendo las salidas
         dataSalidasListar() {
@@ -283,6 +280,19 @@ export default {
             for(let i = 1; i <= numberOfPages; i++){
                 this.pages.push(i);
             }
+        },
+
+        //determinar si se esta en la sucursal principal
+        esAdmin() {
+            if(sessionStorage.getItem('nombreNivel') == 'Administrador') {
+                this.mostrarOpciones =  true;
+            }else { this.mostrarOpciones =  false; }
+        },
+        //determinar si se esta en la sucursal principal
+        esJefeBodega() {
+            if(sessionStorage.getItem('nombreNivel') == 'Jefe de Bodega') {
+                this.mostrar =  true;
+            }else { this.mostrar =  false; }
         }
     },
     computed: {

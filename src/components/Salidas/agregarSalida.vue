@@ -111,9 +111,9 @@ export default {
             idProducto_a_Enviar: '',
             cantidad: 0,
             monto: 0,
-            nombreSucursal: sessionStorage.getItem('nomSucursal'), //este vendra incluido en el login, ahorita esta quemado 
-            sucursalId: '5f9121b37ebf700017f7443d',//sessionStorage.getItem('sucursalId'), //este vendra incluido en el login, ahorita esta quemado
-            idSucursalDestino: '5f9122a47ebf700017f744da',
+            nombreSucursal: sessionStorage.getItem('nomSucursal'), 
+            sucursalId: sessionStorage.getItem('sucursalId'),
+            idSucursalDestino: 0,
 
             selection: '',
             codigoProducto: '',
@@ -194,7 +194,8 @@ export default {
 
         //creando salida
         enviar_form() {
-            if (this.fechaLocal != '' && this.detalle != '' && this.idProducto_a_Enviar != '' && this.cantidad != 0 && this.monto != 0 && this.sucursalId != '' && this.idSucursalDestino != '') {
+            if (this.fechaLocal != '' && this.detalle != '' && this.idProducto_a_Enviar != '' 
+                && this.cantidad != 0 && this.monto != 0 && this.sucursalId != '' && this.idSucursalDestino != '') {
                 axios.post('/Salidas/crear',{
                     Fecha: this.fechaLocal,
                     Detalle: this.detalle,
@@ -204,18 +205,17 @@ export default {
                     idSucursal: this.sucursalId,
                     idSucursalDestino: this.idSucursalDestino
                 })
-                .then(response => {
+                .then((response) => {
                     Swal.fire({
                         title: 'Mensaje',
                         icon: 'success',
                         text: response.data.mensaje
                     });
-                    this.limpiar_form()
-                    location.reload()
+                    this.limpiar_form();
+                    location.reload();
                 })
-                .catch(
-                    error => console.log(error)
-                )
+                .catch((error) => console.log(error));
+                
             }
             else{
                 Swal.fire({

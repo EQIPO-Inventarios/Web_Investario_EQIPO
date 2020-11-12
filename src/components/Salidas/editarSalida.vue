@@ -8,38 +8,25 @@
                         <div class="card-body">
                             <form @submit.prevent="enviarForm()">
                                 <div class="form-row">
+                                    <div class="col-4"></div>
                                     <div class="col-4">
-                                        <label>Código de Barra</label>
-                                    </div>
-                                    <div class="col-4"> 
-
-                                    </div>
-                                    <div class="col-4">
-                                        <label>Fecha de Salida:</label>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                   <div  class="col-4">
-                                        <input v-model="codigoProducto" type="number" disabled="disabled" class="form-control">
-                                   </div>
-                                   <div class="col-4">
-
-                                   </div>
-                                   <div class="col-4">
+                                        <div class="form-row">
+                                            <label class="text-left">Fecha de Salida:</label>
+                                        </div>
                                         <input v-model="fecha" type="text" disabled="disabled" class="form-control">
-                                   </div>
+                                    </div>
                                 </div>
                                 <br>
                                 <div class="form-row">
-                                     <div class="col-4">
-                                        <div class="form-row">
-                                              <label class="text-left">Sucursal Destino</label>
-                                        </div>
-                                           <input v-model="nombreSucursal" type="text" disabled="disabled" class="form-control">
-                                        </div>
                                     <div class="col-4">
                                           <div class="form-row">
-                                              <label class="text-left">Nombre de Producto</label>
+                                              <label class="text-left">Código de Barra:</label>
+                                          </div>
+                                        <input v-model="codigoProducto" type="number" disabled="disabled" class="form-control">
+                                    </div>
+                                    <div class="col-4">
+                                          <div class="form-row">
+                                              <label class="text-left">Nombre de Producto:</label>
                                           </div>
                                         <input v-model="nombreProducto" type="text" disabled="disabled" class="form-control">
                                     </div>
@@ -54,28 +41,28 @@
                                 <div class="form-row">
                                     <div class="col-4">
                                         <div class="form-row">
-                                            <label class="text-left">Cantidad</label>
+                                            <label class="text-left">Cantidad:</label>
                                         </div>
-                                        <input v-model="cantidad" type="number" min="1" class="form-control">
+                                        <input v-model.number="cantidad" type="number" min="1" class="form-control">
                                     </div>
                                     <div class="col-4">
                                         <div class="form-row">
-                                            <label class="text-left">Precio Unitario</label>
+                                            <label class="text-left">Precio Unitario:</label>
                                         </div>
-                                        <input v-model="precioUnitario" type="number" disabled="disabled" class="form-control">
+                                        <input :value="callPrecio" type="text" id="price" disabled="disabled" class="form-control">
                                     </div>
                                     <div class="col-4">
                                         <div class="form-row">
-                                            <label class="text-left">Monto</label>
+                                            <label class="text-left">Monto:</label>
                                         </div>
-                                        <input @keyup="calcularMonto()" v-model="monto" type="number" min="1" disabled="disabled" class="form-control">
+                                        <input @keyup="calcularMonto()" v-model="monto" type="text" class="form-control" disabled="disabled">
                                     </div>
                                 </div>
                                 <br>
                                 <div class="form-row">
                                     <div class="col">
                                         <div class="form-row">
-                                            <label class="text-left">Detalle</label>
+                                            <label class="text-left">Detalle:</label>
                                         </div>
                                         <textarea v-model="detalle" class="form-control" cols="30" rows="5" placeholder=""></textarea>
                                     </div>
@@ -85,7 +72,7 @@
                             <br>
                             <center>
                               <div>
-                                <button v-on:click="enviar_form()" type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Agregar</button>
+                                <button v-on:click="enviar_form()" type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Actualizar</button>
                                 <button v-on:click="limpiar_form()" type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                               </div>
                             </center>
@@ -109,24 +96,85 @@ export default {
     },
     data() {
         return{
+            id: '',
             idProducto: '',
             codigoProducto: '',
             nombreProducto: '',
             nombreSucursal: '',
             nombreProveedor: '',
             precioUnitario: 0,
-            cantidad: 0,
+            cantidad: '',
             monto: 0,
             detalle: '',
             fecha: '',
             cantidadMinima: false,
 
-            dataSalidas: []
+            nombreSucursal: sessionStorage.getItem('nomSucursal'),
+            sucursalId: sessionStorage.getItem('sucursalId'),
+            idDestino: '',
+
+            dataSalidas: [],
+            dataProductos: [],
+            dataSucursales: [],
+            nombreSucursalDestino: ''
         };
     },
     mounted() {
         this.getSalidasListar();
+        this.obtenerProductosL();
+        this.dataSucursalesListar();
+
+        
     },
+
+    watch: {
+        dataSalida() {
+            if (this.dataSalida) {
+                this.id = this.dataSalida._id;
+                this.fecha = this.dataSalida.Fecha;   
+                this.detalle = this.dataSalida.Detalle;  
+                this.idProducto = this.dataSalida.idProducto;       
+                this.cantidad = this.dataSalida.Cantidad;
+                this.monto = this.dataSalida.Monto;
+                this.sucursalId = this.dataSalida.idSucursal;
+                this.idDestino = this.dataSalida.idSucursalDestino;
+                
+            }
+        },
+        idProducto() {  //metodo que no se esta ocupando pero que puede servir.
+            if (this.idProducto) {
+                for(let producto of this.dataProductos) {
+                    if (producto._id == this.idProducto) {
+                        this.codigoProducto = producto.CodigoProducto;
+                        this.nombreProducto = producto.NombreProducto;
+                        this.precioUnitario = producto.Precio_Unitario;
+                        this.nombreProveedor = producto.Proveedor.Nombre;
+                        this.monto = this.precioUnitario * this.cantidad;
+                    }
+                }
+            }
+        },
+        cantidad() {
+            if (this.cantidad) {
+                if(this.cantidad < 1){
+                    this.cantidadMinima = true;
+                }else { 
+                this.cantidadMinima = false; 
+                this.monto = this.precioUnitario * this.cantidad;
+                }        
+            }
+        },
+        //obteniendo el nombre de la sucursal
+        obtenerNombreSucursal(){
+            if(this.idDestino)
+            for(let item of this.dataSucursales) {
+                if (item._id == this.idDestino) {
+                    this.nombreSucursalDestino = item.Nombre;
+                }
+            }
+        }
+    },
+
     methods: {
         getSalidasListar(){
             axios.get('/Salidas/listar')
@@ -139,20 +187,41 @@ export default {
             );
         },
 
+        //obteniendo las sucursales
+        dataSucursalesListar(){
+            axios.get('/Sucursales/listar')
+            .then(response => {
+                this.dataSucursales = response.data;
+                console.log(this.dataSucursales);
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
+        
+
+        obtenerProductosL() {
+            axios.get('/Productos/listar')
+            .then(response => {
+                    this.dataProductos = response.data;
+                    console.log(this.dataProductos);
+            })
+            .catch(
+                    error => console.log(error)
+            );
+        },
 
         enviar_form() {
-            if (this.codigoProducto != '') {
-                axios.post('/Salidas/crear',{
-                    Codigo_Producto: this.codigoProducto,
-                    Nombre_Producto: this.nombreProducto,
-                    Nombre_Sucursal: this.nombreSucursal,
-                    Proveedor: this.proveedor,
-                    Precio_Unitario: this.precioUnitario,
+            if (this.id != '' && this.detalle != '' && this.cantidad != 0 &&
+                this.monto != 0) {
+                axios.put('/Salidas/actualizar',{
+                    id: this.id,
+                    Detalle: this.detalle,
                     Cantidad: this.cantidad,
                     Monto: this.monto,
-                    Descripcion: this.descripcion,
+                    idProducto: this.idProducto,
                 })
-                .then(response => {
+                .then((response) => {
                     Swal.fire({
                         title: 'Mensaje',
                         icon: 'success',
@@ -162,7 +231,7 @@ export default {
                     location.reload()
                 })
                 .catch(
-                    error => console.log(error)
+                    (error) => console.log(error)
                 )
             }
             else{
@@ -183,37 +252,15 @@ export default {
             this.precioUnitario = '';
             this.cantidad = '';
             this.monto = '';
-            this.descripcion = '';
+            this.detalle = '';
         }
     },
     computed: {
         callPrecio() {
             return '$'+this.precioUnitario;
         }
-    },
-    
-    watch: {
-        dataSalida() {
-            if (this.dataSalida) {
-                this.id = this.dataEntrada._id;
-                this.codigoProducto = this.dataSalida.CodigoProducto;
-                this.fecha = this.dataEntrada.Fecha;            
-                this.cantidad = this.dataEntrada.Cantidad;
-                this.monto = this.dataEntrada.Monto;
-                this.detalle = this.dataEntrada.Detalle;
-                this.idProducto = this.dataEntrada.idProducto;
-            }
-        },
-        cantidad() {
-            if (this.cantidad) {
-                if(this.cantidad < 1){
-                    this.cantidadMinima = true;
-                }else { 
-                this.cantidadMinima = false; 
-                this.monto = this.precio * this.cantidad;
-                }        
-            }
-        }
     }
+    
+    
 }
 </script>
