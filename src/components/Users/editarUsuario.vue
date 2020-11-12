@@ -39,7 +39,7 @@
                       </div>
                       <div class="col">
                           <div class="form-group">
-                              <label for="tel">Telefono:</label>
+                              <label for="tel">Teléfono:</label>
                               <input v-model="telefono" type="text" class="form-control" id="tel" placeholder="telefono">
                           </div>
                       </div>  
@@ -136,7 +136,7 @@
                   <br>
                   <div class="card">
                       <div class="card-header">
-                      Direccion
+                      Dirección
                       </div>
                       <div class="card-body">                           
                             <div class="form-row" v-if="cambiarDireccion == false">
@@ -180,7 +180,7 @@
                                 <div class="col"> 
                                     <div class="col">
                                         <div class="form-group">
-                                            <label for="des">Descripcion:</label>
+                                            <label for="des">Descripción:</label>
                                             <input v-model="descripcion" type="text" class="form-control" id="des" placeholder="Descripcion">
                                         </div>
                                     </div>
@@ -248,7 +248,11 @@ export default {
 
             cambiarEstadoCivil: false,
             cambiarNivel: false,
-            cambiarSucursal: false
+            cambiarSucursal: false,
+
+            //recuperando user y password
+            user: '',
+            pass: ''
         }
     },
     mounted(){
@@ -280,6 +284,9 @@ export default {
             this.descripcion = this.dataUsuario.personal.Contacto.Direccion.Descripcion;
             this.departamento = this.dataUsuario.personal.Contacto.Direccion.Departamento;
             this.municipio = this.dataUsuario.personal.Contacto.Direccion.Municipio;
+
+            this.user = this.dataUsuario.usuario;
+            this.user = this.dataUsuario.password;
         }
       }
     },
@@ -288,7 +295,7 @@ export default {
             if (this.nombres != '' && this.apellidos != '' && this.correo != '' && this.dui != '' && this.nit != '' && this.telefono != '' && this.fechaNacimiento != '' && this.numero != 0 && this.numeronivel != 0 && this.idSucursal != 0 && this.descripcion != '' && this.departamento != '' && this.municipio != 0 && this.descripcion != '') {            
                 axios.put('/Usuarios/actualizar',{
                     id : this.id,
-                    Nombres : this.nombres,
+                    Nombres: this.nombres,
                     Apellidos: this.apellidos,
                     Fecha_Nacimiento: this.fechaNacimiento,
                     DUI: this.dui,
@@ -301,8 +308,8 @@ export default {
                     Correo : this.correo,
                     Telefono : this.telefono,
                     idSucursal: this.idSucursal,            //idSucursal
-                    usuario: this.nombres,
-                    password: 123,
+                    usuario: this.user,
+                    password: this.pass,
                     TipoNivel: this.tiponivel,              //tipoNivel
                     NumeroNivel: this.numeronivel           //numeroNivel
             })
