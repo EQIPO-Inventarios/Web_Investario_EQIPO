@@ -60,7 +60,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="nompro">Cantidad:</label>
-                                <input v-model.number="cantidad" type="number" min="1" class="form-control" required="required">
+                                <input v-model="cantidad" type="number" min="1" class="form-control" required="required">
                                 <p v-if="cantidadMinima" class="wd-2 bg-danger text-white"> Cantidad mayor o igual a 1</p>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                     </div>
                 </form>   
                 <br>
-                <div v-if="nombreProducto != '' && nombreProveedor != '' && precio != '' ">
+                <div v-if="nombreProducto != '' && nombreProveedor != '' && precioUnitario != '' ">
                     <center>
                             <button @click="enviarForm()"  type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Agregar</button>
                             <button @click="limpiarForm()" type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
@@ -130,8 +130,8 @@ export default {
             
 
             //obteniendo el nombre y el id de la sucursal
-            nombreSucursal: sessionStorage.getItem('nomSucursal'), //este vendra incluido en el login, ahorita esta quemado 
-            sucursalId: sessionStorage.getItem('sucursalId'), //este vendra incluido en el login, ahorita esta quemado
+            nombreSucursal: sessionStorage.getItem('nomSucursal'),
+            sucursalId: sessionStorage.getItem('sucursalId'),
         }
     },
     mounted() {
@@ -187,6 +187,51 @@ export default {
             this.monto = '';
         },
 
+
+        enviarForm() {
+            if(this.fechaLocal != '' && 
+                this.detalle != '' && 
+                this.productoId != '' && 
+                this.cantidad != 0 && 
+                this.sucursalId != '' ){ 
+                //validando campos numericos
+                if (this.cantidad >= 1 && this.monto != 0 && this.monto >= 1 ) {
+                    axios.post('/PeticionEntradas/crear',{
+                        Fecha: this.fechaLocal,
+                        Detalle: this.detalle,
+                        idProducto: this.productoId,
+                        Cantidad: this.cantidad,
+                        idSucursal: this.sucursalId,
+                    })
+                    .then(response => {                 
+                        //console.log(response.data.mensaje);                 
+                        Swal.fire({
+                        title: 'Mensaje',
+                        icon: 'success',
+                        text: response.data.mensaje
+                        });
+                        this.limpiarForm()
+                        location.reload()
+                    })
+                    .catch(
+                        error => console.log(error)
+                    )
+                }else {
+                    Swal.fire({
+                    title: 'Campos numericos invalidos',
+                    icon: 'info',
+                    text: 'Verifique los campos numericos...'
+                    });
+                }
+
+            }else{
+                Swal.fire({
+                    title: 'Campos vacios',
+                    icon: 'info',
+                    text: 'Todos los campos son requeridos.'
+                });
+            }
+        }
 
         
     },
