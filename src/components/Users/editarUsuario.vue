@@ -44,6 +44,17 @@
                           </div>
                       </div>  
                   </div>
+                  <div class="form-row">
+                                    <div class="col">
+                                        <label for="uss">Usuario:</label>
+                                        <input v-model="obtenerUsuario" type="text" class="form-control" disabled="disabled">
+                                    </div>
+                                    <div class="col">
+                                        <label for="pas">Password:</label>
+                                        <input v-model="convertirFechaNacimiento" type="text" class="form-control" disabled="disabled">
+                                    </div>
+                                </div>
+                                <br>
                   <div class="form-row"> 
                       <div class="col">
                           <div class="form-group">
@@ -251,8 +262,16 @@ export default {
             cambiarSucursal: false,
 
             //recuperando user y password
-            user: '',
-            pass: ''
+            pass: '',
+            //variables para convertir la fecha nacimiento en password
+            fechaNueva: '',
+            d: '',
+            m: '',
+            m2: '',
+            a: '',
+            //capturando el usuario
+            usuario: '',
+            user: ''
         }
     },
     mounted(){
@@ -286,7 +305,7 @@ export default {
             this.municipio = this.dataUsuario.personal.Contacto.Direccion.Municipio;
 
             this.user = this.dataUsuario.usuario;
-            this.user = this.dataUsuario.password;
+            this.pass = this.dataUsuario.password;
         }
       }
     },
@@ -421,6 +440,37 @@ export default {
             var selected = combo.options[combo.selectedIndex].text;      
             this.tipo = selected;
         }
+    },
+    computed: {
+        convertirFechaNacimiento() {
+            this.fechaNueva = '';
+            if(this.fechaNacimiento != ''){
+                this.fechaNueva = this.fechaNacimiento;
+                this.fechaNueva.toLocaleString();
+
+                //this.fechaNueva = this.fechaNueva.replace(/[-]/g, '');
+                this.d = this.fechaNueva.substr(8, 10);
+                this.m = this.fechaNueva.charAt(5);
+                this.m2 = this.fechaNueva.charAt(6);
+                this.a = this.fechaNueva.substr(0, 4);
+                console.log('dia: ' + this.d);
+                console.log('mes: ' + this.m +''+this.m2);
+                console.log('año: ' + this.a);
+
+                this.pass = this.d + this.m + this.m2 + this.a;
+                console.log('pass: '+this.pass);
+            }
+            return this.pass;
+        },
+        obtenerUsuario(){
+            this.usuario = '';
+            if(this.nombres != ''){
+                this.usuario = this.nombres + this.apellidos;
+                this.user = this.usuario;
+                console.log('user: '+this.user);
+            }
+            return this.user;
+        }   
     }
 }
 </script>
