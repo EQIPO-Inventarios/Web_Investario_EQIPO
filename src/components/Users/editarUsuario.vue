@@ -311,7 +311,10 @@ export default {
     },
     methods: {
         enviar_form() {
-            if (this.nombres != '' && this.apellidos != '' && this.correo != '' && this.dui != '' && this.nit != '' && this.telefono != '' && this.fechaNacimiento != '' && this.numero != 0 && this.numeronivel != 0 && this.idSucursal != 0 && this.descripcion != '' && this.departamento != '' && this.municipio != 0 && this.descripcion != '') {            
+            if (this.nombres != '' && this.apellidos != '' && this.correo != '' && this.dui != '' && this.nit != '' 
+                && this.telefono != '' && this.fechaNacimiento != '' && this.numero != 0 && this.numeronivel != 0 
+                && this.idSucursal != 0 && this.descripcion != '' && this.departamento != '' && this.municipio != 0 
+                && this.descripcion != '' && this.user != '' && this.pass != '') {            
                 axios.put('/Usuarios/actualizar',{
                     id : this.id,
                     Nombres: this.nombres,
@@ -332,7 +335,7 @@ export default {
                     TipoNivel: this.tiponivel,              //tipoNivel
                     NumeroNivel: this.numeronivel           //numeroNivel
             })
-            .then(response => {                 
+            .then((response) => {                 
                 //console.log(response.data.mensaje);                 
                 Swal.fire({
                     title: 'Mensaje',
@@ -341,10 +344,8 @@ export default {
                     });
                     location.reload();
             })
-            .catch(
-                error => console.log(error)
-            )
-        }
+            .catch((error) => console.log(error));
+            }
             else{
                 Swal.fire({
                     title: 'Campos vacios',
