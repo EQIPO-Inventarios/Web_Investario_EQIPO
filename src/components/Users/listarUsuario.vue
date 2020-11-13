@@ -168,7 +168,7 @@ export default {
             permisos: sessionStorage.getItem('permiso'),
 
             //obteniendo las sucursales
-            dataSucursales: []
+            dataSucursales: [],
             search: '',
             permisos: sessionStorage.getItem('permiso')
         }
