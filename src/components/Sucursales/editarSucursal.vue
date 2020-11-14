@@ -1,6 +1,4 @@
 <template>
-    <div class="content">
-    <center>
     <div class="row">
       <div class="col-12">
                 <br>
@@ -8,9 +6,6 @@
                     <div class="card-body">
                       <form @submit.prevent="enviar_form()">
                         <div class="form-row">
-                                <!-- Columna izquierda -->
-                                <div class="col-8">
-                                    <!-- card de la izquierda -->
                                     <div class="card h-100">
                                         <div class="card-body">
                                             <!-- Primera fila -->
@@ -82,23 +77,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Columna derecha -->
-                                <div class="col-4">
-                                    <!-- card de la derecha -->
-                                    <div class="card h-100">
-                                        <div class="card-header">
-                                            <center>Bodega</center>
-                                        </div>
-                                        <div class="card-body">
-                                            <input v-model.number="largo" type="number" class="form-control" placeholder="Largo de bodega" disabled>
-                                            <br>
-                                            <input v-model.number="ancho" type="number" class="form-control" placeholder="Ancho de bodega" disabled>
-                                            <br>
-                                            <input v-model.number="estanterias" type="number" class="form-control" placeholder="Estanterias" disabled>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <br>
                       </form>
@@ -113,8 +91,6 @@
                 </div>
         </div>
     </div>
-    </center>
-  </div>
 </template>
 
 <script>
@@ -137,10 +113,6 @@ export default {
             descripcion: '',
             telefono: '',
             correo: '',
-            numeroBodega: '',
-            largo: '', 
-            ancho: '',
-            estanterias: '',
             data: [],
             indiceDepartamento: 0,
             municipiosArray: [],
@@ -158,13 +130,9 @@ export default {
           this.codigo = this.dataSucursal.Codigo;
           this.telefono = this.dataSucursal.Contacto.Telefono;
           this.correo = this.dataSucursal.Contacto.Correo;
-          this.largo = this.dataSucursal.Bodega[0].Largo;
-          this.ancho = this.dataSucursal.Bodega[0].Ancho;
-          this.estanterias = this.dataSucursal.Bodega[0].Estanterias;
           this.descripcion = this.dataSucursal.Contacto.Direccion.Descripcion;
           this.departamento = this.dataSucursal.Contacto.Direccion.Departamento;
           this.municipio = this.dataSucursal.Contacto.Direccion.Municipio;
-          this.numeroBodega = this.dataSucursal.Bodega.NumeroBodega;
           
         }
       }
@@ -172,7 +140,7 @@ export default {
     methods: {
         enviar_form(){
 
-          if (this.nombre != '' && this.codigo != 0 && this.departamento != '' && this.municipio != '' && this.descripcion != '' && this.telefono != '' && this.correo != '' && this.largo != 0 && this.ancho != 0 && this.estanterias != 0) {
+          if (this.nombre != '' && this.codigo != 0 && this.departamento != '' && this.municipio != '' && this.descripcion != '' && this.telefono != '' && this.correo != '') {
               
 
               axios.put('/Sucursales/actualizar',{
@@ -184,10 +152,6 @@ export default {
                   Descripcion: this.descripcion,
                   Telefono: this.telefono,
                   Correo: this.correo,
-                  Largo: this.largo,
-                  Ancho: this.ancho,
-                  Estanterias: this.estanterias
-                  //NumeroBodega: this.numeroBodega
               })
               .then(response => {
                   console.log(response.data.mensaje);

@@ -1,16 +1,9 @@
 <template>
-    <div class="content">
-        <center> 
-        <div class="row">
-            <div>
+            <div class="col-12">
                 <div class="card">
-                    <!-- Cabecera -->
-                    <!-- Cuerpo -->
                     <div class="card-body">
                         <form @submit="enviar_form()">
                             <div class="form-row">
-                                <!-- Columna izquierda -->
-                                <div class="col-8">
                                     <!-- card de la izquierda -->
                                     <div class="card h-100">
                                         <div class="card-body">
@@ -67,23 +60,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Columna derecha -->
-                                <div class="col-4">
-                                    <!-- card de la derecha -->
-                                    <div class="card h-100">
-                                        <div class="card-header">
-                                            <center>Bodega</center>
-                                        </div>
-                                        <div class="card-body">
-                                            <input v-model.number="largo" type="number" class="form-control" placeholder="Largo de bodega">
-                                            <br>
-                                            <input v-model.number="ancho" type="number" class="form-control" placeholder="Ancho de bodega">
-                                            <br>
-                                            <input v-model.number="estanterias" type="number" class="form-control" placeholder="Estanterias">
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <br>
                             <!-- botonera -->
@@ -97,9 +73,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        </center>
-    </div>
 </template>
 
 <script>
@@ -117,10 +90,6 @@ export default {
             descripcion: '',
             telefono: '',
             correo: '',
-            numeroBodega: '',
-            largo: '', 
-            ancho: '',
-            estanterias: '',
             data: [],
             indiceDepartamento: 0,
             municipiosArray: []
@@ -131,7 +100,7 @@ export default {
     },
     methods: {
         enviar_form() {
-            if (this.nombre != '' && this.codigo != 0 && this.departamento != '' && this.municipio != '' && this.descripcion != '' && this.telefono != '' && this.correo != '' && this.largo != 0 && this.ancho != 0 && this.estanterias != 0) {
+            if (this.nombre != '' && this.codigo != 0 && this.departamento != '' && this.municipio != '' && this.descripcion != '' && this.telefono != '' && this.correo != '') {
                 axios.post('/Sucursales/crear',{
                     Nombre: this.nombre,
                     Codigo: this.codigo,
@@ -140,10 +109,6 @@ export default {
                     Descripcion: this.descripcion,
                     Telefono: this.telefono,
                     Correo: this.correo,
-                    NumeroBodega: this.codigo,
-                    Largo: this.largo,
-                    Ancho: this.ancho,
-                    Estanterias: this.estanterias
                 })
                 .then(response => {
                     console.log(response.data.mensaje);
@@ -176,9 +141,6 @@ export default {
             this.descripcion = '';
             this.telefono = '';
             this.correo = '';
-            this.largo = '';
-            this.ancho = '';
-            this.estanterias = '';
         },
         ShowSelected() {
         /* Para obtener el valor id para el selectbox de municipios*/

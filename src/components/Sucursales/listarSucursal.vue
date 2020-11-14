@@ -86,8 +86,6 @@
                   <th scope="col">Correo</th>
                   <th scope="col">Telefono</th>
                   <th scope="col">Direccion</th>
-                  <th scope="col">Estantes</th>
-                  <th scope="col">Dimensiones</th>
                   <th scope="col">Opciones</th>
                 </tr>
               </thead>
@@ -98,8 +96,6 @@
                   <td> {{item.Contacto.Correo}} </td>
                   <td> {{item.Contacto.Telefono}} </td>
                   <td> {{item.Contacto.Direccion.Departamento}}, {{item.Contacto.Direccion.Municipio}} </td>
-                  <td> {{item.Bodega[0].Estanterias}} </td>
-                  <td> {{item.Bodega[0].Ancho}} * {{item.Bodega[0].Largo}} </td>
                   <td v-if="item.Nombre != 'Sucursal Principal'">
                     <button @click="editar(item)"
                         type="button" data-toggle="modal" data-target="#EditModal"
