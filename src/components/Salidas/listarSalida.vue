@@ -167,8 +167,7 @@ export default {
         this.dataSalidasListar();
         this.dataProductosListar();
         this.dataSucursalesListar();
-        this.esJefeBodega();
-        this.esAdmin();
+        this.wUsuario();
     },
     methods: {
         editar(item) {
@@ -187,9 +186,7 @@ export default {
             .catch(
                 error => console.log(error)
             );
-        },
-        
-
+        },      
         //obteniendo los productos
         dataProductosListar(){
             axios.get('/Productos/listar')
@@ -241,8 +238,6 @@ export default {
             }
             return precio;
         },
-
-
         //obteniendo las sucursales
         dataSucursalesListar(){
             axios.get('/Sucursales/listar')
@@ -264,8 +259,6 @@ export default {
             }
             return nombre;
         },
-
-
         //metodos del paginado
         paginate(Salida){
             let page =this.page;
@@ -281,16 +274,9 @@ export default {
                 this.pages.push(i);
             }
         },
-
         //determinar si se esta en la sucursal principal
-        esAdmin() {
+        wUsuario() {
             if(sessionStorage.getItem('nombreNivel') == 'Administrador') {
-                this.mostrarOpciones =  true;
-            }else { this.mostrarOpciones =  false; }
-        },
-        //determinar si se esta en la sucursal principal
-        esJefeBodega() {
-            if(sessionStorage.getItem('nombreNivel') == 'Jefe de Bodega') {
                 this.mostrar =  true;
             }else { this.mostrar =  false; }
         }
