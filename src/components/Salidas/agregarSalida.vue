@@ -1,6 +1,5 @@
 <template>
     <div class="content">
-        <center>
             <div class="row">
                 <div class="col-12">
                     <br>
@@ -20,15 +19,22 @@
                                     <label>Código de Barra</label>
                                 </div>
                                 <div class="form-row">
-                                    <div class="col-4">
-                                        <input v-model="codigoProducto" type="number" class="form-control">
+                                    <div class="col-8">
+                                        <input v-model="codigoProducto" type="number" class="form-control" placeholder="Ingrese codigo de barra" required="required">
+                                        <div v-if="codigoProducto != '' " class="wd bg-success text-white"> Ok valido!</div>
                                     </div>
                                     <div class="col-2">
                                         <button @click="buscarProducto()" class="btn btn-success">Buscar</button>
                                     </div>
                                 </div>
                                 <br>
-                                <div class="form-row">
+                                <div v-if="NoExiste">
+                                    <span class="wd-2 bg-danger text-white">
+                                    No se encontro producto con dicho código de barra.
+                                    </span>
+                                </div>
+                                <div v-if="nombreProducto != '' && nombreProveedor != '' && precioUnitario != '' ">
+                                    <div class="form-row">
                                      <div class="col">
                                         <div class="form-row">
                                               <label class="text-left">Sucursal Destino</label>
@@ -82,19 +88,19 @@
                                     </div>
                                 </div>
                                 <br>
+                                </div>
                             </form>
                             <br>
-                            <center>
-                              <div>
-                                <button v-on:click="enviar_form()" type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Agregar</button>
-                                <button v-on:click="limpiar_form()" type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                              </div>
-                            </center>
+                            <div  v-if="nombreProducto != '' && nombreProveedor != '' && precioUnitario != '' ">
+                                <center>
+                                    <button v-on:click="enviar_form()" type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Agregar</button>
+                                    <button v-on:click="limpiar_form()" type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                </center>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </center>
     </div>
 </template>
 
@@ -128,7 +134,9 @@ export default {
             //obteniendo la data de proveedores
             dataSucursales: [],
             indiceSucursal: 0,
-            sucursalesArray: []
+            sucursalesArray: [],
+
+            NoExiste: false 
         }
     },
     mounted() {
@@ -154,12 +162,19 @@ export default {
             if(this.codigoProducto != '') {
                 for(let item of this.dataProductos) {
                     if(item.CodigoProducto == this.codigoProducto) {
+                        this.NoExiste = false;
                         this.idProducto_a_Enviar = item._id;
                         this.nombreProducto = item.NombreProducto;
                         this.nombreProveedor = item.Proveedor.Nombre;
                         this.precioUnitario = item.Precio_Unitario;
                     }
                 }
+                if (this.nombreProducto == '' &&
+                    this.idProducto_a_Enviar == '' &&
+                    this.nombreProveedor == '' &&
+                    this.precioUnitario == '') {
+                        this.NoExiste = true;
+                    }
             }
         },
 
