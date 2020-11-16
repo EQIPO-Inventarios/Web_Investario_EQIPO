@@ -1,12 +1,33 @@
 <template>
     <div class="col-12">
         <br>
+
+        <!-- inicio del modal aceptar -->
+        <div class="modal fade" id="AceptModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Aceptar Peticion</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- componente de aceptar peticion -->
+                        <aceptar :dataPeticion="row"></aceptar>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- inicio del modal editar -->
         <div class="modal fade" id="EditModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Detalle Peticion</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Editar Peticion</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -90,13 +111,14 @@
                                 <td>{{mostrarEstadoPeticion(item._id)}}</td>
                                 <!-- mostrarEstadoPeticion(item.EstadoPeticion) -->
                                 <td v-if="mostrar">
-                                    <button @click="eliminar(item._id, item.idProducto, item.Cantidad)"
-                                        type="button" style="margin-rigth:8px; color: white" class="btn btn-success btn-sm" title="Aceptar">
+                                    <button @click="aceptar(item)"
+                                        type="button" data-toggle="modal" data-target="#AceptModal" 
+                                        style="margin-rigth:8px; color: white" class="btn btn-success btn-sm" title="Aceptar">
                                         <i class="fas fa-check-square"></i>
                                     </button>
                                 </td>
                                 <td v-if="externa">
-                                    <button 
+                                    <button @click="editar(item)"
                                         type="button" data-toggle="modal" data-target="#EditModal"
                                         style="margin-right:8px; color: white" class="btn btn-warning btn-sm" title="Editar">
                                         <i class="fas fa-edit"></i>
@@ -112,9 +134,7 @@
                             </tr>
                         </tbody>
                     </table>
-
                     <!-- paginacion -->
-                    
                     <div>
                         <button  class=" btn btn-primary btn-sm mr-1" 
                         type="button" v-if="page != 1" @click="page--">
@@ -128,11 +148,9 @@
                             Siguiente
                         </button>
                     </div>
-
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -142,12 +160,14 @@ import axios from '../../config/axios'
 
 import agregar from '@/components/Peticiones/agregarPeticion.vue'
 import editar from '@/components/Peticiones/editarPeticion.vue'
+import aceptar from '@/components/Peticiones/aceptarPeticion.vue'
 
 export default {
     name: 'listaPeticion',
     components: {
         agregar,
-        editar
+        editar,
+        aceptar
     },
     data() {
         return {
@@ -172,85 +192,106 @@ export default {
 
             //mostrar si es jefe de bodega de la sucursal principal
             mostrar: false,
-            externa: false
+            externa: false,
+
+            //variables para eliminar la peticion
+            _id: '',
+            idProducto: '',
+            Cantidad: 0,
+
+            //variables para aceptar la peticion
+            info: Object,
+            id: '',
+            fechaActual: '',
+            detalle: '',
+            productoId: '',
+            cantidad: '',
+            idSucursal: '',
+            estadoPeticion: '',
+            //nombreSucursal: sessionStorage.getItem('nomSucursal'),
+            sucursalId: sessionStorage.getItem('sucursalId'),
+
+            arraySegunSucursal: [],
+            numPeticionesPorSucursal: 0,
+            number: 2
         }
     },
     mounted() {
+        //this.dataPeticionesSucursalesListar();
         this.dataPeticionesListar();
         this.dataProductosListar();
         this.dataSucursalesListar();
         this.EsJefeSucursalPrincipal();
         this.EsSucursalExterna();
-        //this.obtenerCodigoProducto();
-        //this.obtenerPrecioProducto();
-        //this.obtenerProveedorProducto();
-        //this.obtenerNombreSucursal();
-        //this.mostrarEstadoPeticion();
     },
     methods: {
 
-        aceptar: function(id){
-            Swal.fire({
-                title: 'Desea aceptar esta peticion?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
-                })
-                .then((result) => {
-                if (result.value) {
-                    console.log(id);
-                    axios.delete(`/PeticionEntradas/aceptar`)
-                    .then(response => {
-                        console.log(response.data.mensaje);
-                        Swal.fire({
-                        title: 'Aceptada',
-                        icon: 'success',
-                        text: response.data.mensaje
-                        });
-                        location.reload();
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
-
-                }
-            }) 
+        //confirmando las peticiones
+        aceptar(item){
+            this.row = item;
+            console.log(item);
+        },
+        //editando la peticiones
+        editar(item){
+            this.row = item;
+            console.log(item);
         },
 
-
-        //eliminando la peticion de salida
-        eliminar: function(_id, idProducto, Cantidad){
+        /*
+        //eliminando la peticion
+        eliminar(_id, idProducto, Cantidad) {
             Swal.fire({
-                title: 'Esta seguro que desea eliminar la Peticion:',
+                title: 'Esta seguro que desea eliminar la peticion?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
                 confirmButtonText: 'Eliminar'
-                })
-                .then((result) => {
+            }).then((result) => {
                 if (result.value) {
-                    console.log(_id, idProducto, Cantidad);
-                    axios.delete(`/PeticionEntradas/eliminar`)
+                    console.log(_id);
+                    console.log(idProducto);
+                    console.log(Cantidad);
+                    axios.delete(`/PeticionEntradas/eliminar`,{
+                        _id: this._id,
+                        idProducto: this.idProducto,
+                        Cantidad: this.Cantidad
+                    })
                     .then(response => {
-                        console.log(response.data.mensaje);
-                        Swal.fire({
-                        title: 'Eliminada',
-                        icon: 'success',
-                        text: response.data.mensaje
-                        });
-                        location.reload();
+                            console.log(response.data.mensaje);
+                            Swal.fire({
+                            title: 'Eliminado',
+                            icon: 'success',
+                            text: response.data.mensaje
+                            });
+                            location.reload();
                     })
                     .catch(
-                        error => console.log(error)
+                            error => console.log(error)
                     );
 
                 }
-            }) 
-        },
+            })  
+        },*/
 
+
+        
+        
+        //recupera las peticiones por sucursal
+        dataPeticionesSucursalesListar(){
+            axios.get(`/PeticionEntradas/listar`,{  
+                idSucursal: this.sucursalId,  
+                EstadoPeticion: this.number})
+            .then(response => {
+                this.arraySegunSucursal =  response.data;
+                console.log(this.arraySegunSucursal);
+                this.numPeticionesPorSucursal = response.data.length;
+                console.log(this.numPeticionesPorSucursal);
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
 
 
         //recupera las peticiones
@@ -285,16 +326,6 @@ export default {
             }
             return estado;
         },
-        
-
-
-
-
-
-
-
-
-
         //obtener los productos
         dataProductosListar() {
             axios.get('/Productos/listar')
@@ -346,12 +377,6 @@ export default {
             }
             return proveedor;
         },
-
-
-
-
-
-
         //obtener las sucursales
         dataSucursalesListar() {
             axios.get('/Sucursales/listar')
@@ -373,9 +398,6 @@ export default {
             }
             return nombre;
         },
-
-
-
         EsJefeSucursalPrincipal(){
             if (sessionStorage.getItem('nomSucursal') == 'Sucursal Principal') {
                 this.mostrar = true;
@@ -390,9 +412,7 @@ export default {
                 this.externa = false;
             }
         },
-
-
-        //methods para paginacion
+        //metodos para paginacion
         paginate(Peticiones){
             let page = this.page;
             let perPage = this.perPage;
@@ -406,7 +426,6 @@ export default {
                 this.pages.push(i);
             }
         }
-
     },
     computed: {
         displayedPeticiones(){

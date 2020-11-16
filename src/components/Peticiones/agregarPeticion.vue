@@ -11,7 +11,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="nompro">Fecha:</label>
-                                <input v-model="fechaLocal" type="text" disabled="disabled" class="form-control">
+                                <input v-model="fechaLocal" type="text" class="form-control" disabled="disabled">
                             </div>
                         </div>
                         <div class="col"></div>
@@ -29,19 +29,20 @@
                     <div class="form-row">                    
                         <div class="col-8">
                                 <input v-model.number="codigoProducto" type="number" class="form-control" placeholder="Ingrese codigo..." required="required">
-                                <div v-if="codigoProducto != '' " class="wd bg-success text-white">Ok valido!</div>
+                                <div v-if="codigoProducto != '' " class="wd bg-success text-white"> Ok valido!</div>
                         </div>
                         <div class="col">
                             <button @click="buscarProducto()" class="btn btn-primary" type="button">Buscar</button>
                         </div>
                     </div>  
                     <br>
-                    <div v-if="NoExiste"> <!-- SE MUESTRA SI EL CODIGO DE BARRA NO ENCUENTRA NINGUN PRODUCTO.-->
+                    <div v-if="NoExiste">
                         <span class="wd-2 bg-danger text-white">
                             No se encontro producto con dicho codigo de barra.
                         </span>
                     </div>
-                    <div v-if="nombreProducto != '' && nombreProveedor != '' && precioUnitario != '' "> <!-- SINO INGRESA CODIGO DE BARRA NO SE MOSTRARA-->
+                    <br>
+                    <div v-if="nombreProducto != '' && nombreProveedor != '' && precio != '' ">
                         <div class="form-row">
                         <div class="col">
                             <div class="form-group">
@@ -109,7 +110,7 @@ export default {
     name: 'agregarPeticion',
     data() {
         return {
-            fechaLocal: '',
+            fechaLocal: '11-11-2020',
             detalle: '',
 
             //obteniedo los productos
@@ -127,15 +128,13 @@ export default {
             codigoProducto: '',
             NoExiste: false,
 
-            
-
             //obteniendo el nombre y el id de la sucursal
             nombreSucursal: sessionStorage.getItem('nomSucursal'),
             sucursalId: sessionStorage.getItem('sucursalId'),
         }
     },
     mounted() {
-        this.getFechaActual();
+        //this.getFechaActual();
         this.dataProductosListar();
     },
     methods: {
@@ -143,8 +142,6 @@ export default {
             var date = new Date();
             this.fechaLocal = date.getDate() + "/" + (date.getMonth() +1) + "/" + date.getFullYear();
         },
-
-
         //obteniendo los productos
         dataProductosListar() {
             axios.get('/Productos/listar')
@@ -156,8 +153,6 @@ export default {
                     error => console.log(error)
             );
         },
-
-
         //buscando productos
         buscarProducto() {
         if(this.codigoProducto != '') {
@@ -180,31 +175,32 @@ export default {
         },
         limpiarForm() {
             this.codigoProducto = '';
+            this.nombreProducto = '',
+            this.nombreProveedor = '',
             this.precioUnitario = '';
             this.detalle = '';
             this.productoId = '';
             this.cantidad = '';
             this.monto = '';
         },
-
-
         enviarForm() {
             if(this.fechaLocal != '' && 
                 this.detalle != '' && 
                 this.productoId != '' && 
                 this.cantidad != 0 && 
+                this.monto != 0 &&
                 this.sucursalId != '' ){ 
                 //validando campos numericos
                 if (this.cantidad >= 1 && this.monto != 0 && this.monto >= 1 ) {
-                    axios.post('/PeticionEntradas/crear',{
+                    axios.post("/PeticionEntradas/crear",{
                         Fecha: this.fechaLocal,
                         Detalle: this.detalle,
                         idProducto: this.productoId,
                         Cantidad: this.cantidad,
                         idSucursal: this.sucursalId,
                     })
-                    .then(response => {                 
-                        //console.log(response.data.mensaje);                 
+                    .then((response) => {                 
+                        console.log(response.data.mensaje);                 
                         Swal.fire({
                         title: 'Mensaje',
                         icon: 'success',
@@ -232,8 +228,6 @@ export default {
                 });
             }
         }
-
-        
     },
     computed: {
         callPrecio() {
@@ -242,14 +236,14 @@ export default {
     },
     watch: {
         cantidad() {
-        if (this.cantidad) {
-            if(this.cantidad < 1){
-                this.cantidadMinima = true;
-            }else { 
-            this.cantidadMinima = false; 
-            this.monto = this.precioUnitario * this.cantidad;
-            }        
-        }
+            if (this.cantidad) {
+                if(this.cantidad < 1){
+                    this.cantidadMinima = true;
+                }else { 
+                this.cantidadMinima = false; 
+                this.monto = this.precioUnitario * this.cantidad;
+                }        
+            }
         }
     }
 }

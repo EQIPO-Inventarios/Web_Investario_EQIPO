@@ -11,7 +11,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="nompro">Fecha:</label>
-                                <input v-model="fechaActual" type="text" class="form-control" disabled="disabled">
+                                <input v-model="fecha" type="text" class="form-control" disabled="disabled">
                             </div>
                         </div>
                         <div class="col">
@@ -21,33 +21,9 @@
                             </div>
                         </div>
                     </div>
-                    <!--
-                    <div class="form-row">
-                        <label for="codpro">Codigo de Producto:</label>
-                    </div>
-                    <div class="form-row">                    
-                        <div class="col-8">
-                                <input v-model.number="codigoProducto" type="number" class="form-control" placeholder="Ingrese codigo..." required="required">
-                        </div>
-                        <div class="col">
-                            <button @click="buscarProducto()" class="btn btn-primary" type="button">Buscar</button>
-                        </div>
-                    </div>  
                     <br>
-                    <div v-if="NoExiste">
-                        <span class="wd-2 bg-danger text-white">
-                            No se encontro producto con dicho codigo de barra.
-                        </span>
-                    </div>
-                    <br>-->
                     <div>
                         <div class="form-row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="nompro">Codigo producto:</label>
-                                <input v-model="codigoProducto" type="text" id="codg" class="form-control" disabled="disabled">
-                            </div>
-                        </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="nompro">Nombre producto:</label>
@@ -68,7 +44,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="nompro">Cantidad:</label>
-                                <input v-model.number="cantidad" type="number" min="1" class="form-control" required="required">
+                                <input v-model.number="cantidad" type="number" min="1" class="form-control" required="required" disabled="disabled">
                                 <!-- <p v-if="cantidadMinima" class="wd-2 bg-danger text-white"> Cantidad mayor o igual a 1</p> -->
                             </div>
                         </div>
@@ -78,18 +54,13 @@
                                 <input :value="callPrecio" type="text" id="price" class="form-control" disabled="disabled">
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="nompro">Monto:</label>
-                                <input @keyup="calcularMonto()" v-model="monto" type="number" min="1" class="form-control" disabled="disabled">
-                            </div>
-                        </div>
+                        
                         </div>
                         <div class="form-row">
                         <div class="col">
                             <div class="form-group">
                                 <label for="nompro">Detalle:</label>
-                                <textarea v-model="detalle" class="form-control" cols="10" rows="5" placeholder="Detalles ..."></textarea>
+                                <textarea v-model="detalle" class="form-control" cols="10" rows="" placeholder="Detalles ..." disabled="disabled"></textarea>
                             </div>
                         </div>
                         </div>
@@ -98,7 +69,7 @@
                 <br>
                 <div>
                     <center>
-                            <button @click="enviarForm()"  type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Actualizar</button>
+                            <button @click="enviarForm()"  type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Aceptar</button>
                             <button @click="limpiarForm()" type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     </center>
                 </div>           
@@ -114,7 +85,7 @@ import router from 'vue-router'
 import axios from '../../config/axios'
 
 export default {
-    name: 'editarPeticion',
+    name: 'aceptarPeticion',
     props: {
         dataPeticion: { Object }
     },
@@ -122,19 +93,18 @@ export default {
         return {
             //variables para recuperar la data de la peticion
             id: '',
-            fechaActual: '',
+            fecha: '',
             detalle: '',
             productoId: '',
             cantidad: '',
+            idSucursalDestino: '',
             estadoPeticion: '',
 
             //recuperando el nombre del producto
             dataProductos: [],
             nombreProducto: '',
             nombreProveedor: '',
-            codigoProducto: '',
             precio: 0,
-            monto: 0,
             dataSucursales: [],
             nombreSucursalDestino: '',
 
@@ -159,6 +129,7 @@ export default {
                 error => console.log(error)
             );
         },
+
         enviarForm() {
             if(this.id != '' && 
                 this.detalle != '' && 
@@ -166,13 +137,16 @@ export default {
                 this.cantidad != 0){ 
                 //validando campos numericos
                 if (this.cantidad >= 1 ) {
-                    axios.put('/PeticionEntradas/actualizar',{
-                        id: this.id,
+                    axios.put('/PeticionEntradas/aceptar',{
+                        _id: this.id,
+                        Fecha: this.fecha,
                         Detalle: this.detalle,
+                        idProducto: this.productoId,
                         Cantidad: this.cantidad,
-                        idProducto: this.productoId
+                        idSucursal: this.sucursalId,
+                        idSucursalDestino: this.idSucursalDestino
                     })
-                    .then(response => {                 
+                    .then((response) => {                 
                         console.log(response.data.mensaje);                 
                         Swal.fire({
                         title: 'Mensaje',
@@ -201,14 +175,16 @@ export default {
                 });
             }
         },
+
         limpiarForm() {
-            this.fechaActual = '';
+            this.fecha = '';
             this.nombreProducto = '';
             this.nombreProveedor = '';
             this.cantidad = '';
             this.precio = '';
             this.detalle = '';
         },
+
     },
     computed: {
         callPrecio(){
@@ -219,11 +195,11 @@ export default {
         dataPeticion() {
             if (this.dataPeticion) {
                 this.id = this.dataPeticion._id;
-                this.fechaActual = this.dataPeticion.Fecha;
+                this.fecha = this.dataPeticion.Fecha;
                 this.detalle = this.dataPeticion.Detalle;
                 this.productoId = this.dataPeticion.idProducto;
                 this.cantidad = this.dataPeticion.Cantidad;
-                this.sucursalId = this.dataPeticion.idSucursal;
+                this.idSucursalDestino = this.dataPeticion.idSucursal;
                 this.estadoPeticion = this.dataPeticion.EstadoPeticion;
             }
         },
@@ -234,21 +210,10 @@ export default {
                         this.nombreProducto = producto.NombreProducto;
                         this.precio = producto.Precio_Unitario;
                         this.nombreProveedor = producto.Proveedor.Nombre;
-                        this.codigoProducto = producto.CodigoProducto;
                     }
                 }
             }
         },
-        cantidad() {
-            if (this.cantidad) {
-                if(this.cantidad < 1){
-                    this.cantidadMinima = true;
-                }else { 
-                this.cantidadMinima = false; 
-                this.monto = this.precio * this.cantidad;
-                }        
-            }
-        }
     }
 }
 </script>
