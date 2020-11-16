@@ -81,6 +81,16 @@ export default {
                 .then(response => {                    
                     console.log(response.data)               
                     if(response.data != []){
+
+                        if(response.data.status == 204){
+                            Swal.fire({
+                            title: 'Datos incorrectos',
+                            text: 'Usuario y/o Password incorrectos.',
+                            icon: 'error'
+                            });
+                            location.reload();
+                        }
+
                         this.$emit("authenticated", true);
                         sessionStorage.setItem('autenticado', response.data.token);
                         sessionStorage.setItem('usuario', response.data.Nombre);
@@ -104,13 +114,14 @@ export default {
                             this.$router.replace({ name: "Login" });
                         }
 
-                    }else {
+                    }else{
                         Swal.fire({
                             title: 'Datos incorrectos',
                             text: 'Usuario y/o Password incorrectos.',
                             icon: 'error'
                         });
-                    }           
+                    }  
+                             
                 })
                 .catch(
                     error => console.log(error)

@@ -66,6 +66,15 @@
           </div>
           <div class="card-body">
 
+            <div class="row ml-1">
+            <form>
+              <div class="row">
+                <div class="col-3"><label for="">Buscador:</label></div>
+                <div class="col"> <input v-model="search" type="text" class="form-control" placeholder="Buscar por Nombre ..."></div>
+              </div>
+            </form>
+          </div>
+
             <table class="table table-striped">
               <thead class="bg-primary text-white">
                 <tr>
@@ -73,8 +82,6 @@
                   <th scope="col">Correo</th>
                   <th scope="col">Telefono</th>
                   <th scope="col">Direccion</th>
-                  <th scope="col">Estantes</th>
-                  <th scope="col">Dimensiones</th>
                   <th scope="col">Opciones</th>
                 </tr>
               </thead>
@@ -85,8 +92,6 @@
                   <td> {{item.Contacto.Correo}} </td>
                   <td> {{item.Contacto.Telefono}} </td>
                   <td> {{item.Contacto.Direccion.Departamento}}, {{item.Contacto.Direccion.Municipio}} </td>
-                  <td> {{item.Bodega[0].Estanterias}} </td>
-                  <td> {{item.Bodega[0].Ancho}} * {{item.Bodega[0].Largo}} </td>
                   <td v-if="item.Nombre != 'Sucursal Principal'">
                     <button @click="editar(item)"
                         type="button" data-toggle="modal" data-target="#EditModal"
@@ -147,7 +152,8 @@ export default {
         page: 1,
         perPage: 5,
         pages: [],
-        row: Object
+        row: Object,
+        search: ''
       }
   },
   mounted() {
@@ -220,7 +226,17 @@ export default {
   watch: {
     dataSucursales() {
       this.setSucursal();
-    }
+    },
+    search(){
+          axios.get(`/Sucursales/listarPorNombre/${this.search}`)
+          .then(response => {
+                this.dataSucursales = response.data;
+                console.log('Estos son buscados: '+this.dataSucursales);
+          })
+          .catch(
+                error => console.log(error)
+          );
+      }
   }
 }
 </script>
