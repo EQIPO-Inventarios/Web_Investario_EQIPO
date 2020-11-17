@@ -235,14 +235,27 @@ export default {
         this.setProducts();
       },
       search(){
-          axios.get(`/Productos/listarPorNombre/${this.search}`)
-          .then(response => {
-                this.dataProductos = response.data;
-                console.log('Estos son buscados: '+this.dataProductos);
-          })
-          .catch(
-                error => console.log(error)
-          );
+          if (this.search != '') {
+              axios.get(`/Productos/listarPorNombre/${this.search}`)
+              .then(response => {
+                    this.dataProductos = response.data;
+                    console.log('Estos son buscados: '+this.dataProductos);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          } else {
+              axios.get('/Productos/listar')
+              .then(response => {
+                    this.dataProductos = response.data;
+                    console.log(this.dataProductos);
+                    this.numPro = response.data.length;
+                    console.log(this.numPro);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          }
       }
     }
 }

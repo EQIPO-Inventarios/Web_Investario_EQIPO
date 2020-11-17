@@ -239,14 +239,28 @@ export default {
             this.setUsers();
         },
         search(){
-          axios.get(`/Usuarios/buscarUsuarios/${this.search}`)
-          .then(response => {
-                this.dataUsuarios = response.data;
-                console.log('Estos son buscados: '+this.dataUsuarios);
-          })
-          .catch(
-                error => console.log(error)
-          );
+          if (this.search != '') {
+                axios.get(`/Usuarios/buscarUsuarios/${this.search}`)
+                .then(response => {
+                        this.dataUsuarios = response.data;
+                        console.log('Estos son buscados: '+this.dataUsuarios);
+                })
+                .catch(
+                        error => console.log(error)
+                );
+          }
+          else {
+                axios.get('/Usuarios/listar')
+                .then(response => {
+                    this.dataUsuarios = response.data;
+                    console.log(this.dataUsuarios);
+                    this.numUsu = response.data.length;
+                    console.log(this.numUsu);
+                })
+                .catch(
+                    error => console.log(error)
+                );
+          }
       }
     }
 }

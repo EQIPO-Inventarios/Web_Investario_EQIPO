@@ -236,17 +236,30 @@ export default {
         this.setProducts();
       },
       search(){
-          axios.post('/ProductoSucursales/listarPorNombre', {
-            Nombre: this.search,
-            idSucursal: this.sucursalId
-          })
-          .then(response => {
-                this.dataProductos = response.data;
-                console.log('Estos son buscados: '+this.dataProductos);
-          })
-          .catch(
-                error => console.log(error)
-          );
+          if (this.search != '') {
+              axios.post('/ProductoSucursales/listarPorNombre', {
+                Nombre: this.search,
+                idSucursal: this.sucursalId
+              })
+              .then(response => {
+                    this.dataProductos = response.data;
+                    console.log('Estos son buscados: '+this.dataProductos);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          } else {
+              axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
+              .then(response => {
+                    this.dataProductos = response.data;
+                    console.log(this.dataProductos);
+                    this.numPro = response.data.length;
+                    console.log(this.numPro);
+              })
+              .catch(
+                    error => console.log(error)
+              );     
+          }
       }
     }
 }

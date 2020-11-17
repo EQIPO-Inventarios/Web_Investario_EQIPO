@@ -234,14 +234,27 @@ export default {
       this.setProviders();
     },
     search(){
-          axios.get(`/Proveedores/listarPorNombre/${this.search}`)
-          .then(response => {
-                this.dataProveedores = response.data;
-                console.log('Estos son buscados: '+this.dataProveedores);
-          })
-          .catch(
-                error => console.log(error)
-          );
+          if (this.search != '') {
+              axios.get(`/Proveedores/listarPorNombre/${this.search}`)
+              .then(response => {
+                    this.dataProveedores = response.data;
+                    console.log('Estos son buscados: '+this.dataProveedores);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          } else {
+              axios.get('/Proveedores/listar')
+              .then(response => {
+                    this.dataProveedores = response.data;
+                    console.log(this.dataProveedores);
+                    this.numPro = response.data.length;
+                    console.log(this.numPro);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          }
       }
   }
 }

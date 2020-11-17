@@ -232,14 +232,27 @@ export default {
       this.setSucursal();
     },
     search(){
-          axios.get(`/Sucursales/listarPorNombre/${this.search}`)
-          .then(response => {
-                this.dataSucursales = response.data;
-                console.log('Estos son buscados: '+this.dataSucursales);
-          })
-          .catch(
-                error => console.log(error)
-          );
+          if (this.search != '') {
+              axios.get(`/Sucursales/listarPorNombre/${this.search}`)
+              .then(response => {
+                    this.dataSucursales = response.data;
+                    console.log('Estos son buscados: '+this.dataSucursales);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          } else {
+              axios.get('/Sucursales/listar')
+              .then(response => {
+                    this.dataSucursales = response.data;
+                    console.log(this.dataSucursales);
+                    this.numPro = response.data.length;
+                    console.log(this.numPro);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          }
       }
   }
 }
