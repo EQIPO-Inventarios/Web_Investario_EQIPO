@@ -236,7 +236,10 @@ export default {
         this.setProducts();
       },
       search(){
-          axios.get(`/Productos/listarPorNombre/${this.search}`)
+          axios.post('/ProductoSucursales/listarPorNombre', {
+            Nombre: this.search,
+            idSucursal: this.sucursalId
+          })
           .then(response => {
                 this.dataProductos = response.data;
                 console.log('Estos son buscados: '+this.dataProductos);
