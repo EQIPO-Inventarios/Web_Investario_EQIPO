@@ -155,6 +155,8 @@ export default {
           perPage: 5,
           pages: [],
           row: Object,
+          nomSucursal: sessionStorage.getItem('nomSucursal'),
+          sucursalId: sessionStorage.getItem('sucursalId'),
 
           //mostrar agregar y editar Entradas segun Admin
           mostrar: false
@@ -201,16 +203,29 @@ export default {
                   })  
       },
       dataEntradasL() {
-          axios.get('/Entradas/listar')
-          .then(response => {
-                this.dataEntradas = response.data;
-                console.log(this.dataEntradas);
-                this.numPro = response.data.length;
-                console.log(this.numPro);
-          })
-          .catch(
-                error => console.log(error)
-          );
+          if (this.nomSucursal == 'Sucursal Principal') {
+              axios.get('/Entradas/listar')
+              .then(response => {
+                    this.dataEntradas = response.data;
+                    console.log(this.dataEntradas);
+                    this.numPro = response.data.length;
+                    console.log(this.numPro);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          } else {
+              axios.get(`/Entradas/listarporIdSucursal/${this.sucursalId}`)
+              .then(response => {
+                    this.dataEntradas = response.data;
+                    console.log(this.dataEntradas);
+                    this.numPro = response.data.length;
+                    console.log(this.numPro);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          }         
       },
       dataSucursalL() {
           axios.get('/Sucursales/listar')
@@ -223,14 +238,25 @@ export default {
           );
       },
       dataProductoL() {
-          axios.get('/Productos/listar')
-          .then(response => {
-                this.dataProductos = response.data;
-                console.log(this.dataProductos);
-          })
-          .catch(
-                error => console.log(error)
-          );
+          if (this.nomSucursal == 'Sucursal Principal') {
+              axios.get('/Productos/listar')
+              .then(response => {
+                    this.dataProductos = response.data;
+                    console.log(this.dataProductos);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          } else {
+              axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
+              .then(response => {
+                    this.dataProductos = response.data;
+                    console.log(this.dataProductos);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          }
       },
       paginate(Entrada) {
           let page = this.page;
