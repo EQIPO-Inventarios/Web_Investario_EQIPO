@@ -21,7 +21,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="cor">Correo:</label>
-                                            <input v-model="correo" type="email" class="form-control" id="cor" placeholder="Correo electronico">
+                                            <input v-model="correo" type="email" class="form-control" id="cor" placeholder="Correo electrónico">
                                         </div>
                                     </div>
                                 </div>
@@ -40,11 +40,22 @@
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
-                                            <label for="tel">Telefono:</label>
-                                            <input v-model="telefono" type="text" class="form-control" id="tel" placeholder="telefono">
+                                            <label for="tel">Teléfono:</label>
+                                            <input v-model="telefono" type="text" class="form-control" id="tel" placeholder="teléfono">
                                         </div>
                                     </div>  
                                 </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="uss">Usuario:</label>
+                                        <input v-model="obtenerUsuario" type="text" class="form-control" disabled="disabled">
+                                    </div>
+                                    <div class="col">
+                                        <label for="pas">Password:</label>
+                                        <input v-model="convertirFechaNacimiento" type="text" class="form-control" disabled="disabled">
+                                    </div>
+                                </div>
+                                <br>
                                 <div class="form-row"> 
                                     <div class="col">
                                         <div class="form-group">
@@ -86,7 +97,7 @@
                                 <br>
                                 <div class="card">
                                     <div class="card-header">
-                                    Direccion
+                                    Dirección
                                     </div>
                                     <div class="card-body">
                                         <div class="form-row"> 
@@ -112,8 +123,8 @@
                                         
                                         <div class="col"> 
                                             <div class="form-group">
-                                                <label for="des">Descripcion:</label>
-                                                <input v-model="descripcion" type="text" class="form-control" id="des" placeholder="Descripcion">
+                                                <label for="des">Descripción:</label>
+                                                <input v-model="descripcion" type="text" class="form-control" id="des" placeholder="Descripción">
                                             </div>
                                         </div>
                                     </div>
@@ -122,7 +133,7 @@
                             <br>
                             <center>
                                 <div>
-                                    <button v-on:click="enviar_form()" type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Enviar</button>
+                                    <button v-on:click="enviar_form()" type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Guardar</button>
                                     <button v-on:click="limpiar_form()" type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                                 </div>
                             </center>
@@ -167,7 +178,19 @@ export default {
             municipiosArray : [],
             departamento: '',
             municipio: 0,
-            descripcion: ''
+            descripcion: '',
+
+            //capturando la password
+            pass: '',
+            //variables para convertir la fecha nacimiento en password
+            fechaNueva: '',
+            d: '',
+            m: '',
+            m2: '',
+            a: '',
+            //capturando el usuario
+            usuario: '',
+            user: ''
         }
     },
     mounted(){
@@ -177,7 +200,10 @@ export default {
     },
     methods: {
         enviar_form() {
-            if (this.nombres != '' && this.apellidos != '' && this.correo != '' && this.dui != '' && this.nit != '' && this.telefono != '' && this.fechaNacimiento != '' && this.numero != 0 && this.numeronivel != 0 && this.idSucursal != 0 && this.descripcion != '' && this.departamento != '' && this.municipio != 0 && this.descripcion != '') {            
+            if (this.nombres != '' && this.apellidos != '' && this.correo != '' && this.dui != '' && this.nit != '' && 
+                this.telefono != '' && this.fechaNacimiento != '' && this.numero != 0 && this.numeronivel != 0 && 
+                this.idSucursal != 0 && this.descripcion != '' && this.departamento != '' && this.municipio != 0 && 
+                this.descripcion != '' && this.user != '' && this.pass != '') {            
                 axios.post('/Usuarios/crear',{
                     Nombres : this.nombres,
                     Apellidos: this.apellidos,
@@ -192,8 +218,8 @@ export default {
                     Correo : this.correo,
                     Telefono : this.telefono,
                     idSucursal: this.idSucursal,            //idSucursal
-                    NombreUsuario: this.nombres,
-                    Password: 123,
+                    NombreUsuario: this.user,
+                    Password: this.pass,
                     TipoNivel: this.tiponivel,              //tipoNivel
                     NumeroNivel: this.numeronivel           //numeroNivel
             })
@@ -315,6 +341,37 @@ export default {
             var combo = document.getElementById("selectEstadoCivil");
             var selected = combo.options[combo.selectedIndex].text;      
             this.tipo = selected;
+        }
+    },
+    computed: {
+        convertirFechaNacimiento() {
+            this.fechaNueva = '';
+            if(this.fechaNacimiento != ''){
+                this.fechaNueva = this.fechaNacimiento;
+                this.fechaNueva.toLocaleString();
+
+                //this.fechaNueva = this.fechaNueva.replace(/[-]/g, '');
+                this.d = this.fechaNueva.substr(8, 10);
+                this.m = this.fechaNueva.charAt(5);
+                this.m2 = this.fechaNueva.charAt(6);
+                this.a = this.fechaNueva.substr(0, 4);
+                console.log('dia: ' + this.d);
+                console.log('mes: ' + this.m +''+this.m2);
+                console.log('año: ' + this.a);
+
+                this.pass = this.d + this.m + this.m2 + this.a;
+                console.log('pass: '+this.pass);
+            }
+            return this.pass;
+        },
+        obtenerUsuario(){
+            this.usuario = '';
+            if(this.nombres != ''){
+                this.usuario = this.nombres + this.apellidos;
+                this.user = this.usuario;
+                console.log('user: '+this.user);
+            }
+            return this.user;
         }
     }
 }

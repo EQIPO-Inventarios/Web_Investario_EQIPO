@@ -45,6 +45,11 @@ Vue.use(VueRouter)
     path: '/menu/EntradaListado',
     name: 'EntradaL',
     component: () => import(/* webpackChunkName: "about" */ '@/views/Entrada/EntradaList.vue')
+  },
+  {
+    path: '/menu/SalidaListado',
+    name: 'SalidaList',
+    component: () => import(/* webpackChunkName: "salida" */ '@/views/Salida/SalidaList.vue')
   }
 ]
 

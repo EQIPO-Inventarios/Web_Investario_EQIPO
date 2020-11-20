@@ -39,11 +39,22 @@
                       </div>
                       <div class="col">
                           <div class="form-group">
-                              <label for="tel">Telefono:</label>
+                              <label for="tel">Teléfono:</label>
                               <input v-model="telefono" type="text" class="form-control" id="tel" placeholder="telefono">
                           </div>
                       </div>  
                   </div>
+                  <div class="form-row">
+                                    <div class="col">
+                                        <label for="uss">Usuario:</label>
+                                        <input v-model="obtenerUsuario" type="text" class="form-control" disabled="disabled">
+                                    </div>
+                                    <div class="col">
+                                        <label for="pas">Password:</label>
+                                        <input v-model="convertirFechaNacimiento" type="text" class="form-control" disabled="disabled">
+                                    </div>
+                                </div>
+                                <br>
                   <div class="form-row"> 
                       <div class="col">
                           <div class="form-group">
@@ -136,7 +147,7 @@
                   <br>
                   <div class="card">
                       <div class="card-header">
-                      Direccion
+                      Dirección
                       </div>
                       <div class="card-body">                           
                             <div class="form-row" v-if="cambiarDireccion == false">
@@ -180,7 +191,7 @@
                                 <div class="col"> 
                                     <div class="col">
                                         <div class="form-group">
-                                            <label for="des">Descripcion:</label>
+                                            <label for="des">Descripción:</label>
                                             <input v-model="descripcion" type="text" class="form-control" id="des" placeholder="Descripcion">
                                         </div>
                                     </div>
@@ -248,7 +259,19 @@ export default {
 
             cambiarEstadoCivil: false,
             cambiarNivel: false,
-            cambiarSucursal: false
+            cambiarSucursal: false,
+
+            //recuperando user y password
+            pass: '',
+            //variables para convertir la fecha nacimiento en password
+            fechaNueva: '',
+            d: '',
+            m: '',
+            m2: '',
+            a: '',
+            //capturando el usuario
+            usuario: '',
+            user: ''
         }
     },
     mounted(){
@@ -280,15 +303,21 @@ export default {
             this.descripcion = this.dataUsuario.personal.Contacto.Direccion.Descripcion;
             this.departamento = this.dataUsuario.personal.Contacto.Direccion.Departamento;
             this.municipio = this.dataUsuario.personal.Contacto.Direccion.Municipio;
+
+            this.user = this.dataUsuario.usuario;
+            this.pass = this.dataUsuario.password;
         }
       }
     },
     methods: {
         enviar_form() {
-            if (this.nombres != '' && this.apellidos != '' && this.correo != '' && this.dui != '' && this.nit != '' && this.telefono != '' && this.fechaNacimiento != '' && this.numero != 0 && this.numeronivel != 0 && this.idSucursal != 0 && this.descripcion != '' && this.departamento != '' && this.municipio != 0 && this.descripcion != '') {            
+            if (this.nombres != '' && this.apellidos != '' && this.correo != '' && this.dui != '' && this.nit != '' 
+                && this.telefono != '' && this.fechaNacimiento != '' && this.numero != 0 && this.numeronivel != 0 
+                && this.idSucursal != 0 && this.descripcion != '' && this.departamento != '' && this.municipio != 0 
+                && this.descripcion != '' && this.user != '' && this.pass != '') {            
                 axios.put('/Usuarios/actualizar',{
                     id : this.id,
-                    Nombres : this.nombres,
+                    Nombres: this.nombres,
                     Apellidos: this.apellidos,
                     Fecha_Nacimiento: this.fechaNacimiento,
                     DUI: this.dui,
@@ -301,12 +330,12 @@ export default {
                     Correo : this.correo,
                     Telefono : this.telefono,
                     idSucursal: this.idSucursal,            //idSucursal
-                    usuario: this.nombres,
-                    password: 123,
+                    usuario: this.user,
+                    password: this.pass,
                     TipoNivel: this.tiponivel,              //tipoNivel
                     NumeroNivel: this.numeronivel           //numeroNivel
             })
-            .then(response => {                 
+            .then((response) => {                 
                 //console.log(response.data.mensaje);                 
                 Swal.fire({
                     title: 'Mensaje',
@@ -315,10 +344,8 @@ export default {
                     });
                     location.reload();
             })
-            .catch(
-                error => console.log(error)
-            )
-        }
+            .catch((error) => console.log(error));
+            }
             else{
                 Swal.fire({
                     title: 'Campos vacios',
@@ -414,6 +441,37 @@ export default {
             var selected = combo.options[combo.selectedIndex].text;      
             this.tipo = selected;
         }
+    },
+    computed: {
+        convertirFechaNacimiento() {
+            this.fechaNueva = '';
+            if(this.fechaNacimiento != ''){
+                this.fechaNueva = this.fechaNacimiento;
+                this.fechaNueva.toLocaleString();
+
+                //this.fechaNueva = this.fechaNueva.replace(/[-]/g, '');
+                this.d = this.fechaNueva.substr(8, 10);
+                this.m = this.fechaNueva.charAt(5);
+                this.m2 = this.fechaNueva.charAt(6);
+                this.a = this.fechaNueva.substr(0, 4);
+                console.log('dia: ' + this.d);
+                console.log('mes: ' + this.m +''+this.m2);
+                console.log('año: ' + this.a);
+
+                this.pass = this.d + this.m + this.m2 + this.a;
+                console.log('pass: '+this.pass);
+            }
+            return this.pass;
+        },
+        obtenerUsuario(){
+            this.usuario = '';
+            if(this.nombres != ''){
+                this.usuario = this.nombres + this.apellidos;
+                this.user = this.usuario;
+                console.log('user: '+this.user);
+            }
+            return this.user;
+        }   
     }
 }
 </script>

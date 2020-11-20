@@ -77,15 +77,15 @@
 
                 <div class="table-responsive">
                 <table class="table table-striped table-sm" style="font-size:16px">
-                    <thead class="bg-primary text-white text-center">
+                    <thead class="bg-primary text-white">
                         <tr>
                             <th>Nombre</th>
                             <th>Correo</th>
                             <th>DUI</th>
                             <th>NIT</th>
-                            <th>Telefono</th>
+                            <th>Teléfono</th>
                             <th>Fecha de nacimiento</th>
-                            <th>Direccion</th>
+                            <th>Dirección</th>
                             <th>Usuario</th>
                             <th>Nivel</th>
                             <th>Sucursal</th>
@@ -103,7 +103,7 @@
                             <td>{{item.personal.Contacto.Direccion.Departamento}}, {{item.personal.Contacto.Direccion.Municipio}}</td>
                             <td>{{item.usuario}}</td>
                             <td>{{item.nivel.TipoNivel}}</td>
-                            <td>{{item.personal.idSucursal}}</td>
+                            <td>{{obtenerNombreSucursal(item.personal.idSucursal)}}</td>
                             <td>
                                 <button @click="editar(item)"
                                         type="button" data-toggle="modal" data-target="#EditModal"
@@ -165,12 +165,17 @@ export default {
             perPage: 5,
             pages: [],
             row: Object,
+            permisos: sessionStorage.getItem('permiso'),
+
+            //obteniendo las sucursales
+            dataSucursales: [],
             search: '',
             permisos: sessionStorage.getItem('permiso')
         }
     },
     mounted() {
         this.dataUsuariosL();
+        this.dataSucursalesListar();
     },
     methods: {
         editar(item) {
@@ -215,6 +220,31 @@ export default {
                 error => console.log(error)
             );
         },
+
+
+        //obteniendo las sucursales
+        dataSucursalesListar(){
+            axios.get('/Sucursales/listar')
+            .then(response => {
+                this.dataSucursales = response.data;
+                console.log(this.dataSucursales);
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
+        //obteniendo el nombre de la sucursal
+        obtenerNombreSucursal(id) {
+        var nombre = '';
+        for( let sucursal of this.dataSucursales) {
+            if(sucursal._id == id) {
+                nombre = sucursal.Nombre;
+            }
+        }
+        return nombre;
+      },
+
+
         paginate(Users) {
           let page = this.page;
           let perPage = this.perPage;
