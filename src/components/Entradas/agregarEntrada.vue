@@ -134,7 +134,7 @@ export default {
   methods: {
       obtenerFecha() {
         var f = new Date();
-        this.fechaActual = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
+        this.fechaActual = (f.getMonth() +1) + "/" + f.getDate() + "/" + f.getFullYear();
       },
       obtenerProductosL() {
           axios.get('/Productos/listar')

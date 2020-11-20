@@ -69,6 +69,15 @@
 
         <div class="card-body"> <!-- CUERPO DE LISTADO-->
 
+          <div class="row ml-1">
+            <form>
+              <div class="row">
+                <div class="col-3"><label for="">Buscador:</label></div>
+                <div class="col"> <input v-model="search" type="text" class="form-control" placeholder="Buscar por Nombre ..."></div>
+              </div>
+            </form>
+          </div>
+
             <table class="table table-striped">
               <thead class="bg-primary text-white">
                 <tr>
@@ -150,7 +159,8 @@ export default {
           page: 1,
           perPage: 5,
           pages: [],
-          row: Object
+          row: Object,
+          search: ''
         }
     },
     mounted() {
@@ -223,6 +233,29 @@ export default {
     watch: {
       dataProductos() {
         this.setProducts();
+      },
+      search(){
+          if (this.search != '') {
+              axios.get(`/Productos/listarPorNombre/${this.search}`)
+              .then(response => {
+                    this.dataProductos = response.data;
+                    console.log('Estos son buscados: '+this.dataProductos);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          } else {
+              axios.get('/Productos/listar')
+              .then(response => {
+                    this.dataProductos = response.data;
+                    console.log(this.dataProductos);
+                    this.numPro = response.data.length;
+                    console.log(this.numPro);
+              })
+              .catch(
+                    error => console.log(error)
+              );
+          }
       }
     }
 }

@@ -65,6 +65,16 @@
                 </div>
             </div>
             <div class="card-body">
+
+                <div class="row ml-1">
+                    <form>
+                    <div class="row">
+                        <div class="col-3"><label for="">Buscador:</label></div>
+                        <div class="col"> <input v-model="search" type="text" class="form-control" placeholder="Buscar por usuario ..."></div>
+                    </div>
+                    </form>
+                </div>
+
                 <div class="table-responsive">
                 <table class="table table-striped table-sm" style="font-size:16px">
                     <thead class="bg-primary text-white text-center">
@@ -155,6 +165,7 @@ export default {
             perPage: 5,
             pages: [],
             row: Object,
+            search: '',
             permisos: sessionStorage.getItem('permiso')
         }
     },
@@ -226,7 +237,31 @@ export default {
     watch: {
         dataUsuarios() {
             this.setUsers();
-        }
+        },
+        search(){
+          if (this.search != '') {
+                axios.get(`/Usuarios/buscarUsuarios/${this.search}`)
+                .then(response => {
+                        this.dataUsuarios = response.data;
+                        console.log('Estos son buscados: '+this.dataUsuarios);
+                })
+                .catch(
+                        error => console.log(error)
+                );
+          }
+          else {
+                axios.get('/Usuarios/listar')
+                .then(response => {
+                    this.dataUsuarios = response.data;
+                    console.log(this.dataUsuarios);
+                    this.numUsu = response.data.length;
+                    console.log(this.numUsu);
+                })
+                .catch(
+                    error => console.log(error)
+                );
+          }
+      }
     }
 }
 </script>

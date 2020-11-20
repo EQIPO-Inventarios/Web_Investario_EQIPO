@@ -133,6 +133,8 @@ export default {
             sessionStorage.removeItem('usuario');
             sessionStorage.removeItem('permiso');
             sessionStorage.removeItem('nombreNivel');
+            sessionStorage.removeItem('nomSucursal');
+            sessionStorage.removeItem('sucursalId');
             this.$emit("authenticated", false);
             this.$router.replace({ name: "Login" });
             location.reload();
