@@ -100,7 +100,6 @@ export default {
             idProducto: '',
             codigoProducto: '',
             nombreProducto: '',
-            nombreSucursal: '',
             nombreProveedor: '',
             precioUnitario: 0,
             cantidad: '',
@@ -109,7 +108,7 @@ export default {
             fecha: '',
             cantidadMinima: false,
 
-            nombreSucursal: sessionStorage.getItem('nomSucursal'),
+            nomSucursal: sessionStorage.getItem('nomSucursal'),
             sucursalId: sessionStorage.getItem('sucursalId'),
             idDestino: '',
 
@@ -176,16 +175,31 @@ export default {
     },
 
     methods: {
-        getSalidasListar(){
+
+        //obteniendo las salidas
+        getSalidasListar() {
+            if (this.nomSucursal == 'Sucursal Principal'){
             axios.get('/Salidas/listar')
             .then(response => {
-                    this.dataSalidas = response.data;
-                    console.log(this.dataSalidas);
+                this.dataSalidas = response.data;
+                console.log(this.dataSalidas);
             })
             .catch(
-                    error => console.log(error)
+                error => console.log(error)
             );
-        },
+
+            }else{
+            axios.get(`/Salidas/listarporIdSucursal/${this.sucursalId}`)
+            .then(response => {
+                this.dataSalidas = response.data;
+                console.log(this.dataSalidas);
+            })
+            .catch(
+                error => console.log(error)
+            );
+          }
+
+        }, 
 
         //obteniendo las sucursales
         dataSucursalesListar(){
@@ -199,9 +213,10 @@ export default {
             );
         },
         
-
-        obtenerProductosL() {
-            axios.get('/Productos/listar')
+        //obteniendo los productos
+        obtenerProductosL(){
+            if (this.nomSucursal == 'Sucursal Principal') {
+                axios.get('/Productos/listar')
             .then(response => {
                     this.dataProductos = response.data;
                     console.log(this.dataProductos);
@@ -209,6 +224,18 @@ export default {
             .catch(
                     error => console.log(error)
             );
+
+            }else {
+                axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
+                .then(response => {
+                    this.dataProductos = response.data;
+                    console.log(this.dataProductos);
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            }
+            
         },
 
         enviar_form() {
@@ -247,7 +274,7 @@ export default {
         limpiar_form() {
             this.codigoProducto = '';
             this.nombreProducto = '';
-            this.nombreSucursal = '';
+            this.nomSucursal = '';
             this.proveedor = '';
             this.precioUnitario = '';
             this.cantidad = '';
