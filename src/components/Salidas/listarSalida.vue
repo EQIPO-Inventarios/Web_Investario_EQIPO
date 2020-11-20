@@ -217,7 +217,6 @@ export default {
             .catch(
                     error => console.log(error)
             );
-
             }else {
                 axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
                 .then(response => {
@@ -228,7 +227,6 @@ export default {
                     error => console.log(error)
                 );
             }
-            
         },
         
         //obteniendo el nombre del producto

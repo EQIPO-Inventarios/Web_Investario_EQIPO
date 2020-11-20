@@ -153,7 +153,6 @@ export default {
         this.EsSucursalPrincipal();
     },
     methods: {
-        
         //listando los productos
         dataProductosListar(){
             if (this.nomSucursal == 'Sucursal Principal') {
@@ -198,7 +197,6 @@ export default {
             }
         },
 
-
         //obteniendo la fecha actual
         getFechaActual() {
             var fechaActual = new Date();
@@ -226,7 +224,6 @@ export default {
             this.selection = selected;
         },
 
-
         //creando salida
         enviar_form() {
             if (this.fechaLocal != '' && this.detalle != '' && this.idProducto_a_Enviar != '' 
@@ -250,7 +247,6 @@ export default {
                     location.reload();
                 })
                 .catch((error) => console.log(error));
-                
             }
             else{
                 Swal.fire({

@@ -122,8 +122,6 @@ export default {
         this.getSalidasListar();
         this.obtenerProductosL();
         this.dataSucursalesListar();
-
-        
     },
 
     watch: {
@@ -137,7 +135,6 @@ export default {
                 this.monto = this.dataSalida.Monto;
                 this.sucursalId = this.dataSalida.idSucursal;
                 this.idDestino = this.dataSalida.idSucursalDestino;
-                
             }
         },
         idProducto() {  //metodo que no se esta ocupando pero que puede servir.
@@ -175,7 +172,6 @@ export default {
     },
 
     methods: {
-
         //obteniendo las salidas
         getSalidasListar() {
             if (this.nomSucursal == 'Sucursal Principal'){
@@ -198,7 +194,6 @@ export default {
                 error => console.log(error)
             );
           }
-
         }, 
 
         //obteniendo las sucursales
@@ -224,7 +219,6 @@ export default {
             .catch(
                     error => console.log(error)
             );
-
             }else {
                 axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
                 .then(response => {
@@ -235,7 +229,6 @@ export default {
                     error => console.log(error)
                 );
             }
-            
         },
 
         enviar_form() {
@@ -269,7 +262,6 @@ export default {
                 });
             }
         },
-
         
         limpiar_form() {
             this.codigoProducto = '';
