@@ -45,8 +45,15 @@ Vue.use(VueRouter)
     path: '/menu/EntradaListado',
     name: 'EntradaL',
     component: () => import(/* webpackChunkName: "about" */ '@/views/Entrada/EntradaList.vue')
+  },
+  {
+    path: '/menu/ReportesListado',
+    name: 'ReportL',
+    component: () => import(/* webpackChunkName: "about" */ '@/views/Reporte/ReportList.vue')
   }
 ]
+
+
 
 const router = new VueRouter({
   mode: 'history',

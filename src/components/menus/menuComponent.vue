@@ -3,7 +3,7 @@
         <div >
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <a class="navbar-brand">
-                    <router-link to="/menu" class="EnlaceP"><i class="fas fa-home"></i>  Panel General</router-link>
+                    <router-link to="/menu" class="EnlaceP"><i class="fas fa-home"></i>  {{nomSucursal}}</router-link>
                 </a>
 
                 <div class="EnlaceP">
@@ -53,11 +53,13 @@
                                 <span class="EnlaceP"><i class="fas fa-cash-register"></i>   Salidas</span> 
                             </a>
                         </li>
-                        <li class="nav-item dropdown mr-4" v-if="permiso == 2">
-                            <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="EnlaceP"><i class="fas fa-archive"></i>    Reportes</span> 
+                        <li class="nav-item dropdown mr-4" v-if="permiso == 1 || permiso == 2">
+                            <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                   
+                                <router-link to="/menu/ReportesListado">
+                                        <span class="EnlaceP"><i class="fas fa-archive"></i>    Reportes</span>
+                                </router-link>
                             </a>
-                        </li>
+                        </li>                     
                         <li class="nav-item dropdown mr-4" v-if="permiso == 3">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="EnlaceP"><i class="fas fa-tasks"></i>   Peticion</span> 
@@ -102,7 +104,8 @@ export default {
       data(){
         return {
             permiso: sessionStorage.getItem('permiso'),
-            token: sessionStorage.getItem('autenticado')
+            token: sessionStorage.getItem('autenticado'),
+            nomSucursal: sessionStorage.getItem('nomSucursal')
         }
     },
     mounted() {
