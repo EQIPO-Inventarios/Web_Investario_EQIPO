@@ -85,7 +85,7 @@
                         <td>{{getCodigoProducto(item.idProducto)}}</td>
                         <td>{{getNameProduct(item.idProducto)}}</td>
                         <td>{{getNombreProveedor(item.idProducto)}}</td>
-                        <td>Sucursal Central</td>
+                        <td>{{nomSucursal}}</td>
                         <td>{{obtenerNombreSucursal(item.idSucursalDestino)}}</td>
                         <td>$ {{getPrecioUnitario(item.idProducto)}}</td>
                         <td>{{item.Cantidad}}</td>
