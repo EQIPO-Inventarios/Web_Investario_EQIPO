@@ -79,46 +79,9 @@ import router from 'vue-router'
 import axios from '../../config/axios'
 
 export default {
-  name: "editarProducto",
-  props: {
-    dataProduct: { Object },
-  },
-  data() {
-    return {
-      id: "",
-      codigoProducto: "",
-      nombreProducto: "",
-      sucursal: sessionStorage.getItem('nomSucursal'),
-      material: "",
-      caracteristicas: "",
-      existencias: 0,
-      precioUnitario: "",
-      datosProveedor: {
-        nombreProveedor: "",
-        razonSocial: "",
-        departamento: "",
-        municipio: "",
-        descripcion: "",
-        telefono: "",
-        correo: "",
-      },
-      selectedProvider: 0,
-      mostrarDatos: false,
-      cambiarProveedor: false,
-    };
-  },
-  created() {
-    this.bringSuppliers();
-  },
-  methods: {
-    bringSuppliers() {
-      axios
-        .get("/Proveedores/listar")
-        .then((response) => {
-          this.dataProviders = response.data;
-          console.log(this.dataProviders);
-        })
-        .catch((error) => console.log(error));
+    name: 'editarProducto',
+    props: {
+        dataProduct: { Object }
     },
     data() {
         return {

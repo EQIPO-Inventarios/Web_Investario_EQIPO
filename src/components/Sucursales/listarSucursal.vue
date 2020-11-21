@@ -62,8 +62,8 @@
                   <center>Listado de Sucursales</center>
                 </div>
                 <div class="col-2 text-rigth" style="text-align: center">
-                    <div v-if="numPro == 1" class="alert bg-success text-white"><b>{{numPro}} Sucursal</b> </div>
-                    <div v-if="numPro != 1" class="alert bg-success text-white"><b>{{numPro}} Sucursales</b> </div>
+                    <div v-if="numPro == 1" class="alert bg-success text-white"><b>{{numPro}} Proveedor</b> </div>
+                    <div v-if="numPro != 1" class="alert bg-success text-white"><b>{{numPro}} Proveedores </b> </div>
                 </div>
               </div>  
 

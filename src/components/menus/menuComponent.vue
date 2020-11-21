@@ -50,9 +50,7 @@
                         </li>
                         <li class="nav-item dropdown mr-4" v-if="permiso == 1 || permiso == 3">
                             <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               <router-link to="/menu/SalidaListado">
-                                     <span class="EnlaceP"><i class="fas fa-cash-register"></i>   Salidas</span> 
-                               </router-link>
+                                <span class="EnlaceP"><i class="fas fa-cash-register"></i>   Salidas</span> 
                             </a>
                         </li>
                         <li class="nav-item dropdown mr-4" v-if="permiso == 1 || permiso == 2">
