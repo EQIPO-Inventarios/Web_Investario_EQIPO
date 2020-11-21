@@ -165,6 +165,7 @@ export default {
             perPage: 5,
             pages: [],
             row: Object,
+            dataSucursales: [],
             search: '',
             permisos: sessionStorage.getItem('permiso')
         }

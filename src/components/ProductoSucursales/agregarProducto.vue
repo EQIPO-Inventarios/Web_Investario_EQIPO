@@ -5,51 +5,121 @@
           <br>
           <div class="card">
               <div class="card-body">
-                  <form @submit.prevent="enviarForm()">
-                      <div class="form row">
-                          <div class="col">
-                              <input v-model="sucursal" type="text" class="form-control" disabled="disabled">
-                          </div>
-                      </div>
-                      <br>
-                      <div class="form-row">
-                          <div class="col">
-                              <input v-model="codigoProducto" type="text" class="form-control" placeholder="Codigo de barra ...">
-                          </div>
-                          <div class="col">
-                              <input v-model="nombreProducto" type="text" class="form-control" placeholder="Nombre de producto ...">
-                          </div>                         
-                      </div>
-                      <br>
-                      <div class="form-row">
-                          <div class="col">
-                              <select id="selectProveedor" class="custom-select" @change="ShowSelected()">
-                                  <option value="0" selected="selected"> - Seleccione Proveedor - </option>
-                                  <option :value="index" v-for="(item, index) in dataProviders" :key="index"> {{item.Nombre}} </option>
-                              </select>
-                          </div>
-                          <div class="col-4">
-                              <button @click="redireccionar()" type="button" class="btn btn-info btn-sm" data-dismiss="modal">
-                                   + Nuevo
-                              </button>
-                          </div>
-                      </div>
-                      <br>
-                      <div class="form-row">
-                          <div class="col">
-                              <input v-model="material" type="text" class="form-control" placeholder="Material">
-                          </div>
-                          <div class="col">
-                              <input v-model.number="precioUnitario" class="form-control" type="number" placeholder="Precio Unitario" min="1" step="0.1"/>
-                          </div>
-                      </div>
-                      <br>
-                      <div class="form-row">
-                          <div class="col">
-                              <textarea v-model="caracteristicas" class="form-control" cols="30" rows="5" placeholder="Carcateristicas ..."></textarea>
-                          </div>
-                      </div>
-                  </form>
+                  <form @submit="enviarForm()">
+              <div class="form row">
+                <div class="col">
+                  <div class="form-group">
+                      <label for="nomS">Nombre de sucursal:</label>
+                    <input
+                      v-model="sucursal"
+                      type="text"
+                      class="form-control"
+                      id="nomS"
+                      disabled="disabled"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                      <label for="cod">Codigo de barra:</label>
+                    <input
+                    v-model.number="codigoProducto"
+                    type="number"
+                    class="form-control"
+                    id="cod"
+                    placeholder="Codigo de barra ..."
+                    />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label for="nom">Nombre producto:</label>
+                    <input
+                    v-model="nombreProducto"
+                    type="text"
+                    class="form-control"
+                    id="nom"
+                    placeholder="Nombre de producto ..."
+                  />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                    <label>Proveedor:</label>
+                    <select
+                    id="selectProveedor"
+                    class="custom-select"
+                    @change="ShowSelected()"
+                    >
+                    <option value="0" selected="selected">
+                      - Seleccione Proveedor -
+                    </option>
+                    <option
+                      :value="index"
+                      v-for="(item, index) in dataProviders"
+                      :key="index"
+                    >
+                      {{ item.Nombre }}
+                    </option>
+                  </select>
+                  </div>
+                </div>
+                <div class="col-4">
+                    <button @click="goToProvider()" type="button" id="btn-n" class="btn btn-info btn-sm" data-dismiss="modal"> 
+                        + Nuevo
+                    </button>
+                </div>
+              </div>
+              <br />
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="mat">Material:</label>
+                    <input
+                    v-model="material"
+                    type="text"
+                    class="form-control"
+                    id="mat"
+                    placeholder="Material"
+                  />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label for="pre">Precio Unitario:</label>
+                    <input
+                    v-model.number="precioUnitario"
+                    class="form-control"
+                    type="number"
+                    id="pre"
+                    placeholder="Precio Unitario"
+                    min="1"
+                    step="0.1"
+                  />
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="car">Caracteristicas:</label>
+                    <textarea
+                    v-model="caracteristicas"
+                    class="form-control"
+                    cols="30"
+                    rows="5"
+                    id="car"
+                    placeholder="Carcateristicas ..."
+                  ></textarea>
+                  </div>
+                </div>
+              </div>
+            </form>
                   <br>
                       <center>
                         <div>
@@ -75,7 +145,7 @@ export default {
             sucursalId: sessionStorage.getItem('sucursalId'),
             codigoProducto: '',
             nombreProducto: '',
-            sucursal: '',
+            sucursal: sessionStorage.getItem('nomSucursal'),
             material: '',
             caracteristicas: '',
             existencias: 0,
@@ -145,7 +215,7 @@ export default {
                   Correo : this.datosProveedor.correo,
               })
               .then(response => {                 
-                  //console.log(response.data.mensaje);                 
+                  console.log(response.data.mensaje);                 
                   Swal.fire({
                   title: 'Mensaje',
                   icon: 'success',
@@ -169,7 +239,6 @@ export default {
         limpiarForm() {
             this.codigoProducto = '';
             this.nombreProducto = '';
-            this.sucursal = 'Sucursal central';
             this.material = '';
             this.caracteristicas = '';
             this.existencias = 0;
@@ -182,8 +251,8 @@ export default {
             this.telefono = '';
             this.correo = '';
         },
-        redireccionar() {
-            this.$router.replace({ name: "ProveedorL" });
+        goToProvider(){
+          this.$router.replace({ name: "ProveedorL" });
         },
         obtenerSucursal() {
             if(sessionStorage.getItem('nomSucursal')) {
