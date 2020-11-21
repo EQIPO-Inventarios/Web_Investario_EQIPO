@@ -8,7 +8,18 @@
                         <div class="card-body">
                             <form @submit.prevent="enviarForm()">
                                 <div class="form-row">
-                                    <div class="col-4"></div>
+                                    <div class="col-4" v-if="mostrarExterna">
+                                        <div class="form-row">
+                                            <label class="text-left">Sucursal destino:</label>
+                                        </div>
+                                        <input v-model="nomSucursal" type="text" disabled="disabled" class="form-control">
+                                    </div>
+                                    <div class="col-4" v-if="mostrar">
+                                        <div class="form-row">
+                                            <label class="text-left">Sucursal destino:</label>
+                                        </div>
+                                        <input v-model="nombreSucursalDestino" type="text" disabled="disabled" class="form-control">
+                                    </div>
                                     <div class="col-4">
                                         <div class="form-row">
                                             <label class="text-left">Fecha de Salida:</label>
@@ -115,13 +126,17 @@ export default {
             dataSalidas: [],
             dataProductos: [],
             dataSucursales: [],
-            nombreSucursalDestino: ''
+            nombreSucursalDestino: '',
+            mostrarExterna: false,
+            mostrar: false
         };
     },
     mounted() {
         this.getSalidasListar();
         this.obtenerProductosL();
         this.dataSucursalesListar();
+        this.EsSucursalPrincipal();
+        this.obtenerNombreSucursal();
     },
 
     watch: {
@@ -137,7 +152,7 @@ export default {
                 this.idDestino = this.dataSalida.idSucursalDestino;
             }
         },
-        idProducto() {  //metodo que no se esta ocupando pero que puede servir.
+        idProducto() {
             if (this.idProducto) {
                 for(let producto of this.dataProductos) {
                     if (producto._id == this.idProducto) {
@@ -146,6 +161,15 @@ export default {
                         this.precioUnitario = producto.Precio_Unitario;
                         this.nombreProveedor = producto.Proveedor.Nombre;
                         this.monto = this.precioUnitario * this.cantidad;
+                    }
+                }
+            }
+        },
+        idDestino() {
+            if (this.idDestino) {
+                for(let sucursal of this.dataSucursales) {
+                    if (sucursal._id == this.idDestino) {
+                        this.nombreSucursalDestino = sucursal.Nombre;
                     }
                 }
             }
@@ -160,15 +184,6 @@ export default {
                 }        
             }
         },
-        //obteniendo el nombre de la sucursal
-        obtenerNombreSucursal(){
-            if(this.idDestino)
-            for(let item of this.dataSucursales) {
-                if (item._id == this.idDestino) {
-                    this.nombreSucursalDestino = item.Nombre;
-                }
-            }
-        }
     },
 
     methods: {
@@ -263,6 +278,16 @@ export default {
             }
         },
         
+        EsSucursalPrincipal() {
+            if(sessionStorage.getItem('nomSucursal') == 'Sucursal Principal') {
+                this.mostrar = true;
+                this.mostrarExterna = false;
+            }else{
+                this.mostrar = false;
+                this.mostrarExterna = true;
+            }
+        },
+
         limpiar_form() {
             this.codigoProducto = '';
             this.nombreProducto = '';
