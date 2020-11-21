@@ -215,7 +215,7 @@ export default {
                   Correo : this.datosProveedor.correo,
               })
               .then(response => {                 
-                  //console.log(response.data.mensaje);                 
+                  console.log(response.data.mensaje);                 
                   Swal.fire({
                   title: 'Mensaje',
                   icon: 'success',
