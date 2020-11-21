@@ -1,4 +1,5 @@
 <template>
+        <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
@@ -11,23 +12,34 @@
                                             <div class="form-row">
                                                 <!-- primera columna -->
                                                 <div class="col">
-                                                    <input v-model="nombre" type="text" class="form-control" placeholder="Nombre">
+                                                    <div class="form-group">
+                                                        <label for="nom">Nombre de sucursal:</label>
+                                                        <input v-model="nombre" type="text" class="form-control" id="nom" placeholder="Nombre">
+                                                    </div>
                                                 </div>
                                                 <!-- segunda columna -->
                                                 <div class="col">
-                                                    <input v-model.number="codigo" type="number" class="form-control" placeholder="Codigo">
+                                                    <div class="form-group">
+                                                        <label for="cod">Codigo de sucursal:</label>
+                                                        <input v-model.number="codigo" type="number" class="form-control" id="cod" placeholder="Codigo">
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <br>
                                             <!-- segunda fila -->
                                             <div class="form-row">
                                                 <!-- primera columna -->
                                                 <div class="col">
-                                                    <input v-model="telefono" type="text" class="form-control" placeholder="Telefono">
+                                                    <div class="form-group">
+                                                        <label for="tel">Telefono:</label>
+                                                        <input v-model="telefono" type="text" class="form-control" id="tel" placeholder="Telefono">
+                                                    </div>
                                                 </div>
                                                 <!-- segunda columna -->
                                                 <div class="col">
-                                                    <input v-model="correo" type="email" class="form-control" placeholder="Correo">
+                                                    <div class="form-group">
+                                                        <label for="cor">Correo:</label>
+                                                        <input v-model="correo" type="email" class="form-control" id="cor" placeholder="Correo">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <br>
@@ -41,25 +53,59 @@
                                                     <div class="form-row">
                                                         <!-- primera columna -->
                                                         <div class="col">
-                                                            <select class="form-control" id="selectDepartamento" @change="ShowSelected()">
-                                                                <option value="Departamento" selected="selected">-Departamento-</option>
-                                                                <option v-for="(item, index) in data" :value="index" :key="index">{{item.Departamento}}</option>
-                                                            </select>
+                                                            <div class="form-group">
+                                                                <label>Departamento:</label>
+                                                                <select class="form-control" id="selectDepartamento" @change="ShowSelected()">
+                                                                 <option value="Departamento" selected="selected">-Departamento-</option>
+                                                                 <option v-for="(item, index) in data" :value="index" :key="index">{{item.Departamento}}</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                         <!-- segunda columna -->
                                                         <div class="col">
-                                                            <select v-model="municipio" class="form-control">
-                                                                <option value="0" selected="selected">-Municipio-</option>
-                                                                <option v-for="(item, index) in municipiosArray" :key="index" >{{item}}</option>
-                                                            </select>
+                                                            <div class="form-group">
+                                                                <label>Municipio:</label>
+                                                                <select v-model="municipio" class="form-control">
+                                                                 <option value="0" selected="selected">-Municipio-</option>
+                                                                 <option v-for="(item, index) in municipiosArray" :key="index" >{{item}}</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <br>
-                                                    <input v-model="descripcion" type="text" class="form-control" placeholder="Descripcion">
+                                                    <div class="form-group">
+                                                        <label for="des">Descripcion:</label>
+                                                        <textarea v-model="descripcion" type="text" class="form-control" id="des" placeholder="Descripcion" cols="30" rows="5"></textarea>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <!-- Columna derecha -->
+                                <div class="col-4">
+                                    <!-- card de la derecha -->
+                                    <div class="card h-100">
+                                        <div class="card-header">
+                                            <center>Bodega</center>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="lar">Largo:</label>
+                                                <input v-model.number="largo" type="number" class="form-control" id="lar" placeholder="Largo de bodega">
+                                            </div>
+                                            <br>
+                                            <div class="form-group">
+                                                <label for="acn">Ancho:</label>
+                                                <input v-model.number="ancho" type="number" class="form-control" id="anc" placeholder="Ancho de bodega">
+                                            </div>
+                                            <br>
+                                            <div class="form-group">
+                                                <label for="est">Numero de Estanterias:</label>
+                                                <input v-model.number="estanterias" type="number" class="form-control" id="est" placeholder="Estanterias">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <br>
                             <!-- botonera -->
@@ -73,6 +119,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 </template>
 
 <script>
