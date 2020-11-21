@@ -165,14 +165,14 @@ export default {
                     error => console.log(error)
                 );
             }else {
-                 axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
-              .then(response => {
-                    this.dataProductos = response.data;
-                    console.log(this.dataProductos);
-              })
-              .catch(
-                    error => console.log(error)
-              );
+                axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
+                .then(response => {
+                        this.dataProductos = response.data;
+                        console.log(this.dataProductos);
+                })
+                .catch(
+                        error => console.log(error)
+                );
             }
         },
         
