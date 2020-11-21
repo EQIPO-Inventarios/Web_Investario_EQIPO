@@ -42,7 +42,7 @@
                         </span>
                     </div>
                     <br>
-                    <div v-if="nombreProducto != '' && nombreProveedor != '' && precio != '' ">
+                    <div v-if="nombreProducto != '' && nombreProveedor != '' && precioUnitario != '' ">
                         <div class="form-row">
                         <div class="col">
                             <div class="form-group">
@@ -61,7 +61,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="nompro">Cantidad:</label>
-                                <input v-model="cantidad" type="number" min="1" class="form-control" required="required">
+                                <input v-model.number="cantidad" type="number" min="1" class="form-control" required="required">
                                 <p v-if="cantidadMinima" class="wd-2 bg-danger text-white"> Cantidad mayor o igual a 1</p>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="nompro">Monto:</label>
-                                <input @keyup="calcularMonto()" v-model="monto" type="number" min="1" class="form-control" disabled="disabled">
+                                <input @keyup="calcularMonto()" v-model.number="monto" type="number" min="1" class="form-control" disabled="disabled">
                             </div>
                         </div>
                         </div>
@@ -110,7 +110,7 @@ export default {
     name: 'agregarPeticion',
     data() {
         return {
-            fechaLocal: '11-11-2020',
+            fechaLocal: '',
             detalle: '',
 
             //obteniedo los productos
@@ -134,13 +134,13 @@ export default {
         }
     },
     mounted() {
-        //this.getFechaActual();
+        this.obtenerFecha();
         this.dataProductosListar();
     },
     methods: {
-        getFechaActual() {
-            var date = new Date();
-            this.fechaLocal = date.getDate() + "/" + (date.getMonth() +1) + "/" + date.getFullYear();
+        obtenerFecha() {
+            var f = new Date();
+            this.fechaLocal = (f.getMonth() +1) + "/" + f.getDate() + "/" + f.getFullYear();
         },
         //obteniendo los productos
         dataProductosListar() {
@@ -177,11 +177,11 @@ export default {
             this.codigoProducto = '';
             this.nombreProducto = '',
             this.nombreProveedor = '',
-            this.precioUnitario = '';
+            this.precioUnitario = 0;
             this.detalle = '';
             this.productoId = '';
-            this.cantidad = '';
-            this.monto = '';
+            this.cantidad = 0;
+            this.monto = 0;
         },
         enviarForm() {
             if(this.fechaLocal != '' && 
@@ -197,9 +197,9 @@ export default {
                         Detalle: this.detalle,
                         idProducto: this.productoId,
                         Cantidad: this.cantidad,
-                        idSucursal: this.sucursalId,
+                        idSucursal: this.sucursalId
                     })
-                    .then((response) => {                 
+                    .then(response => {                 
                         console.log(response.data.mensaje);                 
                         Swal.fire({
                         title: 'Mensaje',

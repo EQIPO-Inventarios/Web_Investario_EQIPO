@@ -69,7 +69,7 @@
                 <br>
                 <div>
                     <center>
-                            <button @click="enviarForm()"  type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Aceptar</button>
+                            <button @click="enviarForm()"  type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Recibida</button>
                             <button @click="limpiarForm()" type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     </center>
                 </div>           
@@ -145,13 +145,12 @@ export default {
                 this.cantidad != 0){ 
                 //validando campos numericos
                 if (this.cantidad >= 1 ) {
-                    axios.put('/PeticionEntradas/aceptar',{
+                    axios.put('/PeticionEntradas/entregada',{
                         _id: this.id,
                         Fecha: this.newf,
+                        Cantidad: this.cantidad,
                         Detalle: this.detalle,
                         idProducto: this.productoId,
-                        Cantidad: this.cantidad,
-                        idSucursal: this.sucursalId,
                         idSucursalDestino: this.idSucursalDestino
                     })
                     .then(response => {                 
