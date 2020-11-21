@@ -59,6 +59,9 @@
 </template>
 
 <script>
+import router from 'vue-router'
+import axios from 'axios'
+
 export default {
     name: 'listarReportes'
 }
