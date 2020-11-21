@@ -186,7 +186,7 @@ export default {
       id: "",
       codigoProducto: "",
       nombreProducto: "",
-      sucursal: "Sucursal central",
+      sucursal: sessionStorage.getItem('nomSucursal'),
       material: "",
       caracteristicas: "",
       existencias: 0,
