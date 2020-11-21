@@ -104,7 +104,7 @@
                 </div>
             </div>
             <div class="card-body">
-            <div class="row ml-1">
+            <div class="row ml-1" v-if="externa">
                 <form>
                     <div class="row">
                         <div class="col-3">
