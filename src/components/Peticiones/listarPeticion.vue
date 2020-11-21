@@ -155,21 +155,19 @@
                                         </button>
                                     </td>
                                 <div v-if="externa">
-                                    <td v-if="mostrarAceptadas">
+                                    <td v-if="item.EstadoPeticion==2">
                                         <button @click="recibida(item)"
                                             type="button" data-toggle="modal" data-target="#ConfirmModal"
                                             style="margin-right:8px; color: white" class="btn btn-success btn-sm" title="Recibida">
                                             <i class="fas fa-check-double"></i>
                                         </button>
                                     </td>
-                                    <td v-if="mostrarPendientes">
+                                    <td v-if="item.EstadoPeticion==1">
                                         <button @click="editar(item)"
                                             type="button" data-toggle="modal" data-target="#EditModal"
                                             style="margin-right:8px; color: white" class="btn btn-warning btn-sm" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                    </td>
-                                    <td v-if="mostrarPendientes">
                                         <button @click="eliminar(item._id, item.idProducto, item.Cantidad)" 
                                             class="btn btn-danger btn-sm" style="margin-right:8px; color: white" title="Eliminar">
                                             <i class="fas fa-trash-alt"></i>
@@ -264,9 +262,7 @@ export default {
             number: 1,
 
             //mostrar solo si estan pendientes
-            mostrarPendientes: false,
-            mostrarAceptadas: false,
-            mostrarEntregadas: false
+            mostrarEntregadas: true
         }
     },
     mounted() {
@@ -276,8 +272,6 @@ export default {
         this.dataSucursalesListar();
         this.EsJefeSucursalPrincipal();
         this.EsSucursalExterna();
-        this.peticionesPendientes();
-        this.peticionesAceptadas();
         this.peticionesEntregadas();
     },
     methods: {
@@ -300,7 +294,7 @@ export default {
 
         
         //eliminando la peticion
-        eliminar(_id, idProducto, Cantidad) {
+        eliminar(ID, IdP, C) {
             Swal.fire({
                 title: 'Esta seguro que desea eliminar la peticion?',
                 icon: 'warning',
@@ -310,16 +304,13 @@ export default {
                 confirmButtonText: 'Eliminar'
             }).then((result) => {
                 if (result.value) {
-                    console.log(_id);
-                    console.log(idProducto);
-                    console.log(Cantidad);
-                    axios.delete(`/PeticionEntradas/eliminar`,{
-                        _id: this._id,
-                        idProducto: this.idProducto,
-                        Cantidad: this.Cantidad
+                    axios.delete('/PeticionEntradas/eliminar', {
+                        _id: this.ID,
+                        idProducto: this.IdP,
+                        Cantidad: this.C,
                     })
                     .then(response => {
-                            console.log(response.data.mensaje);
+                            console.table(response.data.mensaje);
                             Swal.fire({
                             title: 'Eliminado',
                             icon: 'success',
@@ -473,20 +464,6 @@ export default {
                 this.externa = false;
             }
         },
-        peticionesPendientes(){
-            if (this.number == 1) {
-                this.mostrarPendientes = true;
-            }else{
-                this.mostrarPendientes = false;
-            }
-        },
-        peticionesAceptadas(){
-            if (this.number == 2) {
-                this.mostrarAceptadas = true;
-            }else{
-                this.mostrarAceptadas = false;
-            }
-        },
         peticionesEntregadas(){
             if (this.number == 3) {
                 this.mostrarEntregadas = false;
@@ -524,6 +501,7 @@ export default {
         number(){
             if(this.number){
                 if (this.number==1) {
+                    this.mostrarEntregadas = true;
                     axios.post('/PeticionEntradas/listar', {
                     idSucursal: this.sucursalId,
                     EstadoPeticion: this.number
@@ -539,6 +517,7 @@ export default {
                     );
                 }
                 if (this.number==2) {
+                    this.mostrarEntregadas = true;
                     axios.post('/PeticionEntradas/listar', {
                     idSucursal: this.sucursalId,
                     EstadoPeticion: this.number
@@ -554,6 +533,7 @@ export default {
                     );
                 }
                 if (this.number==3) {
+                    this.mostrarEntregadas = false;
                     axios.post('/PeticionEntradas/listar', {
                     idSucursal: this.sucursalId,
                     EstadoPeticion: this.number
