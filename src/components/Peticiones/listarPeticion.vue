@@ -304,13 +304,13 @@ export default {
                 confirmButtonText: 'Eliminar'
             }).then((result) => {
                 if (result.value) {
-                    axios.delete('/PeticionEntradas/eliminar', {
-                        _id: this.ID,
-                        idProducto: this.IdP,
-                        Cantidad: this.C,
+                    axios.post('/PeticionEntradas/eliminar', {
+                        _id: ID,
+                        idProducto: IdP,
+                        Cantidad: C
                     })
                     .then(response => {
-                            console.table(response.data.mensaje);
+                            console.log(response.data.mensaje);
                             Swal.fire({
                             title: 'Eliminado',
                             icon: 'success',
