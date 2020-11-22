@@ -156,51 +156,79 @@ export default {
 
             //data de las sucursales
             dataSucursales: [],
+            
+            nomSucursal: sessionStorage.getItem('nomSucursal'),
+            sucursalId: sessionStorage.getItem('sucursalId'),
 
             //mostrar agregar Entradas segun Jefe de Bodega
             mostrar: false,
             //mostrar editar Entradas segun Admin
-            mostrarOpciones: false
+            //mostrarOpciones: false
         }
     },
     mounted() {
         this.dataSalidasListar();
         this.dataProductosListar();
         this.dataSucursalesListar();
-        this.esJefeBodega();
-        this.esAdmin();
+        //this.wUsuario();
+        //this.EsSucursalPrincipal();
     },
     methods: {
         editar(item) {
             this.row = item;
             console.log(item);
         },
+
         //obteniendo las salidas
         dataSalidasListar() {
-            axios.get('/Salidas/listar')
-            .then(response => {
-                this.dataSalidas = response.data;
-                console.log(this.dataSalidas);
-                this.numSal = response.data.length;
-                console.log(this.numSal);
-            })
-            .catch(
-                error => console.log(error)
-            );
+            if (this.nomSucursal == 'Sucursal Principal'){
+                    axios.get('/Salidas/listar')
+                    .then(response => {
+                        this.dataSalidas = response.data;
+                        console.log(this.dataSalidas);
+                        this.numSal = response.data.length;
+                        console.log(this.numSal);
+                    })
+                    .catch(
+                        error => console.log(error)
+                    );
+            }else{
+                    axios.get(`/Salidas/listarporIdSucursal/${this.sucursalId}`)
+                    .then(response => {
+                        this.dataSalidas = response.data;
+                        console.log(this.dataSalidas);
+                        this.numSal = response.data.length;
+                        console.log(this.numSal)
+                    })
+                    .catch(
+                        error => console.log(error)
+                    );
+          }
         },
-        
 
         //obteniendo los productos
         dataProductosListar(){
-            axios.get('/Productos/listar')
-            .then(response => {
+            if (this.nomSucursal == 'Sucursal Principal') {
+                axios.get('/Productos/listar')
+                .then(response => {
+                        this.dataProductos = response.data;
+                        console.log(this.dataProductos);
+                })
+                .catch(
+                        error => console.log(error)
+                );
+            }else {
+                axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
+                .then(response => {
                     this.dataProductos = response.data;
                     console.log(this.dataProductos);
-            })
-            .catch(
+                })
+                .catch(
                     error => console.log(error)
-            );
+                );
+            }
         },
+        
         //obteniendo el nombre del producto
         getNameProduct(id){
             var nombreProducto = '';
@@ -241,8 +269,6 @@ export default {
             }
             return precio;
         },
-
-
         //obteniendo las sucursales
         dataSucursalesListar(){
             axios.get('/Sucursales/listar')
@@ -264,8 +290,6 @@ export default {
             }
             return nombre;
         },
-
-
         //metodos del paginado
         paginate(Salida){
             let page =this.page;
@@ -281,18 +305,18 @@ export default {
                 this.pages.push(i);
             }
         },
-
         //determinar si se esta en la sucursal principal
-        esAdmin() {
+        wUsuario() {
             if(sessionStorage.getItem('nombreNivel') == 'Administrador') {
-                this.mostrarOpciones =  true;
-            }else { this.mostrarOpciones =  false; }
-        },
-        //determinar si se esta en la sucursal principal
-        esJefeBodega() {
-            if(sessionStorage.getItem('nombreNivel') == 'Jefe de Bodega') {
                 this.mostrar =  true;
             }else { this.mostrar =  false; }
+        },
+        EsSucursalPrincipal() {
+            if(sessionStorage.getItem('nomSucursal') == 'Sucursal Principal') {
+                this.mostrar = true;
+            }else{
+                this.mostrar = false;
+            }
         }
     },
     computed: {
