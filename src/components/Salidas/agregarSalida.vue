@@ -111,7 +111,7 @@ export default {
             idProducto_a_Enviar: '',
             cantidad: 0,
             monto: 0,
-            nombreSucursal: sessionStorage.getItem('nomSucursal'), 
+            nomSucursal: sessionStorage.getItem('nomSucursal'), 
             sucursalId: sessionStorage.getItem('sucursalId'),
             idSucursalDestino: 0,
 
@@ -128,46 +128,68 @@ export default {
             //obteniendo la data de proveedores
             dataSucursales: [],
             indiceSucursal: 0,
-            sucursalesArray: []
+            sucursalesArray: [],
+
+            NoExiste: false,
+            mostrar: false,
+            mostrarExterna: false
         }
     },
     mounted() {
         this.dataProductosListar();
         this.getFechaActual();
         this.dataSucursalesListar();
+        this.EsSucursalPrincipal();
     },
     methods: {
-        
         //listando los productos
-        dataProductosListar() {
-            axios.get('/Productos/listar')
-            .then(response => {
-                this.dataProductos = response.data;
-                console.log('productos:' + this.dataProductos);
-            })
-            .catch(
-                error => console.log(error)
-            );
+        dataProductosListar(){
+            if (this.nomSucursal == 'Sucursal Principal') {
+                axios.get('/Productos/listar')
+                .then(response => {
+                    this.dataProductos = response.data;
+                    console.log(this.dataProductos);
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            }else {
+                axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
+                .then(response => {
+                        this.dataProductos = response.data;
+                        console.log(this.dataProductos);
+                })
+                .catch(
+                        error => console.log(error)
+                );
+            }
         },
+        
         //buscando segun codigo de barra
         buscarProducto(){
             if(this.codigoProducto != '') {
                 for(let item of this.dataProductos) {
                     if(item.CodigoProducto == this.codigoProducto) {
+                        this.NoExiste = false;
                         this.idProducto_a_Enviar = item._id;
                         this.nombreProducto = item.NombreProducto;
                         this.nombreProveedor = item.Proveedor.Nombre;
                         this.precioUnitario = item.Precio_Unitario;
                     }
                 }
+                if (this.nombreProducto == '' &&
+                    this.idProducto_a_Enviar == '' &&
+                    this.nombreProveedor == '' &&
+                    this.precioUnitario == '') {
+                    this.NoExiste = true;
+                    }
             }
         },
-
 
         //obteniendo la fecha actual
         getFechaActual() {
             var fechaActual = new Date();
-            this.fechaLocal = fechaActual.getDate() + "/" + (fechaActual.getMonth() +1) + "/" + fechaActual.getFullYear();
+            this.fechaLocal = (fechaActual.getMonth() +1) + "/" + fechaActual.getDate()  + "/" + fechaActual.getFullYear();
         },
 
         //obteniendo las sucursales
@@ -190,7 +212,6 @@ export default {
             var selected = combo.options[combo.selectedIndex].text;
             this.selection = selected;
         },
-
 
         //creando salida
         enviar_form() {
@@ -215,7 +236,6 @@ export default {
                     location.reload();
                 })
                 .catch((error) => console.log(error));
-                
             }
             else{
                 Swal.fire({
@@ -228,12 +248,22 @@ export default {
         limpiar_form() {
             this.idProducto_a_Enviar = '';
             this.nombreProducto = '';
-            this.nombreSucursal = '';
+            this.nomSucursal = '';
             this.proveedor = '';
             this.precioUnitario = 0;
             this.cantidad = 0;
             this.monto = 0;
             this.detalle = '';
+        },
+        EsSucursalPrincipal() {
+            if(sessionStorage.getItem('nomSucursal') == 'Sucursal Principal') {
+                this.mostrar = true;
+                this.mostrarExterna = false;
+            }else{
+                this.mostrar = false;
+                this.mostrarExterna = true;
+                this.idSucursalDestino = this.sucursalId;
+            }
         }
     },
     computed: {

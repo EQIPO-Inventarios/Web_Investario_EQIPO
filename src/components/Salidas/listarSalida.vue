@@ -44,7 +44,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col">
-                            <div v-if="mostrar">
+                            <div>
                                <button type="button" data-toggle="modal" data-target="#AddModal"
                                 style="margin-right:8px; color: white" class="btn btn-success">
                                     <i class="fas fa-plus-circle"></i>  Agregar
@@ -75,7 +75,7 @@
                         <td scope= "col">Precio Unitario</td>
                         <td scope= "col">Cantidad</td>
                         <td scope= "col">Monto</td>
-                        <td scope= "col" v-if="mostrarOpciones">Opciones</td>
+                        <td scope= "col">Opciones</td>
                     </tr>
                     </thead>
 
@@ -85,12 +85,12 @@
                         <td>{{getCodigoProducto(item.idProducto)}}</td>
                         <td>{{getNameProduct(item.idProducto)}}</td>
                         <td>{{getNombreProveedor(item.idProducto)}}</td>
-                        <td>Sucursal Central</td>
+                        <td>{{nomSucursal}}</td>
                         <td>{{obtenerNombreSucursal(item.idSucursalDestino)}}</td>
                         <td>$ {{getPrecioUnitario(item.idProducto)}}</td>
                         <td>{{item.Cantidad}}</td>
                         <td>$ {{item.Monto}}</td>
-                        <td v-if="mostrarOpciones">
+                        <td>
                             <button @click="editar(item)"
                                 type="button" data-toggle="modal" data-target="#EditModal"
                                 style="margin-right:8px; color: white" class="btn btn-warning btn-sm" title="Editar">
