@@ -65,27 +65,17 @@
                 </div>
             </div>
             <div class="card-body">
-
-                <div class="row ml-1">
-                    <form>
-                    <div class="row">
-                        <div class="col-3"><label for="">Buscador:</label></div>
-                        <div class="col"> <input v-model="search" type="text" class="form-control" placeholder="Buscar por usuario ..."></div>
-                    </div>
-                    </form>
-                </div>
-
                 <div class="table-responsive">
                 <table class="table table-striped table-sm" style="font-size:16px">
-                    <thead class="bg-primary text-white text-center">
+                    <thead class="bg-primary text-white">
                         <tr>
                             <th>Nombre</th>
                             <th>Correo</th>
                             <th>DUI</th>
                             <th>NIT</th>
-                            <th>Telefono</th>
+                            <th>Teléfono</th>
                             <th>Fecha de nacimiento</th>
-                            <th>Direccion</th>
+                            <th>Dirección</th>
                             <th>Usuario</th>
                             <th>Nivel</th>
                             <th>Sucursal</th>
@@ -103,7 +93,7 @@
                             <td>{{item.personal.Contacto.Direccion.Departamento}}, {{item.personal.Contacto.Direccion.Municipio}}</td>
                             <td>{{item.usuario}}</td>
                             <td>{{item.nivel.TipoNivel}}</td>
-                            <td>{{item.personal.idSucursal}}</td>
+                            <td>{{obtenerNombreSucursal(item.personal.idSucursal)}}</td>
                             <td>
                                 <button @click="editar(item)"
                                         type="button" data-toggle="modal" data-target="#EditModal"
@@ -165,12 +155,15 @@ export default {
             perPage: 5,
             pages: [],
             row: Object,
-            search: '',
-            permisos: sessionStorage.getItem('permiso')
+            permisos: sessionStorage.getItem('permiso'),
+
+            //obteniendo las sucursales
+            dataSucursales: []
         }
     },
     mounted() {
         this.dataUsuariosL();
+        this.dataSucursalesListar();
     },
     methods: {
         editar(item) {
@@ -215,6 +208,31 @@ export default {
                 error => console.log(error)
             );
         },
+
+
+        //obteniendo las sucursales
+        dataSucursalesListar(){
+            axios.get('/Sucursales/listar')
+            .then(response => {
+                this.dataSucursales = response.data;
+                console.log(this.dataSucursales);
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
+        //obteniendo el nombre de la sucursal
+        obtenerNombreSucursal(id) {
+        var nombre = '';
+        for( let sucursal of this.dataSucursales) {
+            if(sucursal._id == id) {
+                nombre = sucursal.Nombre;
+            }
+        }
+        return nombre;
+      },
+
+
         paginate(Users) {
           let page = this.page;
           let perPage = this.perPage;
@@ -237,31 +255,7 @@ export default {
     watch: {
         dataUsuarios() {
             this.setUsers();
-        },
-        search(){
-          if (this.search != '') {
-                axios.get(`/Usuarios/buscarUsuarios/${this.search}`)
-                .then(response => {
-                        this.dataUsuarios = response.data;
-                        console.log('Estos son buscados: '+this.dataUsuarios);
-                })
-                .catch(
-                        error => console.log(error)
-                );
-          }
-          else {
-                axios.get('/Usuarios/listar')
-                .then(response => {
-                    this.dataUsuarios = response.data;
-                    console.log(this.dataUsuarios);
-                    this.numUsu = response.data.length;
-                    console.log(this.numUsu);
-                })
-                .catch(
-                    error => console.log(error)
-                );
-          }
-      }
+        }
     }
 }
 </script>
