@@ -38,7 +38,9 @@
                 </table>
         </div>
         <div v-if="mostrar">
-            <button @click="printReport()" class="btn btn-warning">Print</button>
+            <button @click="printReport()" class="btn btn-warning" title="Print">
+                <i class="fas fa-print"></i>
+            </button>
         </div>
         <br>
     </div>
@@ -107,7 +109,8 @@ export default {
             document.body.innerHTML = printContents;
             window.print();
             document.body.innerHTML = originalContents;
-        },
+            location.reload()
+        }   
     },
     watch: {
         Seleccionado(){
