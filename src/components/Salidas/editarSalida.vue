@@ -8,7 +8,18 @@
                         <div class="card-body">
                             <form @submit.prevent="enviarForm()">
                                 <div class="form-row">
-                                    <div class="col-4"></div>
+                                    <div class="col-4" v-if="mostrarExterna">
+                                        <div class="form-row">
+                                            <label class="text-left">Sucursal destino:</label>
+                                        </div>
+                                        <input v-model="nomSucursal" type="text" disabled="disabled" class="form-control">
+                                    </div>
+                                    <div class="col-4" v-if="mostrar">
+                                        <div class="form-row">
+                                            <label class="text-left">Sucursal destino:</label>
+                                        </div>
+                                        <input v-model="nombreSucursalDestino" type="text" disabled="disabled" class="form-control">
+                                    </div>
                                     <div class="col-4">
                                         <div class="form-row">
                                             <label class="text-left">Fecha de Salida:</label>
