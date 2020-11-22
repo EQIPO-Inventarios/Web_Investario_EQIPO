@@ -44,7 +44,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col">
-                            <div>
+                            <div v-if="mostrar">
                                <button type="button" data-toggle="modal" data-target="#AddModal"
                                 style="margin-right:8px; color: white" class="btn btn-success">
                                     <i class="fas fa-plus-circle"></i>  Agregar
@@ -75,7 +75,7 @@
                         <td scope= "col">Precio Unitario</td>
                         <td scope= "col">Cantidad</td>
                         <td scope= "col">Monto</td>
-                        <td scope= "col">Opciones</td>
+                        <td scope= "col" v-if="mostrarOpciones">Opciones</td>
                     </tr>
                     </thead>
 
@@ -85,12 +85,12 @@
                         <td>{{getCodigoProducto(item.idProducto)}}</td>
                         <td>{{getNameProduct(item.idProducto)}}</td>
                         <td>{{getNombreProveedor(item.idProducto)}}</td>
-                        <td>{{nomSucursal}}</td>
+                        <td>Sucursal Central</td>
                         <td>{{obtenerNombreSucursal(item.idSucursalDestino)}}</td>
                         <td>$ {{getPrecioUnitario(item.idProducto)}}</td>
                         <td>{{item.Cantidad}}</td>
                         <td>$ {{item.Monto}}</td>
-                        <td>
+                        <td v-if="mostrarOpciones">
                             <button @click="editar(item)"
                                 type="button" data-toggle="modal" data-target="#EditModal"
                                 style="margin-right:8px; color: white" class="btn btn-warning btn-sm" title="Editar">
@@ -156,79 +156,51 @@ export default {
 
             //data de las sucursales
             dataSucursales: [],
-            
-            nomSucursal: sessionStorage.getItem('nomSucursal'),
-            sucursalId: sessionStorage.getItem('sucursalId'),
 
             //mostrar agregar Entradas segun Jefe de Bodega
             mostrar: false,
             //mostrar editar Entradas segun Admin
-            //mostrarOpciones: false
+            mostrarOpciones: false
         }
     },
     mounted() {
         this.dataSalidasListar();
         this.dataProductosListar();
         this.dataSucursalesListar();
-        //this.wUsuario();
-        //this.EsSucursalPrincipal();
+        this.esJefeBodega();
+        this.esAdmin();
     },
     methods: {
         editar(item) {
             this.row = item;
             console.log(item);
         },
-
         //obteniendo las salidas
         dataSalidasListar() {
-            if (this.nomSucursal == 'Sucursal Principal'){
-                    axios.get('/Salidas/listar')
-                    .then(response => {
-                        this.dataSalidas = response.data;
-                        console.log(this.dataSalidas);
-                        this.numSal = response.data.length;
-                        console.log(this.numSal);
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
-            }else{
-                    axios.get(`/Salidas/listarporIdSucursal/${this.sucursalId}`)
-                    .then(response => {
-                        this.dataSalidas = response.data;
-                        console.log(this.dataSalidas);
-                        this.numSal = response.data.length;
-                        console.log(this.numSal)
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
-          }
+            axios.get('/Salidas/listar')
+            .then(response => {
+                this.dataSalidas = response.data;
+                console.log(this.dataSalidas);
+                this.numSal = response.data.length;
+                console.log(this.numSal);
+            })
+            .catch(
+                error => console.log(error)
+            );
         },
+        
 
         //obteniendo los productos
         dataProductosListar(){
-            if (this.nomSucursal == 'Sucursal Principal') {
-                axios.get('/Productos/listar')
-                .then(response => {
-                        this.dataProductos = response.data;
-                        console.log(this.dataProductos);
-                })
-                .catch(
-                        error => console.log(error)
-                );
-            }else {
-                axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
-                .then(response => {
+            axios.get('/Productos/listar')
+            .then(response => {
                     this.dataProductos = response.data;
                     console.log(this.dataProductos);
-                })
-                .catch(
+            })
+            .catch(
                     error => console.log(error)
-                );
-            }
+            );
         },
-        
         //obteniendo el nombre del producto
         getNameProduct(id){
             var nombreProducto = '';
@@ -269,6 +241,8 @@ export default {
             }
             return precio;
         },
+
+
         //obteniendo las sucursales
         dataSucursalesListar(){
             axios.get('/Sucursales/listar')
@@ -290,6 +264,8 @@ export default {
             }
             return nombre;
         },
+
+
         //metodos del paginado
         paginate(Salida){
             let page =this.page;
@@ -305,18 +281,18 @@ export default {
                 this.pages.push(i);
             }
         },
+
         //determinar si se esta en la sucursal principal
-        wUsuario() {
+        esAdmin() {
             if(sessionStorage.getItem('nombreNivel') == 'Administrador') {
+                this.mostrarOpciones =  true;
+            }else { this.mostrarOpciones =  false; }
+        },
+        //determinar si se esta en la sucursal principal
+        esJefeBodega() {
+            if(sessionStorage.getItem('nombreNivel') == 'Jefe de Bodega') {
                 this.mostrar =  true;
             }else { this.mostrar =  false; }
-        },
-        EsSucursalPrincipal() {
-            if(sessionStorage.getItem('nomSucursal') == 'Sucursal Principal') {
-                this.mostrar = true;
-            }else{
-                this.mostrar = false;
-            }
         }
     },
     computed: {
