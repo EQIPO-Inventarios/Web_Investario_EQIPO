@@ -1,5 +1,6 @@
 <template>
     <div class="content">
+        <center>
             <div class="row">
                 <div class="col-12">
                     <br>
@@ -19,35 +20,23 @@
                                     <label>Código de Barra</label>
                                 </div>
                                 <div class="form-row">
-                                    <div class="col-8">
-                                        <input v-model="codigoProducto" type="number" class="form-control" placeholder="Ingrese codigo de barra" required="required">
-                                        <div v-if="codigoProducto != '' " class="wd bg-success text-white"> Ok valido!</div>
+                                    <div class="col-4">
+                                        <input v-model="codigoProducto" type="number" class="form-control">
                                     </div>
                                     <div class="col-2">
                                         <button @click="buscarProducto()" class="btn btn-success">Buscar</button>
                                     </div>
                                 </div>
                                 <br>
-                                <div v-if="NoExiste">
-                                    <span class="wd-2 bg-danger text-white">
-                                    No se encontro producto con dicho código de barra.
-                                    </span>
-                                </div>
-                                <div v-if="nombreProducto != '' && nombreProveedor != '' && precioUnitario != '' ">
-                                    <div class="form-row">
+                                <div class="form-row">
                                      <div class="col">
                                         <div class="form-row">
                                               <label class="text-left">Sucursal Destino</label>
                                         </div>
-                                        <div v-if="mostrar">
                                             <select class="form-control" v-model="idSucursalDestino" id="Sucursal_a_Seleccionar">
                                                 <option value="0" selected="selected">-Sucursal-</option>
                                                 <option v-for="(item, index) in dataSucursales" :value="item._id" :key="index">{{item.Nombre}}</option>
                                             </select>
-                                        </div>
-                                        <div v-if="mostrarExterna">
-                                            <input v-model="nomSucursal" type="text" disabled="disabled" class="form-control">
-                                        </div>
                                         </div>
                                     <div class="col">
                                           <div class="form-row">
@@ -93,19 +82,19 @@
                                     </div>
                                 </div>
                                 <br>
-                                </div>
                             </form>
                             <br>
-                            <div  v-if="nombreProducto != '' && nombreProveedor != '' && precioUnitario != '' ">
-                                <center>
-                                    <button v-on:click="enviar_form()" type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Agregar</button>
-                                    <button v-on:click="limpiar_form()" type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                                </center>
-                            </div>
+                            <center>
+                              <div>
+                                <button v-on:click="enviar_form()" type="submit" class="btn btn-primary mr-4" data-dismiss="modal">Agregar</button>
+                                <button v-on:click="limpiar_form()" type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                              </div>
+                            </center>
                         </div>
                     </div>
                 </div>
             </div>
+        </center>
     </div>
 </template>
 
@@ -122,7 +111,7 @@ export default {
             idProducto_a_Enviar: '',
             cantidad: 0,
             monto: 0,
-            nomSucursal: sessionStorage.getItem('nomSucursal'), 
+            nombreSucursal: sessionStorage.getItem('nomSucursal'), 
             sucursalId: sessionStorage.getItem('sucursalId'),
             idSucursalDestino: 0,
 
@@ -139,68 +128,46 @@ export default {
             //obteniendo la data de proveedores
             dataSucursales: [],
             indiceSucursal: 0,
-            sucursalesArray: [],
-
-            NoExiste: false,
-            mostrar: false,
-            mostrarExterna: false
+            sucursalesArray: []
         }
     },
     mounted() {
         this.dataProductosListar();
         this.getFechaActual();
         this.dataSucursalesListar();
-        this.EsSucursalPrincipal();
     },
     methods: {
-        //listando los productos
-        dataProductosListar(){
-            if (this.nomSucursal == 'Sucursal Principal') {
-                axios.get('/Productos/listar')
-                .then(response => {
-                    this.dataProductos = response.data;
-                    console.log(this.dataProductos);
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            }else {
-                axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
-                .then(response => {
-                        this.dataProductos = response.data;
-                        console.log(this.dataProductos);
-                })
-                .catch(
-                        error => console.log(error)
-                );
-            }
-        },
         
+        //listando los productos
+        dataProductosListar() {
+            axios.get('/Productos/listar')
+            .then(response => {
+                this.dataProductos = response.data;
+                console.log('productos:' + this.dataProductos);
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
         //buscando segun codigo de barra
         buscarProducto(){
             if(this.codigoProducto != '') {
                 for(let item of this.dataProductos) {
                     if(item.CodigoProducto == this.codigoProducto) {
-                        this.NoExiste = false;
                         this.idProducto_a_Enviar = item._id;
                         this.nombreProducto = item.NombreProducto;
                         this.nombreProveedor = item.Proveedor.Nombre;
                         this.precioUnitario = item.Precio_Unitario;
                     }
                 }
-                if (this.nombreProducto == '' &&
-                    this.idProducto_a_Enviar == '' &&
-                    this.nombreProveedor == '' &&
-                    this.precioUnitario == '') {
-                    this.NoExiste = true;
-                    }
             }
         },
+
 
         //obteniendo la fecha actual
         getFechaActual() {
             var fechaActual = new Date();
-            this.fechaLocal = (fechaActual.getMonth() +1) + "/" + fechaActual.getDate()  + "/" + fechaActual.getFullYear();
+            this.fechaLocal = fechaActual.getDate() + "/" + (fechaActual.getMonth() +1) + "/" + fechaActual.getFullYear();
         },
 
         //obteniendo las sucursales
@@ -223,6 +190,7 @@ export default {
             var selected = combo.options[combo.selectedIndex].text;
             this.selection = selected;
         },
+
 
         //creando salida
         enviar_form() {
@@ -247,6 +215,7 @@ export default {
                     location.reload();
                 })
                 .catch((error) => console.log(error));
+                
             }
             else{
                 Swal.fire({
@@ -259,22 +228,12 @@ export default {
         limpiar_form() {
             this.idProducto_a_Enviar = '';
             this.nombreProducto = '';
-            this.nomSucursal = '';
+            this.nombreSucursal = '';
             this.proveedor = '';
             this.precioUnitario = 0;
             this.cantidad = 0;
             this.monto = 0;
             this.detalle = '';
-        },
-        EsSucursalPrincipal() {
-            if(sessionStorage.getItem('nomSucursal') == 'Sucursal Principal') {
-                this.mostrar = true;
-                this.mostrarExterna = false;
-            }else{
-                this.mostrar = false;
-                this.mostrarExterna = true;
-                this.idSucursalDestino = this.sucursalId;
-            }
         }
     },
     computed: {
