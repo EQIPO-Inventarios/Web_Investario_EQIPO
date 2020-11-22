@@ -69,7 +69,7 @@
                   </div>
                 </div>
                 <div class="col-4">
-                    <button type="button" id="btn-n" class="btn btn-info btn-sm">
+                    <button @click="goToProvider()" type="button" id="btn-n" class="btn btn-info btn-sm" data-dismiss="modal"> 
                         + Nuevo
                     </button>
                 </div>
@@ -158,7 +158,7 @@ export default {
     return {
       codigoProducto: "",
       nombreProducto: "",
-      sucursal: "Sucursal central",
+      sucursal: sessionStorage.getItem('nomSucursal'),
       material: "",
       caracteristicas: "",
       existencias: 0,
@@ -260,7 +260,6 @@ export default {
     limpiarForm() {
       this.codigoProducto = "";
       this.nombreProducto = "";
-      this.sucursal = "Sucursal central";
       this.material = "";
       this.caracteristicas = "";
       this.existencias = 0;
@@ -273,6 +272,9 @@ export default {
       this.telefono = "";
       this.correo = "";
     },
+    goToProvider(){
+      this.$router.replace({ name: "ProveedorL" });
+    }
   },
 };
 </script>
