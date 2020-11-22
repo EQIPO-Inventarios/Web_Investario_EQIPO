@@ -3,7 +3,7 @@
         <br>
         <!--Incio modal editar--> 
         <div class="modal fade" id="EditModal"  data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
+          <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Editar Sucursal</h5>
@@ -24,7 +24,7 @@
         </div> <!--Final modal editar--> 
 
         <div class="modal fade" id="AddModal"  data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
+          <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Agregar Sucursal</h5>
@@ -33,8 +33,12 @@
                 </button>
               </div>
               <div class="modal-body">
+
                   <!--aqui ira el componente editar --> 
+                  <center>
                     <agregar></agregar>
+                  </center>
+
               </div>
               <div class="modal-footer">
               </div>
@@ -58,8 +62,8 @@
                   <center>Listado de Sucursales</center>
                 </div>
                 <div class="col-2 text-rigth" style="text-align: center">
-                    <div v-if="numPro == 1" class="alert bg-success text-white"><b>{{numPro}} Sucursal</b> </div>
-                    <div v-if="numPro != 1" class="alert bg-success text-white"><b>{{numPro}} Sucursales</b> </div>
+                    <div v-if="numPro == 1" class="alert bg-success text-white"><b>{{numPro}} Proveedor</b> </div>
+                    <div v-if="numPro != 1" class="alert bg-success text-white"><b>{{numPro}} Proveedores </b> </div>
                 </div>
               </div>  
 

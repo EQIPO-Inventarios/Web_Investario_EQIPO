@@ -11,34 +11,23 @@
                                             <div class="form-row">
                                                 <!-- primera columna -->
                                                 <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="nom">Nombre de sucursal:</label>
-                                                        <input v-model="nombre" type="text" class="form-control" id="nom" placeholder="Nombre">
-                                                    </div>
+                                                    <input v-model="nombre" type="text" class="form-control" placeholder="Nombre">
                                                 </div>
                                                 <!-- segunda columna -->
                                                 <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="cod">Codigo de sucursal:</label>
-                                                        <input v-model.number="codigo" type="number" class="form-control" id="cod" placeholder="Codigo">
-                                                    </div>
+                                                    <input v-model.number="codigo" type="number" class="form-control" placeholder="Codigo">
                                                 </div>
                                             </div>
+                                            <br>
                                             <!-- segunda fila -->
                                             <div class="form-row">
                                                 <!-- primera columna -->
                                                 <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="tel">Telefono:</label>
-                                                        <input v-model="telefono" type="text" class="form-control" id="tel" placeholder="Telefono">
-                                                    </div>
+                                                    <input v-model="telefono" type="text" class="form-control" placeholder="Telefono">
                                                 </div>
                                                 <!-- segunda columna -->
                                                 <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="cor">Correo:</label>
-                                                        <input v-model="correo" type="email" class="form-control" id="cor" placeholder="Correo">
-                                                    </div>
+                                                    <input v-model="correo" type="email" class="form-control" placeholder="Correo">
                                                 </div>
                                             </div>
                                             <br>
@@ -52,29 +41,21 @@
                                                     <div class="form-row">
                                                         <!-- primera columna -->
                                                         <div class="col">
-                                                            <div class="form-group">
-                                                                <label>Departamento:</label>
-                                                                <select class="form-control" id="selectDepartamento" @change="ShowSelected()">
-                                                                 <option value="Departamento" selected="selected">-Departamento-</option>
-                                                                 <option v-for="(item, index) in data" :value="index" :key="index">{{item.Departamento}}</option>
-                                                                </select>
-                                                            </div>
+                                                            <select class="form-control" id="selectDepartamento" @change="ShowSelected()">
+                                                                <option value="Departamento" selected="selected">-Departamento-</option>
+                                                                <option v-for="(item, index) in data" :value="index" :key="index">{{item.Departamento}}</option>
+                                                            </select>
                                                         </div>
                                                         <!-- segunda columna -->
                                                         <div class="col">
-                                                            <div class="form-group">
-                                                                <label>Municipio:</label>
-                                                                <select v-model="municipio" class="form-control">
-                                                                 <option value="0" selected="selected">-Municipio-</option>
-                                                                 <option v-for="(item, index) in municipiosArray" :key="index" >{{item}}</option>
-                                                                </select>
-                                                            </div>
+                                                            <select v-model="municipio" class="form-control">
+                                                                <option value="0" selected="selected">-Municipio-</option>
+                                                                <option v-for="(item, index) in municipiosArray" :key="index" >{{item}}</option>
+                                                            </select>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="des">Descripcion:</label>
-                                                        <textarea v-model="descripcion" type="text" class="form-control" id="des" placeholder="Descripcion" cols="30" rows="5"></textarea>
-                                                    </div>
+                                                    <br>
+                                                    <input v-model="descripcion" type="text" class="form-control" placeholder="Descripcion">
                                                 </div>
                                             </div>
                                         </div>

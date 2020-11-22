@@ -35,7 +35,9 @@
               <div class="modal-body">
 
                   <!--aqui ira el componente editar --> 
+                  <center>
                     <agregar ></agregar>
+                  </center>
 
               </div>
               <div class="modal-footer">

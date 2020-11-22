@@ -1,85 +1,53 @@
 <template>
+    <div class="content">
+    <center>
     <div class="row">
       <div class="col-12">
+        <br>
         <div class="card">
             <div class="card-body">
               <form @submit.prevent="enviar_form()">
                   <div class="form-row">
                       <div class="col">
-                          <div class="form-group">
-                              <label for="nom">Nombre:</label>
-                              <input v-model="nombres" type="text" class="form-control" id="nom" placeholder="Nombres">
-                          </div>
+                          <input v-model="nombres" type="text" class="form-control"  placeholder="Nombres">
                       </div>
                       <div class="col">
-                          <div class="form-group">
-                              <label for="ape">Apellido:</label>
-                              <input v-model="apellidos" type="text" class="form-control" id="ape" placeholder="Apellidos">
-                          </div>
+                          <input v-model="apellidos" type="text" class="form-control"  placeholder="Apellidos">
                       </div>
                       <div class="col">
-                          <div class="form-group">
-                              <label for="cor">Correo:</label>
-                              <input v-model="correo" type="email" class="form-control" id="cor" placeholder="Correo electronico">
-                          </div>
+                          <input v-model="correo" type="email" class="form-control"  placeholder="Correo electronico">
                       </div>
                   </div>
+                  <br>
                   <div class="form-row"> 
                       <div class="col">
-                          <div class="form-group">
-                              <label for="du">DUI:</label>
-                              <input v-model="dui" type="text" class="form-control" id="du" placeholder="DUI">
-                          </div>
+                      <input v-model="dui" type="text" class="form-control" placeholder="DUI">
                       </div>
                       <div class="col">
-                          <div class="form-group">
-                              <label for="ni">NIT:</label>
-                              <input v-model="nit" type="text" class="form-control" id="ni" placeholder="NIT">
-                          </div>
+                      <input v-model="nit" type="text" class="form-control" placeholder="NIT">
                       </div>
                       <div class="col">
-                          <div class="form-group">
-                              <label for="tel">Teléfono:</label>
-                              <input v-model="telefono" type="text" class="form-control" id="tel" placeholder="telefono">
-                          </div>
+                          <input v-model="telefono" type="text" class="form-control" placeholder="telefono">
                       </div>  
                   </div>
-                  <div class="form-row">
-                                    <div class="col">
-                                        <label for="uss">Usuario:</label>
-                                        <input v-model="obtenerUsuario" type="text" class="form-control" disabled="disabled">
-                                    </div>
-                                    <div class="col">
-                                        <label for="pas">Password:</label>
-                                        <input v-model="convertirFechaNacimiento" type="text" class="form-control" disabled="disabled">
-                                    </div>
-                                </div>
-                                <br>
+                  <br>
                   <div class="form-row"> 
                       <div class="col">
-                          <div class="form-group">
-                              <label for="fec">Fecha de nacimiento:</label>
-                              <input v-model="fechaNacimiento" type="date" class="form-control" id="fec" placeholder="Fecha de Nacimiento">
-                          </div>
+                      <input v-model="fechaNacimiento" type="date" class="form-control" placeholder="Fecha de Nacimiento">
                       </div>
                   </div>
+                  <br>
                     <div class="form-row">
                         <div class="col-6">
                             <div v-if="cambiarEstadoCivil == false">
-                                <div class="form-group">
-                                    <label for="civ">Estado civil:</label>
-                                    <input type="text" v-model="tipo" class="form-control" id="civ" disabled="disabled">
-                                </div>
+                                <input type="text" v-model="tipo" class="form-control" disabled="disabled">
                             </div>
                             <div v-if="cambiarEstadoCivil">
-                                <div class="form-group">
-                                    <label>Estado civil:</label>
-                                    <select v-model="numero" class="form-control" id="selectEstadoCivil" @change="ShowSelected3()">
+                                <select v-model="numero" class="form-control" id="selectEstadoCivil" @change="ShowSelected3()">
                                     <option value="0">-Estado Civil-</option>
                                     <option value="1">Soltero</option>
                                     <option value="2">Casado</option>
                                 </select>
-                                </div>
                             </div>
                         </div>
                         <div class="col-1">
@@ -87,26 +55,20 @@
                         </div>
                         <div class="col text-left">
                             <input type="checkbox" class="form-check-input" v-model="cambiarEstadoCivil" id="checkEC">
-                            <label for="checkEC"><small class="text-danger">Cambiar Estado Civil</small></label>
+                            <label for="checkEC">Cambiar Estado Civil</label>
                         </div>
                     </div>
                     <br>
                     <div class="form-row">
                         <div class="col-6">
                             <div v-if="cambiarNivel == false">
-                                <div class="form-group">
-                                    <label for="niv">Nivel de usuario:</label>
-                                    <input type="text" v-model="tiponivel" class="form-control" id="niv" disabled="disable">
-                                </div>
+                                <input type="text" v-model="tiponivel" class="form-control" disabled="disable">
                             </div>
                             <div v-if="cambiarNivel">
-                                <div class="form-group">
-                                    <label>Nivel de usuario:</label>
-                                    <select class="form-control" v-model="numeronivel" id="selectNivel" @change="ShowSelected()">
+                                <select class="form-control" v-model="numeronivel" id="selectNivel" @change="ShowSelected()">
                                     <option value="TipoNivel" selected="selected">-Nivel-</option>
                                     <option v-for="(item, index) in dataNivel" :value="item.NumeroNivel" :key="index">{{item.TipoNivel}}</option>
-                                    </select>
-                                </div>
+                                </select>
                             </div>
                         </div>
                         <div class="col-1">
@@ -114,26 +76,20 @@
                         </div>
                         <div class="col text-left">
                             <input type="checkbox" class="form-check-input" v-model="cambiarNivel" id="checkN">
-                            <label for="checkN"><small class="text-danger">Cambiar Nivel de usuario</small></label>
+                            <label for="checkN">Cambiar Nivel</label>
                         </div>
                     </div>
                 <br>
                 <div class="form-row">
                     <div class="col-6">
                         <div v-if="cambiarSucursal == false">
-                            <div class="form-group">
-                                <label for="suc">Sucursal:</label>
-                                <input type="text" v-model="nombreSucursal" class="form-control" id="suc" disabled="disabled">
-                            </div>
+                            <input type="text" v-model="nombreSucursal" class="form-control" disabled="disabled">
                         </div>
                         <div v-if="cambiarSucursal">
-                            <div class="form-group">
-                                <label>Sucursal:</label>
-                                <select class="form-control" v-model="idSucursal" id="selectSucursal" @change="ShowSelected1()">
-                                    <option value="Nombre" selected="selected">-Sucursal-</option>
-                                    <option v-for="(item, index) in dataSucursal" :value="item._id" :key="index">{{item.Nombre}}</option>
-                                </select>
-                            </div>
+                            <select class="form-control" v-model="idSucursal" id="selectSucursal" @change="ShowSelected1()">
+                                <option value="Nombre" selected="selected">-Sucursal-</option>
+                                <option v-for="(item, index) in dataSucursal" :value="item._id" :key="index">{{item.Nombre}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-1">
@@ -141,59 +97,47 @@
                     </div>
                     <div class="col text-left">
                         <input type="checkbox" class="form-check-input" v-model="cambiarSucursal" id="checkS">
-                        <label for="checkS"><small class="text-danger">Cambiar Sucursal</small></label>
+                        <label for="checkS">Cambiar Sucursal</label>
                     </div>
                 </div>
                   <br>
                   <div class="card">
                       <div class="card-header">
-                      Dirección
+                      Direccion
                       </div>
-                      <div class="card-body">                           
+                      <div class="card-body">
+                            <br>
+                            <label for="check" class="mr-2">Cambiar departamento y municipio</label>
+                            <input id="check" type="checkbox"  v-model="cambiarDireccion">
+                            <br>
                             <div class="form-row" v-if="cambiarDireccion == false">
                                 <div class="col">
-                                    <div class="form-group">
-                                        <label for="dep">Departamento:</label>
-                                        <input v-model="departamento" type="text" class="form-control" id="dep" disabled>
-                                    </div>
+                                    <input v-model="departamento" type="text" class="form-control" disabled>
                                 </div>
                                 <div class="col">
-                                    <div class="form-group">
-                                        <label for="mun">Municipio:</label>
-                                        <input v-model="municipio" type="text" class="form-control" id="mun" disabled>
-                                    </div>
+                                    <input v-model="municipio" type="text" class="form-control" disabled>
                                 </div>
                             </div>
 
                             <div class="form-row" v-if="cambiarDireccion"> 
                                 <div class="col">
-                                    <div class="form-group">
-                                        <label>Departamento:</label>
-                                        <select class="form-control" id="selectDepartamento" @change="ShowSelected2()">
-                                            <option value="Departamento" selected="selected">-Departamento-</option>
-                                            <option v-for="(item, index) in data" :value="index" :key="index">{{item.Departamento}}</option>
-                                        </select>
-                                    </div>
+                                <select class="form-control" id="selectDepartamento" @change="ShowSelected2()">
+                                    <option value="Departamento" selected="selected">-Departamento-</option>
+                                    <option v-for="(item, index) in data" :value="index" :key="index">{{item.Departamento}}</option>
+                                </select>
                                 </div>
                                 <div class="col">
-                                    <div class="form-group">
-                                        <label>Municipio:</label>
-                                        <select v-model="municipio" class="form-control">
-                                            <option value="0" selected="selected">-Municipio-</option>
-                                            <option v-for="(item, index) in municipiosArray" :key="index" >{{item}}</option>
-                                        </select>
-                                    </div>
+                                <select v-model="municipio" class="form-control">
+                                    <option value="0" selected="selected">-Municipio-</option>
+                                    <option v-for="(item, index) in municipiosArray" :key="index" >{{item}}</option>
+                                </select>
                                 </div>                                      
                             </div>
-                                <label for="check" class="mr-2"><small class="text-danger">Cambiar departamento y municipio</small></label>
-                                <input id="check" type="checkbox"  v-model="cambiarDireccion">
+                            <br>
                             <div class="form-row">
                                 <div class="col"> 
                                     <div class="col">
-                                        <div class="form-group">
-                                            <label for="des">Descripción:</label>
-                                            <input v-model="descripcion" type="text" class="form-control" id="des" placeholder="Descripcion">
-                                        </div>
+                                    <input v-model="descripcion" type="text" class="form-control" placeholder="Descripcion">
                                     </div>
                                 </div>
                             </div>
@@ -211,6 +155,8 @@
         </div>
         </div>
     </div>
+    </center>
+  </div>
 </template>
 
 <script>
@@ -259,19 +205,7 @@ export default {
 
             cambiarEstadoCivil: false,
             cambiarNivel: false,
-            cambiarSucursal: false,
-
-            //recuperando user y password
-            pass: '',
-            //variables para convertir la fecha nacimiento en password
-            fechaNueva: '',
-            d: '',
-            m: '',
-            m2: '',
-            a: '',
-            //capturando el usuario
-            usuario: '',
-            user: ''
+            cambiarSucursal: false
         }
     },
     mounted(){
@@ -298,26 +232,20 @@ export default {
             this.numeronivel = this.dataUsuario.nivel.NumeroNivel;
 
             this.idSucursal = this.dataUsuario.personal.idSucursal;
-            this.obtenerNombreSucursal();
+            this.obtenerNombreSucursal(this.dataUsuario.personal.idSucursals);
 
             this.descripcion = this.dataUsuario.personal.Contacto.Direccion.Descripcion;
             this.departamento = this.dataUsuario.personal.Contacto.Direccion.Departamento;
             this.municipio = this.dataUsuario.personal.Contacto.Direccion.Municipio;
-
-            this.user = this.dataUsuario.usuario;
-            this.pass = this.dataUsuario.password;
         }
       }
     },
     methods: {
         enviar_form() {
-            if (this.nombres != '' && this.apellidos != '' && this.correo != '' && this.dui != '' && this.nit != '' 
-                && this.telefono != '' && this.fechaNacimiento != '' && this.numero != 0 && this.numeronivel != 0 
-                && this.idSucursal != 0 && this.descripcion != '' && this.departamento != '' && this.municipio != 0 
-                && this.descripcion != '' && this.user != '' && this.pass != '') {            
+            if (this.nombres != '' && this.apellidos != '' && this.correo != '' && this.dui != '' && this.nit != '' && this.telefono != '' && this.fechaNacimiento != '' && this.numero != 0 && this.numeronivel != 0 && this.idSucursal != 0 && this.descripcion != '' && this.departamento != '' && this.municipio != 0 && this.descripcion != '') {            
                 axios.put('/Usuarios/actualizar',{
                     id : this.id,
-                    Nombres: this.nombres,
+                    Nombres : this.nombres,
                     Apellidos: this.apellidos,
                     Fecha_Nacimiento: this.fechaNacimiento,
                     DUI: this.dui,
@@ -330,12 +258,12 @@ export default {
                     Correo : this.correo,
                     Telefono : this.telefono,
                     idSucursal: this.idSucursal,            //idSucursal
-                    usuario: this.user,
-                    password: this.pass,
+                    usuario: this.nombres,
+                    password: 123,
                     TipoNivel: this.tiponivel,              //tipoNivel
                     NumeroNivel: this.numeronivel           //numeroNivel
             })
-            .then((response) => {                 
+            .then(response => {                 
                 //console.log(response.data.mensaje);                 
                 Swal.fire({
                     title: 'Mensaje',
@@ -344,8 +272,10 @@ export default {
                     });
                     location.reload();
             })
-            .catch((error) => console.log(error));
-            }
+            .catch(
+                error => console.log(error)
+            )
+        }
             else{
                 Swal.fire({
                     title: 'Campos vacios',
@@ -399,7 +329,7 @@ export default {
                  error => console.log(error)
             )
         },
-        obtenerNombreSucursal(){
+        obtenerNombreSucursal(id){
             axios.get(`/Sucursales/buscar/${this.idSucursal}`)
             .then(response => {
                 this.nombreSucursal = response.data.Nombre;
@@ -441,37 +371,6 @@ export default {
             var selected = combo.options[combo.selectedIndex].text;      
             this.tipo = selected;
         }
-    },
-    computed: {
-        convertirFechaNacimiento() {
-            this.fechaNueva = '';
-            if(this.fechaNacimiento != ''){
-                this.fechaNueva = this.fechaNacimiento;
-                this.fechaNueva.toLocaleString();
-
-                //this.fechaNueva = this.fechaNueva.replace(/[-]/g, '');
-                this.d = this.fechaNueva.substr(8, 10);
-                this.m = this.fechaNueva.charAt(5);
-                this.m2 = this.fechaNueva.charAt(6);
-                this.a = this.fechaNueva.substr(0, 4);
-                console.log('dia: ' + this.d);
-                console.log('mes: ' + this.m +''+this.m2);
-                console.log('año: ' + this.a);
-
-                this.pass = this.d + this.m + this.m2 + this.a;
-                console.log('pass: '+this.pass);
-            }
-            return this.pass;
-        },
-        obtenerUsuario(){
-            this.usuario = '';
-            if(this.nombres != ''){
-                this.usuario = this.nombres + this.apellidos;
-                this.user = this.usuario;
-                console.log('user: '+this.user);
-            }
-            return this.user;
-        }   
     }
 }
 </script>
