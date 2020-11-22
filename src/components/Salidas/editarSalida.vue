@@ -100,7 +100,6 @@ export default {
             idProducto: '',
             codigoProducto: '',
             nombreProducto: '',
-            nombreSucursal: '',
             nombreProveedor: '',
             precioUnitario: 0,
             cantidad: '',
@@ -109,22 +108,24 @@ export default {
             fecha: '',
             cantidadMinima: false,
 
-            nombreSucursal: sessionStorage.getItem('nomSucursal'),
+            nomSucursal: sessionStorage.getItem('nomSucursal'),
             sucursalId: sessionStorage.getItem('sucursalId'),
             idDestino: '',
 
             dataSalidas: [],
             dataProductos: [],
             dataSucursales: [],
-            nombreSucursalDestino: ''
+            nombreSucursalDestino: '',
+            mostrarExterna: false,
+            mostrar: false
         };
     },
     mounted() {
         this.getSalidasListar();
         this.obtenerProductosL();
         this.dataSucursalesListar();
-
-        
+        this.EsSucursalPrincipal();
+        this.obtenerNombreSucursal();
     },
 
     watch: {
@@ -138,10 +139,9 @@ export default {
                 this.monto = this.dataSalida.Monto;
                 this.sucursalId = this.dataSalida.idSucursal;
                 this.idDestino = this.dataSalida.idSucursalDestino;
-                
             }
         },
-        idProducto() {  //metodo que no se esta ocupando pero que puede servir.
+        idProducto() {
             if (this.idProducto) {
                 for(let producto of this.dataProductos) {
                     if (producto._id == this.idProducto) {
@@ -150,6 +150,15 @@ export default {
                         this.precioUnitario = producto.Precio_Unitario;
                         this.nombreProveedor = producto.Proveedor.Nombre;
                         this.monto = this.precioUnitario * this.cantidad;
+                    }
+                }
+            }
+        },
+        idDestino() {
+            if (this.idDestino) {
+                for(let sucursal of this.dataSucursales) {
+                    if (sucursal._id == this.idDestino) {
+                        this.nombreSucursalDestino = sucursal.Nombre;
                     }
                 }
             }
@@ -164,28 +173,32 @@ export default {
                 }        
             }
         },
-        //obteniendo el nombre de la sucursal
-        obtenerNombreSucursal(){
-            if(this.idDestino)
-            for(let item of this.dataSucursales) {
-                if (item._id == this.idDestino) {
-                    this.nombreSucursalDestino = item.Nombre;
-                }
-            }
-        }
     },
 
     methods: {
-        getSalidasListar(){
+        //obteniendo las salidas
+        getSalidasListar() {
+            if (this.nomSucursal == 'Sucursal Principal'){
             axios.get('/Salidas/listar')
             .then(response => {
-                    this.dataSalidas = response.data;
-                    console.log(this.dataSalidas);
+                this.dataSalidas = response.data;
+                console.log(this.dataSalidas);
             })
             .catch(
-                    error => console.log(error)
+                error => console.log(error)
             );
-        },
+
+            }else{
+            axios.get(`/Salidas/listarporIdSucursal/${this.sucursalId}`)
+            .then(response => {
+                this.dataSalidas = response.data;
+                console.log(this.dataSalidas);
+            })
+            .catch(
+                error => console.log(error)
+            );
+          }
+        }, 
 
         //obteniendo las sucursales
         dataSucursalesListar(){
@@ -199,9 +212,10 @@ export default {
             );
         },
         
-
-        obtenerProductosL() {
-            axios.get('/Productos/listar')
+        //obteniendo los productos
+        obtenerProductosL(){
+            if (this.nomSucursal == 'Sucursal Principal') {
+                axios.get('/Productos/listar')
             .then(response => {
                     this.dataProductos = response.data;
                     console.log(this.dataProductos);
@@ -209,6 +223,16 @@ export default {
             .catch(
                     error => console.log(error)
             );
+            }else {
+                axios.get(`/ProductoSucursales/listar/${this.sucursalId}`)
+                .then(response => {
+                    this.dataProductos = response.data;
+                    console.log(this.dataProductos);
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            }
         },
 
         enviar_form() {
@@ -242,12 +266,21 @@ export default {
                 });
             }
         },
-
         
+        EsSucursalPrincipal() {
+            if(sessionStorage.getItem('nomSucursal') == 'Sucursal Principal') {
+                this.mostrar = true;
+                this.mostrarExterna = false;
+            }else{
+                this.mostrar = false;
+                this.mostrarExterna = true;
+            }
+        },
+
         limpiar_form() {
             this.codigoProducto = '';
             this.nombreProducto = '';
-            this.nombreSucursal = '';
+            this.nomSucursal = '';
             this.proveedor = '';
             this.precioUnitario = '';
             this.cantidad = '';
