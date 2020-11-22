@@ -10,7 +10,7 @@ import Listado from '@/components/Salidas/listarSalida.vue'
 import menuComponent from '@/components/menus/menuComponent.vue'
 
 export default {
-    name: 'SalidaList',
+    name: 'SalidaL',
     components: {
         menuComponent,
         Listado
