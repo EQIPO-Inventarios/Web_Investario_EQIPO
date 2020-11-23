@@ -35,9 +35,7 @@
               <div class="modal-body">
 
                   <!--aqui ira el componente editar --> 
-                  <center>
-                    <agregar ></agregar>
-                  </center>
+                    <agregar></agregar>
 
               </div>
               <div class="modal-footer">
@@ -189,7 +187,9 @@ export default {
                                 icon: 'success',
                                 text: response.data.mensaje
                                 });
-                              location.reload();
+                              setTimeout( function() {
+                                  location.reload();
+                              }, 2000);
                         })
                         .catch(
                               error => console.log(error)
