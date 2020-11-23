@@ -16,7 +16,7 @@
                                 </div>
                                 <br>
                                 <div class="form-row">
-                                    <label>Código de Barra</label>
+                                    <label>Código de Barra:</label>
                                 </div>
                                 <div class="form-row">
                                     <div class="col-8">
@@ -37,7 +37,7 @@
                                     <div class="form-row">
                                      <div class="col">
                                         <div class="form-row">
-                                              <label class="text-left">Sucursal Destino</label>
+                                              <label class="text-left">Sucursal Destino:</label>
                                         </div>
                                         <div v-if="mostrar">
                                             <select class="form-control" v-model="idSucursalDestino" id="Sucursal_a_Seleccionar">
@@ -51,13 +51,13 @@
                                         </div>
                                     <div class="col">
                                           <div class="form-row">
-                                              <label class="text-left">Nombre de Producto</label>
+                                              <label class="text-left">Nombre de Producto:</label>
                                           </div>
                                         <input v-model="nombreProducto" type="text" disabled="disabled" class="form-control">
                                     </div>
                                     <div>
                                           <div class="form-row">
-                                              <label class="text-left">Proveedor</label>
+                                              <label class="text-left">Proveedor:</label>
                                           </div>
                                         <input v-model="nombreProveedor" type="text" disabled="disabled" class="form-control">
                                     </div>
@@ -66,19 +66,19 @@
                                 <div class="form-row">
                                     <div class="col">
                                         <div class="form-row">
-                                            <label class="text-left">Cantidad</label>
+                                            <label class="text-left">Cantidad:</label>
                                         </div>
                                         <input v-model="cantidad" type="number" min="1" class="form-control">
                                     </div>
                                         <div class="col">
                                             <div class="form-row">
-                                                <label class="text-left">Precio Unitario</label>
+                                                <label class="text-left">Precio Unitario:</label>
                                             </div>
                                             <input v-model="precioUnitario" type="number" disabled="disabled" class="form-control">
                                         </div>
                                     <div>
                                         <div class="form-row">
-                                            <label class="text-left">Monto</label>
+                                            <label class="text-left">Monto:</label>
                                         </div>
                                         <input @keyup="calcularMonto()" v-model="monto" type="number" min="1" disabled="disabled" class="form-control">
                                     </div>
@@ -87,7 +87,7 @@
                                 <div class="form-row">
                                     <div class="col">
                                         <div class="form-row">
-                                            <label class="text-left">Detalle</label>
+                                            <label class="text-left">Detalle:</label>
                                         </div>
                                         <textarea v-model="detalle" class="form-control" cols="30" rows="5" placeholder=""></textarea>
                                     </div>
@@ -245,6 +245,9 @@ export default {
                     });
                     this.limpiar_form();
                     location.reload();
+                    setTimeout( function() {
+                        location.reload();
+                    }, 2000);
                 })
                 .catch((error) => console.log(error));
             }

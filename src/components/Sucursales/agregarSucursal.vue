@@ -11,11 +11,17 @@
                                             <div class="form-row">
                                                 <!-- primera columna -->
                                                 <div class="col">
-                                                    <input v-model="nombre" type="text" class="form-control" placeholder="Nombre">
+                                                    <div class="form-row">
+                                                        <label class="text-left">Nombre:</label>
+                                                    </div>
+                                                    <input v-model="nombre" type="text" class="form-control">
                                                 </div>
                                                 <!-- segunda columna -->
                                                 <div class="col">
-                                                    <input v-model.number="codigo" type="number" class="form-control" placeholder="Codigo">
+                                                    <div class="form-row">
+                                                        <label class="text-left">Código:</label>
+                                                    </div>
+                                                    <input v-model.number="codigo" type="number" class="form-control">
                                                 </div>
                                             </div>
                                             <br>
@@ -23,24 +29,33 @@
                                             <div class="form-row">
                                                 <!-- primera columna -->
                                                 <div class="col">
-                                                    <input v-model="telefono" type="text" class="form-control" placeholder="Telefono">
+                                                    <div class="form-row">
+                                                        <label class="text-left">Teléfono:</label>
+                                                    </div>
+                                                    <input v-model="telefono" type="text" class="form-control">
                                                 </div>
                                                 <!-- segunda columna -->
                                                 <div class="col">
-                                                    <input v-model="correo" type="email" class="form-control" placeholder="Correo">
+                                                    <div class="form-row">
+                                                        <label class="text-left">Correo:</label>
+                                                    </div>
+                                                    <input v-model="correo" type="email" class="form-control">
                                                 </div>
                                             </div>
                                             <br>
 
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <center>Direccion</center>
+                                                    <center>Dirección</center>
                                                 </div>
                                                 <div class="card-body">
                                                     <!-- primera fila -->
                                                     <div class="form-row">
                                                         <!-- primera columna -->
                                                         <div class="col">
+                                                            <div class="form-row">
+                                                                <label class="text-left">Departamento:</label>
+                                                            </div>
                                                             <select class="form-control" id="selectDepartamento" @change="ShowSelected()">
                                                                 <option value="Departamento" selected="selected">-Departamento-</option>
                                                                 <option v-for="(item, index) in data" :value="index" :key="index">{{item.Departamento}}</option>
@@ -48,6 +63,9 @@
                                                         </div>
                                                         <!-- segunda columna -->
                                                         <div class="col">
+                                                            <div class="form-row">
+                                                                <label class="text-left">Municipio:</label>
+                                                            </div>
                                                             <select v-model="municipio" class="form-control">
                                                                 <option value="0" selected="selected">-Municipio-</option>
                                                                 <option v-for="(item, index) in municipiosArray" :key="index" >{{item}}</option>
@@ -55,7 +73,10 @@
                                                         </div>
                                                     </div>
                                                     <br>
-                                                    <input v-model="descripcion" type="text" class="form-control" placeholder="Descripcion">
+                                                    <div class="form-row">
+                                                        <label class="text-left">Descripción:</label>
+                                                    </div>
+                                                    <input v-model="descripcion" type="text" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
@@ -120,6 +141,9 @@ export default {
                     });
                     this.limpiar_form()
                     location.reload()
+                    setTimeout( function() {
+                        location.reload();
+                    }, 2000);
                 })
                 .catch(
                     error => console.log(error)
