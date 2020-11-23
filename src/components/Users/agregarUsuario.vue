@@ -179,7 +179,6 @@ export default {
             departamento: '',
             municipio: 0,
             descripcion: '',
-
             //capturando la password
             pass: '',
             //variables para convertir la fecha nacimiento en password
@@ -290,7 +289,6 @@ export default {
                  error => console.log(error)
             )
         },
-
         //METODOS DE SUCURSALES
         ShowSelected1() {
             /* Para obtener el valor id*/
@@ -312,7 +310,6 @@ export default {
                  error => console.log(error)
             )
         },
-
         //METODOS DE DIRECCIONES
         ShowSelected2() {
             /* Para obtener el valor id para el selectbox de municipios*/
@@ -334,7 +331,6 @@ export default {
                     error => console.log(error)
                 )
         },
-
         //ESTADO CIVIL
         ShowSelected3() {
             /* Para obtener el valor*/
@@ -361,7 +357,6 @@ export default {
                 console.log('dia: ' + this.d);
                 console.log('mes: ' + this.m +''+this.m2);
                 console.log('año: ' + this.a);
-
                 this.pass = this.d + this.m + this.m2 + this.a;
                 console.log('pass: '+this.pass);
             }
