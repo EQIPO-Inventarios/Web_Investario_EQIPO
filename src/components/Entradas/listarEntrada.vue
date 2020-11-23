@@ -204,7 +204,7 @@ export default {
       },
       dataEntradasL() {
           if (this.nomSucursal == 'Sucursal Principal') {
-              axios.get('/Entradas/listar')
+              axios.get(`/Entradas/listarporIdSucursal/${this.sucursalId}`)
               .then(response => {
                     this.dataEntradas = response.data;
                     console.log(this.dataEntradas);

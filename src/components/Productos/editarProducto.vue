@@ -5,58 +5,77 @@
           <br>
           <div class="card">
               <div class="card-body">
-                  <form @submit="enviarForm()">
+                  <form @submit.prevent="enviarForm()">
                       <div class="form row">
                           <div class="col">
-                              <input v-model="sucursal" type="text" class="form-control" disabled="disabled">
+                              <div class="form-group">
+                                  <label>Sucursal:</label>
+                                  <input v-model="sucursal" type="text" class="form-control" disabled="disabled">
+                              </div>
                           </div>
                       </div>
-                      <br>
                       <div class="form-row">
                           <div class="col">
-                              <input v-model="codigoProducto" type="text" class="form-control" placeholder="Codigo de barra ...">
+                              <div class="form-group">
+                                  <label>Codigo de barra:</label>
+                                  <input v-model="codigoProducto" type="text" class="form-control" placeholder="Codigo de barra ...">
+                              </div>
                           </div>
                           <div class="col">
-                              <input v-model="nombreProducto" type="text" class="form-control" placeholder="Nombre de producto ...">
+                              <div class="form-group">
+                                  <label>Nombre de Producto:</label>
+                                  <input v-model="nombreProducto" type="text" class="form-control" placeholder="Nombre de producto ...">
+                              </div>
                           </div>                         
                       </div>
-                      <br>
                       <div class="form-row" v-if="cambiarProveedor == false">
                         <div class="col">
-                            <input v-model="datosProveedor.nombreProveedor" type="text" class="form-control" disabled="disabled">
+                            <div class="form-group">
+                                <label>Proveedor:</label>
+                                <input v-model="datosProveedor.nombreProveedor" type="text" class="form-control" disabled="disabled">
+                            </div>
                         </div> 
                       </div>
-                      <br>
                       <div class="form-row">
                           <div class="col">
                               <div class="custom-control custom-checkbox mr-sm-2">
                                 <input v-model="cambiarProveedor" type="checkbox" class="custom-control-input" id="check">
-                                <label class="custom-control-label" for="check">cambiar proveedor.</label>
+                                <label class="custom-control-label" for="check"> <small class="text-danger">cambiar proveedor.</small></label>
                               </div>
                           </div>
                       </div>
                       <br>
                       <div class="form-row" v-if="cambiarProveedor">
                           <div class="col">
-                              <select id="selectProveedor" class="custom-select" @change="ShowSelected()">
+                            <div class="form-group">
+                                <label>Proveedor:</label>
+                                <select id="selectProveedor" class="custom-select" @change="ShowSelected()">
                                   <option value="0" selected="selected"> - Seleccione Proveedor - </option>
                                   <option :value="index" v-for="(item, index) in dataProviders" :key="index"> {{item.Nombre}} </option>
-                              </select>
+                                </select>
+                            </div>
                           </div>
                       </div>
-                      <br>
                       <div class="form-row">
                           <div class="col">
-                              <input v-model="material" type="text" class="form-control" placeholder="Material">
+                              <div class="form-group">
+                                  <label>Material:</label>
+                                  <input v-model="material" type="text" class="form-control" placeholder="Material">
+                              </div>
                           </div>
                           <div class="col">
-                              <input v-model.number="precioUnitario" class="form-control" type="number" placeholder="Precio Unitario" min="1" step="0.1"/>
+                              <div class="form-group">
+                                  <label>Precio Unitario:</label>
+                                  <input v-model.number="precioUnitario" class="form-control" type="number" placeholder="Precio Unitario" min="1" step="0.1"/>
+                              </div>
                           </div>
                       </div>
-                      <br>
                       <div class="form-row">
                           <div class="col">
-                              <textarea v-model="caracteristicas" class="form-control" cols="30" rows="5" placeholder="Carcateristicas ..."></textarea>
+                              <div class="form-group">
+                                  <label>Caracteristicas:</label>
+                                  <textarea v-model="caracteristicas" class="form-control" cols="30" rows="5" placeholder="Carcateristicas ..."></textarea>
+                              </div>
                           </div>
                       </div>
                   </form>
@@ -88,7 +107,7 @@ export default {
             id: '',
             codigoProducto: '',
             nombreProducto: '',
-            sucursal: 'Sucursal central',
+            sucursal: sessionStorage.getItem('nomSucursal'),
             material: '',
             caracteristicas: '',
             existencias: 0,
