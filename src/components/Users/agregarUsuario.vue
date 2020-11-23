@@ -9,19 +9,19 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="nom">Nombre:</label>
-                                            <input v-model="nombres" type="text" class="form-control" id="nom" placeholder="Nombres">
+                                            <input v-model="nombres" type="text" class="form-control" id="nom">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="ape">Apellido:</label>
-                                            <input v-model="apellidos" type="text" class="form-control" id="ape" placeholder="Apellidos">
+                                            <input v-model="apellidos" type="text" class="form-control" id="ape">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="cor">Correo:</label>
-                                            <input v-model="correo" type="email" class="form-control" id="cor" placeholder="Correo electrónico">
+                                            <input v-model="correo" type="email" class="form-control" id="cor">
                                         </div>
                                     </div>
                                 </div>
@@ -29,19 +29,19 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="du">DUI:</label>
-                                            <input v-model="dui" type="text" class="form-control" id="du" placeholder="DUI">
+                                            <input v-model="dui" type="text" class="form-control" id="du">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="ni">NIT:</label>
-                                            <input v-model="nit" type="text" class="form-control" id="ni" placeholder="NIT">
+                                            <input v-model="nit" type="text" class="form-control" id="ni">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="tel">Teléfono:</label>
-                                            <input v-model="telefono" type="text" class="form-control" id="tel" placeholder="teléfono">
+                                            <input v-model="telefono" type="text" class="form-control" id="tel">
                                         </div>
                                     </div>  
                                 </div>
@@ -60,7 +60,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="fec">Fecha de nacimiento:</label>
-                                            <input v-model="fechaNacimiento" type="date" class="form-control" id="fec" placeholder="Fecha de Nacimiento">
+                                            <input v-model="fechaNacimiento" type="date" class="form-control" id="fec" min="1970-01-01" max="2002-12-31">
                                         </div>
                                     </div>
                                     <div class="col">
@@ -97,7 +97,7 @@
                                 <br>
                                 <div class="card">
                                     <div class="card-header">
-                                    Dirección
+                                    <center>Dirección</center>
                                     </div>
                                     <div class="card-body">
                                         <div class="form-row"> 
@@ -124,7 +124,7 @@
                                         <div class="col"> 
                                             <div class="form-group">
                                                 <label for="des">Descripción:</label>
-                                                <input v-model="descripcion" type="text" class="form-control" id="des" placeholder="Descripción">
+                                                <input v-model="descripcion" type="text" class="form-control" id="des">
                                             </div>
                                         </div>
                                     </div>
@@ -232,6 +232,9 @@ export default {
                     });
                     this.limpiar_form();
                     location.reload();
+                    setTimeout( function() {
+                        location.reload();
+                    }, 2000);
             })
             .catch(
                 error => console.log(error)

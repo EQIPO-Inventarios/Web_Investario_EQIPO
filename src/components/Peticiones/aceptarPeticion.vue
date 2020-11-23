@@ -163,6 +163,9 @@ export default {
                         });
                         this.limpiarForm();
                         location.reload();
+                        setTimeout( function() {
+                            location.reload();
+                        }, 2000);
                     })
                     .catch(
                         error => console.log(error)

@@ -24,7 +24,7 @@
                     </div>
                     <br>
                     <div class="form-row">
-                        <label for="codpro">Codigo de Producto:</label>
+                        <label for="codpro">Código de Producto:</label>
                     </div>
                     <div class="form-row">                    
                         <div class="col-8">
@@ -208,6 +208,9 @@ export default {
                         });
                         this.limpiarForm()
                         location.reload()
+                        setTimeout( function() {
+                            location.reload();
+                        }, 2000);
                     })
                     .catch(
                         error => console.log(error)
