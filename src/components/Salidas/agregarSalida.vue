@@ -244,7 +244,6 @@ export default {
                         text: response.data.mensaje
                     });
                     this.limpiar_form();
-                    location.reload();
                     setTimeout( function() {
                         location.reload();
                     }, 2000);
