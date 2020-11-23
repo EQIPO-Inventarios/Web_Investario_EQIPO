@@ -44,7 +44,7 @@
                         <div class="form-row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="nompro">Codigo producto:</label>
+                                <label for="nompro">Código producto:</label>
                                 <input v-model="codigoProducto" type="text" id="codg" class="form-control" disabled="disabled">
                             </div>
                         </div>
@@ -180,7 +180,10 @@ export default {
                         text: response.data.mensaje
                         });
                         this.limpiarForm();
-                        location.reload();
+
+                        setTimeout( function() {
+                            location.reload();
+                        }, 2000);
                     })
                     .catch(
                         (error) => console.log(error)
