@@ -8,11 +8,17 @@
               <form @submit.prevent="enviarForm()">
                   <div class="form-row">
                     <div class="col">
+                      <div class="form-group">
+                        <label>Fecha actual:</label>
                         <input v-model="fechaActual" type="text" disabled="disabled" class="form-control">
+                      </div>                      
                     </div>
                     <div class="col"></div>
                     <div class="col">
-                      <input v-model="nombreSucursal" type="text" class="form-control" disabled="disabled">
+                      <div class="form-group">
+                        <label>Sucursal:</label>
+                        <input v-model="nombreSucursal" type="text" class="form-control" disabled="disabled">
+                      </div>                      
                     </div>
                   </div>
                   <br>
