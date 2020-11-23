@@ -184,7 +184,9 @@ export default {
                   text: response.data.mensaje
                   });
                   this.cambiarProveedor = false;
-                  location.reload()
+                  setTimeout( function() {
+                      location.reload();
+                  }, 2000);
               })
               .catch(
                   error => console.log(error)
@@ -200,6 +202,9 @@ export default {
         },
         cancelar() {
             this.cambiarProveedor = false;
+        },
+        recagarPag(){
+            location.reload()
         }
     },
     watch: {

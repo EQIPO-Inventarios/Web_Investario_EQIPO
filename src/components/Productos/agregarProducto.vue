@@ -166,8 +166,11 @@ export default {
                   icon: 'success',
                   text: response.data.mensaje
                   });
-                  this.limpiarForm()
-                  location.reload()
+                  this.limpiarForm();
+
+                  setTimeout( function() {
+                      location.reload();
+                  }, 2000);
               })
               .catch(
                   error => console.log(error)
