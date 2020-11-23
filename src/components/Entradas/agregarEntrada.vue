@@ -8,16 +8,27 @@
               <form @submit.prevent="enviarForm()">
                   <div class="form-row">
                     <div class="col">
+                      <div class="form-group">
+                        <label>Fecha actual:</label>
                         <input v-model="fechaActual" type="text" disabled="disabled" class="form-control">
+                      </div>                      
                     </div>
                     <div class="col"></div>
                     <div class="col">
-                      <input v-model="nombreSucursal" type="text" class="form-control" disabled="disabled">
+                      <div class="form-group">
+                        <label>Sucursal:</label>
+                        <input v-model="nombreSucursal" type="text" class="form-control" disabled="disabled">
+                      </div>                      
                     </div>
                   </div>
                   <br>
-                  <div class="form-row">                    
-                    <div class="col-8">
+                  <div class="form-row">
+                    <div class="col">
+                      <f class="form-group">
+                        <label>Codigo de barra:</label>
+                      </f>
+                    </div>                    
+                    <div class="col-7">
                         <input v-model.number="codigoBarra" type="number" class="form-control" placeholder="Ingrese codigo de barra" required="required">
                         <div v-if="codigoBarra != '' " class="wd bg-success text-white"> Ok valido!</div>
                     </div>
