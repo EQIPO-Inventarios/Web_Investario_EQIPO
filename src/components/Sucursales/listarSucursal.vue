@@ -84,8 +84,8 @@
                 <tr>
                   <th scope="col">Nombre</th>
                   <th scope="col">Correo</th>
-                  <th scope="col">Telefono</th>
-                  <th scope="col">Direccion</th>
+                  <th scope="col">Teléfono</th>
+                  <th scope="col">Dirección</th>
                   <th scope="col">Opciones</th>
                 </tr>
               </thead>
@@ -188,6 +188,9 @@ export default {
                                 text: response.data.mensaje
                                 });
                               location.reload();
+                              setTimeout( function() {
+                                  location.reload();
+                              }, 2000);
                         })
                         .catch(
                               error => console.log(error)

@@ -264,6 +264,9 @@ export default {
                     });
                     this.limpiar_form()
                     location.reload()
+                    setTimeout( function() {
+                        location.reload();
+                    }, 2000);
                 })
                 .catch(
                     (error) => console.log(error)
@@ -291,7 +294,7 @@ export default {
         limpiar_form() {
             this.codigoProducto = '';
             this.nombreProducto = '';
-            this.nomSucursal = '';
+            this.nombreSucursalDestino = '';
             this.proveedor = '';
             this.precioUnitario = '';
             this.cantidad = '';

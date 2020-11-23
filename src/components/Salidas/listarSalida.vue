@@ -67,7 +67,7 @@
                     <thead class="bg-primary text-white" >
                     <tr>
                         <td scope= "col">Fecha</td>
-                        <td scope= "col">Codigo de barra</td>
+                        <td scope= "col">Código de barra</td>
                         <td scope= "col">Producto</td>
                         <td scope= "col">Proveedor</td>
                         <td scope= "col">Sucursal</td>
@@ -181,29 +181,16 @@ export default {
 
         //obteniendo las salidas
         dataSalidasListar() {
-            if (this.nomSucursal == 'Sucursal Principal'){
-                    axios.get('/Salidas/listar')
-                    .then(response => {
-                        this.dataSalidas = response.data;
-                        console.log(this.dataSalidas);
-                        this.numSal = response.data.length;
-                        console.log(this.numSal);
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
-            }else{
-                    axios.get(`/Salidas/listarporIdSucursal/${this.sucursalId}`)
-                    .then(response => {
-                        this.dataSalidas = response.data;
-                        console.log(this.dataSalidas);
-                        this.numSal = response.data.length;
-                        console.log(this.numSal)
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
-          }
+            axios.get(`/Salidas/listarporIdSucursal/${this.sucursalId}`)
+            .then(response => {
+                this.dataSalidas = response.data;
+                console.log(this.dataSalidas);
+                this.numSal = response.data.length;
+                console.log(this.numSal)
+            })
+            .catch(
+                error => console.log(error)
+            );
         },
 
         //obteniendo los productos
