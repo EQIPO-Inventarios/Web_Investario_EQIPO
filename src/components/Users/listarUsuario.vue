@@ -188,7 +188,7 @@ export default {
                                 icon: 'success',
                                 text: response.data.mensaje
                                 });
-                              location.reload();
+
                                 setTimeout( function() {
                                     location.reload();
                                 }, 2000);
