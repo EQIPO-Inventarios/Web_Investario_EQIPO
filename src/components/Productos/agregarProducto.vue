@@ -6,7 +6,7 @@
           <div class="card">
               <div class="card-body">
                   <form @submit.prevent="enviarForm()">
-                      <div class="form row">
+                      <div class="form-row">
                           <div class="col">
                               <div class="form-group">
                                   <label>Sucursal:</label>
