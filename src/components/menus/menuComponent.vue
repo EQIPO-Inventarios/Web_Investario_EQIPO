@@ -30,7 +30,7 @@
                         <li class="nav-item dropdown mr-4" v-if="permiso == 1 || permiso == 3">
                             <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <router-link to="/menu/ProductoListado">
-                                    <span class="EnlaceP"><i class="fas fa-shopping-basket"></i>   Produtos</span> 
+                                    <span class="EnlaceP"><i class="fas fa-shopping-basket"></i>   Productos</span> 
                                 </router-link>  
                             </a>
                         </li>
